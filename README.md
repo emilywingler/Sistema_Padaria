@@ -202,6 +202,13 @@ Opções:
 
 Estrutura modular, com pacotes e classes organizados logicamente.
 
+src/
+|--- main/
+|   |--- model/
+|   |--- service/
+|   |--- io/
+|   |--- repport/
+|   |--- App.java
 ---
 
 ## 5. Condições de entrega
