@@ -72,6 +72,7 @@ public class Produto {
         BigDecimal percentual = new BigDecimal(percentualLucro);
         BigDecimal lucro = custo.multiply(percentual).divide(cem, 2, RoundingMode.HALF_UP);
         return custo.add(lucro).setScale(2, RoundingMode.HALF_UP);
+<<<<<<< HEAD
 }
 
 
@@ -80,5 +81,3 @@ public class Produto {
         return  "idProduto: " + idProduto + ", descricao: " + descricao + ", minEstoque: " + minEstoque + ", estoqueAtual: " + estoqueAtual + ", custo: " + custo + ", percentualLucro: " + percentualLucro;
     }
     
-    
-}

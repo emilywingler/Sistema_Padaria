@@ -54,18 +54,15 @@ public class GerenciaProdutos {
     
     //exibe todos os produtos cadastrados no terminal com suas informações 
     //mostra o valor de venda ja calculado
-    public void listarProdutos() {
+     public void listarProdutos() {
         if (produtos.isEmpty()) {
             System.out.println("Lista de produtos vazia.");
         } else {
             for (Produto p : produtos) {
-                System.out.println(p.getIdProduto() + " - " + p.getDescricao() + " - Estoque Atual: " + 
-                                   p.getEstoqueAtual() + " - Estoque Mínimo: " + p.getMinEstoque() +
-                                   " - Custo: R$" + p.getCusto() + " - Lucro: " + p.getPercentualLucro() +
-                                   "% - Venda: R$" + p.getValorDeVenda());
+                System.out.println(p); // usa o toString()
             }
         }
-    }
+     }
     
     //permite editar um produto interativamente 
     //as alterações são feitas diretamente no objeto em memoria 
@@ -122,6 +119,7 @@ public class GerenciaProdutos {
         // sc.close(); // não feche aqui!
     }
     
+    //analisar se estoque mim será usada em outra classe para obter esse retorno 
     public void verificarEstoqueBaixo(){
         for (Produto p : produtos) {
             if (p.getEstoqueAtual() < p.getMinEstoque()) {
@@ -131,5 +129,14 @@ public class GerenciaProdutos {
             }
         }
     }
+    public boolean existeProdutoComEstoqueBaixo() {
+        for (Produto p : produtos) {
+            if (p.getEstoqueAtual() < p.getMinEstoque()) {
+                return true; // achou pelo menos 1
+            }
+        }
+    return false; // nenhum produto está abaixo do mínimo
+    }
+          
 }
 
