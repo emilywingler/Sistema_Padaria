@@ -47,8 +47,10 @@ public class GerenciaCliente {
     */
     public void removerCliente(int codigo){
         Cliente c = buscarCliente(codigo);
-        clientes.remove(c);
-        escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
+        if(c != null){
+            clientes.remove(c);
+            escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
+        }else System.out.println("Cliente nao encontrado");   
     }
     
     /**
@@ -85,9 +87,8 @@ public class GerenciaCliente {
         
         if(!clientes.isEmpty()){
             for(Cliente c : clientes){
-                System.out.println(c.getId()+" - "+c.getNome()+" - "+c.getEndereco()+" - "+c.getTelefone()+" - "+c.getDataCadastro()+" - ");
-                if(c.getTipo().equals("Pessoa Física")) System.out.print(((ClienteFisico)c).getCpf());
-                else System.out.print(((ClienteJuridico)c).getCnpj()+" - "+((ClienteJuridico)c).getInscricaoEstadual());
+                if(c instanceof ClienteFisico cf) System.out.println(cf.toString());
+                else System.out.println(((ClienteJuridico)c).toString());
             }
         }else System.out.println("Lista vazia.");  
     }
@@ -112,72 +113,75 @@ public class GerenciaCliente {
     */
     public void editarCliente(int codigo){
         Cliente c = buscarCliente(codigo);
-        int op = 0;
-        Scanner sc = new Scanner(System.in);
-        
-        while(op != 8){
-            System.out.println("""
-                               1. Nome
-                               2. Endereco
-                               3. Telefone
-                               4. Data de Cadastro
-                               5. CPF
-                               6. CNPJ
-                               7. Inscricao Estadual
-                               8. Sair
-                               """);
-            System.out.println("\nInsira uma opcao: ");
-            op = sc.nextInt();
-            sc.nextLine();
-        
-            switch(op){
-                case 1 ->{
-                    System.out.println("Insira o novo nome: ");
-                    c.setNome(sc.nextLine());
-                }
-                case 2 ->{
-                    System.out.println("Insira o novo endereco: ");
-                    c.setEndereco(sc.nextLine());
-                }
-                case 3 ->{
-                    System.out.println("Insira o novo telefone: ");
-                    c.setTelefone(sc.nextLine());
-                }
-                case 4 ->{
-                    System.out.println("Insira a nova data de cadastro: ");
-                    c.setDataCadastro(sc.nextLine());
-                }
-                case 5 ->{
-                    if(c instanceof ClienteFisico){
-                        System.out.println("Insira o novo CPF: ");
-                        ((ClienteFisico)c).setCpf(sc.nextLine());
-                    }else{
-                        System.out.println("Um cliente juridico nao possui CPF.");
+        if(c != null){
+            int op = 0;
+            Scanner sc = new Scanner(System.in);
+
+            while(op != 8){
+                System.out.println("""
+                                   1. Nome
+                                   2. Endereco
+                                   3. Telefone
+                                   4. Data de Cadastro
+                                   5. CPF
+                                   6. CNPJ
+                                   7. Inscricao Estadual
+                                   8. Sair
+                                   """);
+                System.out.println("\nInsira uma opcao: ");
+                op = sc.nextInt();
+                sc.nextLine();
+
+                switch(op){
+                    case 1 ->{
+                        System.out.println("Insira o novo nome: ");
+                        c.setNome(sc.nextLine());
                     }
-                }
-                case 6 ->{
-                    if(c instanceof ClienteJuridico){
-                        System.out.println("Insira o novo CNPJ: ");
-                        ((ClienteJuridico)c).setCnpj(sc.nextLine());
-                    }else{
-                        System.out.println("Um cliente fisico nao possui CNPJ.");
+                    case 2 ->{
+                        System.out.println("Insira o novo endereco: ");
+                        c.setEndereco(sc.nextLine());
                     }
-                }
-                case 7 ->{
-                    if(c instanceof ClienteJuridico){
-                        System.out.println("Insira a nova Inscrição Estadual: ");
-                        ((ClienteJuridico)c).setInscricaoEstadual(sc.nextLine());
-                    }else{
-                        System.out.println("Um cliente fisico nao possui Inscricao Estadual.");
+                    case 3 ->{
+                        System.out.println("Insira o novo telefone: ");
+                        c.setTelefone(sc.nextLine());
                     }
-                }
-                case 8 ->{}
-                default ->{
-                    System.out.println("Valor invalido. Tente novamente.");
+                    case 4 ->{
+                        System.out.println("Insira a nova data de cadastro: ");
+                        c.setDataCadastro(sc.nextLine());
+                    }
+                    case 5 ->{
+                        if(c instanceof ClienteFisico){
+                            System.out.println("Insira o novo CPF: ");
+                            ((ClienteFisico)c).setCpf(sc.nextLine());
+                        }else{
+                            System.out.println("Um cliente juridico nao possui CPF.");
+                        }
+                    }
+                    case 6 ->{
+                        if(c instanceof ClienteJuridico){
+                            System.out.println("Insira o novo CNPJ: ");
+                            ((ClienteJuridico)c).setCnpj(sc.nextLine());
+                        }else{
+                            System.out.println("Um cliente fisico nao possui CNPJ.");
+                        }
+                    }
+                    case 7 ->{
+                        if(c instanceof ClienteJuridico){
+                            System.out.println("Insira a nova Inscrição Estadual: ");
+                            ((ClienteJuridico)c).setInscricaoEstadual(sc.nextLine());
+                        }else{
+                            System.out.println("Um cliente fisico nao possui Inscricao Estadual.");
+                        }
+                    }
+                    case 8 ->{}
+                    default ->{
+                        System.out.println("Valor invalido. Tente novamente.");
+                    }
                 }
             }
-        }
-        escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);  
-        sc.close();
+            escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);  
+            sc.close();
+        }else System.out.println("Cliente nao encontrado.");
+        
     }   
 }
