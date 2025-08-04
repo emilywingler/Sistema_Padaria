@@ -53,9 +53,12 @@ public class GerenciaFornecedor {
     * @param codigo O código inteiro (ID) do cliente que deve ser removido.
     */
     public void removerFornecedor(int codigo){
-        Fornecedor c = buscarFornecedor(codigo);
-        fornecedores.remove(c);
-        escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+        Fornecedor f = buscarFornecedor(codigo);
+        if(f != null){
+            fornecedores.remove(f);
+            escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+        }else System.out.println("Fornecedor nao encontrado.");
+        
     }
     
     /**
@@ -91,7 +94,7 @@ public class GerenciaFornecedor {
         
         if(!fornecedores.isEmpty()){
             for(Fornecedor f : fornecedores){
-                System.out.println(f.getIdFornecedor()+" - "+f.getNomeEmpresa()+" - "+f.getEndereco()+" - "+f.getTelefone()+" - "+f.getCnpj()+" - "+f.getPessoaContato());
+                System.out.println(f.toString());
             }
         }else System.out.println("Lista vazia.");  
     }
@@ -111,50 +114,55 @@ public class GerenciaFornecedor {
     */
     public void editarFornecedor(int codigo){
         Fornecedor f = buscarFornecedor(codigo);
-        int op = 0;
-        Scanner sc = new Scanner(System.in);
-        
-        while(op != 8){
-            System.out.println("""
-                               1. Nome da Empresa
-                               2. Endereco
-                               3. Telefone
-                               4. CNPJ
-                               5. Pessoa de Contato
-                               6. Sair
-                               """);
-            System.out.println("\nInsira uma opcao: ");
-            op = sc.nextInt();
-            sc.nextLine();
-        
-            switch(op){
-                case 1 ->{
-                    System.out.println("Insira o novo nome da empresa: ");
-                    f.setNomeEmpresa(sc.nextLine());
-                }
-                case 2 ->{
-                    System.out.println("Insira o novo endereco: ");
-                    f.setEndereco(sc.nextLine());
-                }
-                case 3 ->{
-                    System.out.println("Insira o novo telefone: ");
-                    f.setTelefone(sc.nextLine());
-                }
-                case 4 ->{
-                    System.out.println("Insira o novo CNPJ: ");
-                    f.setCnpj(sc.nextLine());
-                }
-                case 5 ->{
-                    System.out.println("Insira a nova pessoa de contato: ");
-                    f.setPessoaContato(sc.nextLine());
-                }
-                case 6 ->{}
-                default ->{
-                    System.out.println("Valor invalido. Tente novamente.");
+        if(f != null){
+            int op = 0;
+            Scanner sc = new Scanner(System.in);
+
+            while(op != 8){
+                System.out.println("""
+                                   1. Nome da Empresa
+                                   2. Endereco
+                                   3. Telefone
+                                   4. CNPJ
+                                   5. Pessoa de Contato
+                                   6. Sair
+                                   """);
+                System.out.println("\nInsira uma opcao: ");
+                op = sc.nextInt();
+                sc.nextLine();
+
+                switch(op){
+                    case 1 ->{
+                        System.out.println("Insira o novo nome da empresa: ");
+                        f.setNomeEmpresa(sc.nextLine());
+                    }
+                    case 2 ->{
+                        System.out.println("Insira o novo endereco: ");
+                        f.setEndereco(sc.nextLine());
+                    }
+                    case 3 ->{
+                        System.out.println("Insira o novo telefone: ");
+                        f.setTelefone(sc.nextLine());
+                    }
+                    case 4 ->{
+                        System.out.println("Insira o novo CNPJ: ");
+                        f.setCnpj(sc.nextLine());
+                    }
+                    case 5 ->{
+                        System.out.println("Insira a nova pessoa de contato: ");
+                        f.setPessoaContato(sc.nextLine());
+                    }
+                    case 6 ->{}
+                    default ->{
+                        System.out.println("Valor invalido. Tente novamente.");
+                    }
                 }
             }
+            escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+            sc.close();
+        }else{
+            System.out.println("Fornecedor nao encontrado.");
         }
-        escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
-        sc.close();
+        
     }   
 }
