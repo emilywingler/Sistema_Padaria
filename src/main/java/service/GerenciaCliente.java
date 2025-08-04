@@ -7,6 +7,7 @@ import io.Leitura;
 import io.Escrita;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class GerenciaCliente {
     private List<Cliente> clientes;
@@ -91,14 +92,91 @@ public class GerenciaCliente {
         }else System.out.println("Lista vazia.");  
     }
     
-    
+    /**
+    * Inicia uma sessão interativa no console para editar os dados de um cliente específico.
+    * <p>
+    * Primeiramente, o método busca o cliente pelo código fornecido. Uma vez encontrado,
+    * um menu de opções é exibido em loop, permitindo ao usuário escolher qual campo
+    * do cliente deseja alterar. O loop continua até que a opção "Sair" (8) seja selecionada.
+    * <p>
+    * O método realiza verificações de tipo (usando {@code instanceof}) para campos
+    * específicos como CPF e CNPJ, garantindo que apenas os dados pertinentes a um
+    * {@link ClienteFisico} ou {@link ClienteJuridico} possam ser editados e informando
+    * o usuário em caso de uma escolha inadequada.
+    * <p>
+    * Todas as alterações são aplicadas ao objeto em memória durante a sessão e são
+    * persistidas no arquivo CSV de uma só vez, apenas ao final do processo, quando
+    * o usuário decide sair do menu de edição.
+    *
+    * @param codigo O código numérico (ID) do cliente que se deseja editar.
+    */
     public void editarCliente(int codigo){
         Cliente c = buscarCliente(c);
+        int op = 0;
+        Scanner sc = new Scanner(System.in);
         
-        System.out.println("O que você deseja alterar?");
-        System.out.println("1. Nome"
-                + "2. Endereço"
-                + "Telefone")
-    }
-    
+        while(op != 8){
+            System.out.println("""
+                               1. Nome
+                               2. Endereco
+                               3. Telefone
+                               4. Data de Cadastro
+                               5. CPF
+                               6. CNPJ
+                               7. Inscricao Estadual
+                               8. Sair
+                               """);
+            System.out.println("\nInsira uma opcao");
+            op = sc.nextInt();
+            sc.nextLine();
+        
+            switch(op){
+                case 1 ->{
+                    System.out.println("Insira o novo nome: ");
+                    c.setNome(sc.nextLine());
+                }
+                case 2 ->{
+                    System.out.println("Insira o novo endereco: ");
+                    c.setEndereco(sc.nextLine());
+                }
+                case 3 ->{
+                    System.out.println("Insira o novo telefone: ");
+                    c.setTelefone(sc.nextLine());
+                }
+                case 4 ->{
+                    System.out.println("Insira a nova data de cadastro: ");
+                    c.setDataCadastro(sc.nextLine());
+                }
+                case 5 ->{
+                    if(c instanceof ClienteFisico){
+                        System.out.println("Insira o novo CPF: ");
+                        ((ClienteFisico)c).setCpf(sc.nextLine());
+                    }else{
+                        System.out.println("Um cliente juridico nao possui CPF.");
+                    }
+                }
+                case 6 ->{
+                    if(c instanceof ClienteJuridico){
+                        System.out.println("Insira o novo CNPJ: ");
+                        ((ClienteJuridico)c).setCnpj(sc.nextLine());
+                    }else{
+                        System.out.println("Um cliente fisico nao possui CNPJ.");
+                    }
+                }
+                case 7 ->{
+                    if(c instanceof ClienteJuridico){
+                        System.out.println("Insira a nova Inscrição Estadual: ");
+                        ((ClienteJuridico)c).setInscricaoEstadual(sc.nextLine());
+                    }else{
+                        System.out.println("Um cliente fisico nao possui Inscricao Estadual.");
+                    }
+                }
+                case 8 ->{}
+                default ->{
+                    System.out.println("Valor invalido. Tente novamente.");
+                }
+            }
+        }
+        escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);         
+    }   
 }
