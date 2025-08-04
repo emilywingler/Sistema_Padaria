@@ -74,7 +74,11 @@ public class Produto {
         return custo.add(lucro).setScale(2, RoundingMode.HALF_UP);
 }
 
-    
+
+    @Override
+    public String toString() {
+        return  "idProduto: " + idProduto + ", descricao: " + descricao + ", minEstoque: " + minEstoque + ", estoqueAtual: " + estoqueAtual + ", custo: " + custo + ", percentualLucro: " + percentualLucro;
+    }
     
     
 }

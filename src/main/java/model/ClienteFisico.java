@@ -25,4 +25,11 @@ public class ClienteFisico extends Cliente{
     public static int getTotalClientesFisicos() {
         return totalClientesFisicos;
     }
+
+    @Override
+    public String toString() {
+        return  super.toString() + ", cpf=" + cpf;
+    }
+    
+    
 }

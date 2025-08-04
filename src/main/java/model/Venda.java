@@ -47,6 +47,10 @@ public class Venda {
         return totalVendas;
     }
 
+    @Override
+    public String toString() {
+        return  "idVenda: " + idVenda + ", DataVenda: " + DataVenda + ", idProduto: " + idProduto + ", quantidade: " + quantidade + ", MeioPagamento: " + MeioPagamento;
+    }
     
     
 }

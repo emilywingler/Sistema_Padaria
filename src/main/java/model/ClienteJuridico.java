@@ -36,5 +36,11 @@ public class ClienteJuridico extends Cliente{
     public static int getTotalClientesJuridicos() {
         return totalClientesJuridicos;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "cnpj: " + cnpj + ", InscricaoEstadual: " + InscricaoEstadual;
+    }
+    
     
 }
