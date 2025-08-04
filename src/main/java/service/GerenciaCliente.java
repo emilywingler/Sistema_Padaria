@@ -111,7 +111,7 @@ public class GerenciaCliente {
     * @param codigo O código numérico (ID) do cliente que se deseja editar.
     */
     public void editarCliente(int codigo){
-        Cliente c = buscarCliente(c);
+        Cliente c = buscarCliente(codigo);
         int op = 0;
         Scanner sc = new Scanner(System.in);
         
