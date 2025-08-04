@@ -126,7 +126,7 @@ public class GerenciaCliente {
                                7. Inscricao Estadual
                                8. Sair
                                """);
-            System.out.println("\nInsira uma opcao");
+            System.out.println("\nInsira uma opcao: ");
             op = sc.nextInt();
             sc.nextLine();
         
