@@ -177,6 +177,7 @@ public class GerenciaCliente {
                 }
             }
         }
-        escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);         
+        escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);  
+        sc.close();
     }   
 }
