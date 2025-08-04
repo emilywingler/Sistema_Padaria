@@ -124,6 +124,7 @@ public class GerenciaProdutos {
         // sc.close(); // não feche aqui!
     }
     
+    //analisar se estoque mim será usada em outra classe para obter esse retorno 
     public void verificarEstoqueBaixo(){
         for (Produto p : produtos) {
             if (p.getEstoqueAtual() < p.getMinEstoque()) {
@@ -133,5 +134,14 @@ public class GerenciaProdutos {
             }
         }
     }
+    public boolean existeProdutoComEstoqueBaixo() {
+        for (Produto p : produtos) {
+            if (p.getEstoqueAtual() < p.getMinEstoque()) {
+                return true; // achou pelo menos 1
+            }
+        }
+    return false; // nenhum produto está abaixo do mínimo
+    }
+          
 }
 
