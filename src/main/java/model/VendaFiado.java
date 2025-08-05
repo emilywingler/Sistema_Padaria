@@ -16,6 +16,13 @@ public class VendaFiado extends Venda {
     public int getIdCliente() {
         return idCliente;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", idCliente: " + idCliente;
+    }
+    
+    
     
     
 }

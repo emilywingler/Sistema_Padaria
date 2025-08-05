@@ -39,6 +39,12 @@ public class Compra {
     public int getQuantidade() {
         return quantidade;
     }
+
+    @Override
+    public String toString() {
+        return "idCompra: " + idCompra + ", idFornecedor: " + idFornecedor + ", DataCompra: " + DataCompra + ", idProduto: " + idProduto + ", quantidade: " + quantidade;
+    }
+    
     
     
     

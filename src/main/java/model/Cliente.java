@@ -71,5 +71,11 @@ public class Cliente {
     public static int getTotalClientes() {
         return totalClientes;
     }
+
+    @Override
+    public String toString() {
+        return "idCliente: " + idCliente + ", nome: " + nome + ", endereco: " + endereco + ", telefone: " + telefone + ", dataCadastro: " + dataCadastro + ", tipo: " + tipo;
+    }
+    
     
 }

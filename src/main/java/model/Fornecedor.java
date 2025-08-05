@@ -72,5 +72,9 @@ public class Fornecedor {
         return totalFornecedores;
     }
 
-    
+    @Override
+    public String toString() {
+        return "idFornecedor: " + idFornecedor + ", nomeEmpresa: " + nomeEmpresa + ", endereco: " + endereco + ", telefone: " + telefone + ", cnpj: " + cnpj + ", pessoaContato: " + pessoaContato;
+    }
+
 }
