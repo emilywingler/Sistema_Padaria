@@ -10,11 +10,14 @@ import model.Compra;
 import io.Leitura;
 import io.Escrita;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import model.Produto;
 import model.Venda;
-
+import model.VendaAVista;
+import model.VendaFiado;
+import service.
 
 /**
  *
@@ -43,24 +46,49 @@ public class GerenciaVenda {
     private final String ARQUIVO_VENDA= "vendas.csv"; //nome do arquivo csv que os produtos sao salvos 
     private Leitura leitorCSV;//objeto responsavel por ler dados no csv
     private Escrita escritorCSV;
-    private List<Produto> produtos//objeto responsavel por escrever dados no csv
+    private GerenciaProdutos gp;//objeto responsavel por escrever dados no csv
     
-    public GerenciaVenda(List<Produto>) {
+    public GerenciaVenda(GerenciaProdutos gerenciaProd) {
         vendas = new ArrayList<>();
         leitorCSV = new Leitura();
-        escritorCSV = new Escrita();produtos = new ArrayList<>();
-        
+        escritorCSV = new Escrita();
+        this.gp = gerenciaProd;
     }
     
-// USAR o Polimorfismo de INclusão aqui, para simplificar
-    
-// Não tem deletar vendas ou editar vendas, porque cada venda é única;
+    //VENDA A VISTA
     public void registrarVenda(int idVenda, String DataVenda, int idProduto, int quantidade, char MeioPagamento){
-        Produto p;
-        p = buscar
-        Venda v = new Venda(idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
-        vendas.add(v);
-        //escritorCSV.atualizarArquivoVenda(,v);
+        Produto produto =gp.buscarProduto(idProduto);
+        if(produto == null){
+            System.out.println("Produto não encontrado");
+        }
+        else if (produto.getEstoqueAtual() < quantidade){
+            System.out.println("Não há estoque para essa compra");
+        }
+        else{
+            produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
+            // gerenciaProdutos.salvarProdutosAtualizados(); //criar esse método - package IO!!!
+            //escritorCSV.atualizarArquivoVenda(,v); 
+            Venda v = new VendaAVista(idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
+            vendas.add(v);
+        } 
+    }
+    
+    //VENDA FIADO
+    public void registrarVenda( int idCliente, int idVenda, String DataVenda, int idProduto, int quantidade, char MeioPagamento){
+        Produto produto =gp.buscarProduto(idProduto);
+        if(produto == null){
+            System.out.println("Produto não encontrado");
+        }
+        else if (produto.getEstoqueAtual() < quantidade){
+            System.out.println("Não há estoque para essa compra");
+        }
+        else{
+            produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
+            // gerenciaProdutos.salvarProdutosAtualizados(); //criar esse método - package IO!!!
+            //escritorCSV.atualizarArquivoVenda(,v); 
+            Venda v = new VendaFiado(idCliente, idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
+            vendas.add(v);
+        } 
     }
     
     public void listarVendas(){
@@ -77,17 +105,30 @@ public class GerenciaVenda {
                 if(v.getIdVenda() == codigoVenda){
                     return v;
                 }
-                else{
-                    return null;
+            }
+        }
+        return null;
+    }
+    
+    
+    public BigDecimal receitaPorProduto(String idProd){
+        Produto produto =gp.buscarProduto(idProd);
+        if(produto == null){
+            System.out.println("Produto não encontrado");
+            return null;
+        }
+        else{
+            BigDecimal total = new BigDecimal("0");
+            for(Venda v : vendas){
+                if(produto.getIdProduto() == v.getIdProduto()){
+                    total.add(produto.getValorDeVenda().multiply(total, MathContext.UNLIMITED));
                 }
             }
+            return total;
         }
     }
     
     
-    public BigDecimal receitaPorProduto(String codigoProd){
-        
-    }
     public BigDecimal lucroPorProduto(String codigoProd){
     }
     

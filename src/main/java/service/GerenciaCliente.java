@@ -13,13 +13,29 @@ public class GerenciaCliente {
     private List<Cliente> clientes;
     private final String ARQUIVO_CLIENTE = "clientes.csv";
     private Leitura leitorCSV;
-    private Escrita escritorCSV;
-    
+    //private Escrita escritorCSV;
     public GerenciaCliente(){
         clientes = new ArrayList<>();
         leitorCSV = new Leitura();
-        escritorCSV = new Escrita();
+        //escritorCSV = new Escrita();
     }
+    
+    
+    public void carregarClientesCSV(String caminhoArquivo){
+
+        List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
+        for (String[] campos : linhas) {
+            Cliente c = new Cliente(
+                Integer.parseInt(campos[0]),
+                campos[1],
+                campos[2],
+                campos[3],
+                campos[4],
+                campos[5]
+            );
+            clientes.add(c);
+        }
+    } 
     
     /**
     * Adiciona um novo cliente ao sistema e persiste a alteração no arquivo de dados.
@@ -33,7 +49,7 @@ public class GerenciaCliente {
     */
     public void inserirCliente(Cliente cliente){
         clientes.add(cliente);
-        escritorCSV.atualizarArquivo();
+        //escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, cliente);
     }
     
     /**
@@ -49,7 +65,7 @@ public class GerenciaCliente {
         Cliente c = buscarCliente(codigo);
         if(c != null){
             clientes.remove(c);
-            escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
+            //escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
         }else System.out.println("Cliente nao encontrado");   
     }
     
@@ -80,18 +96,23 @@ public class GerenciaCliente {
     * <p>
     * Este método verifica se a lista interna de clientes está vazia. Se estiver, exibe
     * uma mensagem informativa. Caso contrário, itera sobre a lista e imprime os dados
-    * de cada cliente, incluindo informações específicas como CPF para {@code ClienteFisico}
+    * de cada cliente, incluin
+
+
+
+do informações específicas como CPF para {@code ClienteFisico}
     * ou CNPJ e Inscrição Estadual para {@code ClienteJuridico}.
     */
-    public void listarClientes(){
-        
-        if(!clientes.isEmpty()){
-            for(Cliente c : clientes){
-                if(c instanceof ClienteFisico cf) System.out.println(cf.toString());
-                else System.out.println(((ClienteJuridico)c).toString());
-            }
-        }else System.out.println("Lista vazia.");  
+    public void listarClientes() {
+    if (!clientes.isEmpty()) {
+        for (Cliente c : clientes) {
+            System.out.println(c.toString()); // chama o toString() da instância real
+        }
+    } else {
+        System.out.println("Lista vazia.");
     }
+}
+
     
     /**
     * Inicia uma sessão interativa no console para editar os dados de um cliente específico.
@@ -109,7 +130,11 @@ public class GerenciaCliente {
     * persistidas no arquivo CSV de uma só vez, apenas ao final do processo, quando
     * o usuário decide sair do menu de edição.
     *
-    * @param codigo O código numérico (ID) do cliente que se deseja editar.
+    * @param codigo O cód
+
+
+
+igo numérico (ID) do cliente que se deseja editar.
     */
     public void editarCliente(int codigo){
         Cliente c = buscarCliente(codigo);
@@ -178,8 +203,7 @@ public class GerenciaCliente {
                         System.out.println("Valor invalido. Tente novamente.");
                     }
                 }
-            }
-            escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);  
+            } 
             sc.close();
         }else System.out.println("Cliente nao encontrado.");
         

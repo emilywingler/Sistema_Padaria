@@ -10,18 +10,17 @@ import io.Leitura;
 import io.Escrita;
 
 
-
 /**
  *
  * @author mikae
  */
-public class GerenciaProdutos {
+public class GerenciaProduto{
     private List<Produto> produtos; //lista que armazena os objetos Produto em memoria
     private final String ARQUIVO_PRODUTO = "produtos.csv"; //nome do arquivo csv que os produtos sao salvos 
     private Leitura leitorCSV;//objeto responsavel por lerdados no csv
     private Escrita escritorCSV;//objeto responsavel por escrever dados no csv
     
-    public GerenciaProdutos() {
+    public GerenciaProduto() {
         produtos = new ArrayList<>();
         leitorCSV = new Leitura();
         escritorCSV = new Escrita();
@@ -31,14 +30,14 @@ public class GerenciaProdutos {
     //chama o metodo atualizarArquivo para reescrer o csv com o produtos atualizados 
     public void inserirProduto(Produto p) {
         produtos.add(p);
-        escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
+        //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
     }
     
     public void removerProduto(int codigo) {
         Produto p = buscarProduto(codigo);
         if (p != null) {
             produtos.remove(p);
-            escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
+            //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
         } else {
             System.out.println("Produto não encontrado.");
         }
@@ -115,10 +114,10 @@ public class GerenciaProdutos {
             }
         }
 
-        escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
+        //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
         // sc.close(); // não feche aqui!
     }
-    
+        
     //analisar se estoque mim será usada em outra classe para obter esse retorno 
     public void verificarEstoqueBaixo(){
         for (Produto p : produtos) {
@@ -137,6 +136,8 @@ public class GerenciaProdutos {
         }
     return false; // nenhum produto está abaixo do mínimo
     }
-          
+    
 }
+          
+
 
