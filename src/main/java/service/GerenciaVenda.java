@@ -200,11 +200,39 @@ public class GerenciaVenda {
         }
     }
         
-    public BigDecimal buscaValorDeVenda(String idProduto){
-        
-    }
     public BigDecimal lucroPorMP(char meioPagamento){
-    
+        BigDecimal total = BigDecimal.ZERO;
+        Map<Integer,Produto>  cacheProdutos = new HashMap<>(); //evitar buscas infinitas na memória
+        
+        if (!vendas.isEmpty()){
+            
+            for(Venda v : vendas){
+                if(v.getMeioPagamento() == meioPagamento){
+                    
+                    int idProduto = v.getIdProduto();
+                    
+                    Produto produto = cacheProdutos.get(idProduto);
+                    if(produto == null){
+                        produto = gp.buscarProduto(idProduto);
+                        
+                        if(produto != null){
+                            cacheProdutos.put(idProduto,produto);
+                        }
+                        else{
+                            continue;
+                        }
+                    }
+                    
+                    total.add(this.lucroTotalDoPedido(v, produto));
+                }
+            }
+            
+            return total;
+        }
+         else{
+            System.out.println("Ainda não há nehuma venda registrada no sistema!");
+            return null;
+        }
     }
     
     
