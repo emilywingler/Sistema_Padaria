@@ -112,6 +112,15 @@ public class GerenciaVenda {
         return null;
     }
     
+    public BigDecimal lucroTotalDoPedido(Venda v, Produto p){
+        BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
+        return p.getLucro().multiply(quantidadeProd);
+    }
+    
+    public BigDecimal receitaTotalDoPedido(Venda v, Produto p){
+        BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
+        return p.getValorDeVenda().multiply(quantidadeProd);
+    }
     
     public BigDecimal receitaPorProduto(String idProd){
         Produto produto =gp.buscarProduto(idProd);
@@ -123,8 +132,7 @@ public class GerenciaVenda {
         else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
-                    BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
-                    total.add(produto.getValorDeVenda().multiply(quantidadeProd));
+                    total.add(this.receitaTotalDoPedido(v, produto));
                 }
             }
         }
@@ -134,7 +142,6 @@ public class GerenciaVenda {
         }
         return total;
     }
-    
     
     public BigDecimal lucroPorProduto(String idProd){
         Produto produto =gp.buscarProduto(idProd);
@@ -146,8 +153,7 @@ public class GerenciaVenda {
         else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
-                   BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
-                    total.add(produto.getLucro().multiply(quantidadeProd));
+                    total.add(this.lucroTotalDoPedido(v, produto));
                 }
             }
         }
@@ -167,10 +173,22 @@ public class GerenciaVenda {
             
             for(Venda v : vendas){
                 if(v.getMeioPagamento() == meioPagamento){
-                    Produto produto = cacheProdutos.get(v.getIdProduto());
+                    
+                    int idProduto = v.getIdProduto();
+                    
+                    Produto produto = cacheProdutos.get(idProduto);
                     if(produto == null){
-                        produto = 
+                        produto = gp.buscarProduto(idProduto);
+                        
+                        if(produto != null){
+                            cacheProdutos.put(idProduto,produto);
+                        }
+                        else{
+                            continue;
+                        }
                     }
+                    
+                    total.add(this.receitaTotalDoPedido(v, produto));
                 }
             }
             
