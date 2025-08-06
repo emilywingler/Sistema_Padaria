@@ -1,0 +1,21 @@
+código;nome;endereço;telefone;data de cadastro;tipo de cliente;cpf ou cnpj;número de inscrição estadual
+1;Juliana Ferreira;Rua Maranhão, 123 - Bairro Sol;2799239467;2024-09-28;F;466.750.508-77;
+2;Construtora Alfa;Rua Amapá, 321 - Bairro Alvorada;2799587354;2025-05-19;J;18.112.340/0001-60;2023001
+3;Escola Saber Mais;Av. Brasil, 456 - Jardim América;2799291716;2024-03-17;J;10.257.814/0001-63;2023002
+4;Marina Rocha;Rua São Paulo, 789 - Centro;2799195812;2023-02-06;F;269.482.697-55;
+5;Juliana Ferreira;Rua Bela Vista, 500 - Bairro Lagoa;2799321511;2024-10-09;F;915.753.641-93;
+6;Clínica Vida Saudável;Rua Bela Vista, 500 - Bairro Lagoa;2799334065;2024-04-14;J;26.778.709/0001-27;2023003
+7;Loja Rápida EIRELI;Rua São Paulo, 789 - Centro;2799473180;2022-08-16;J;57.897.283/0001-62;2023004
+8;Escola Saber Mais;Rua Amapá, 321 - Bairro Alvorada;2799733517;2022-12-10;J;96.782.609/0001-51;2023005
+9;Escola Saber Mais;Av. Vitória, 301 - Cidade Alta;2799816413;2025-06-07;J;16.705.531/0001-55;2023006
+10;Gráfica Nova Imagem;Rua Maranhão, 123 - Bairro Sol;2799657231;2024-05-21;J;64.118.693/0001-69;2023007
+11;Fernanda Gomes;Rua Rio Grande, 77 - Bela Vista;2799651177;2023-10-08;F;864.202.220-76;
+12;Oficina Central ME;Rua Bela Vista, 500 - Bairro Lagoa;2799372867;2024-11-08;J;86.737.341/0001-81;2023008
+13;Marina Rocha;Rua Amapá, 321 - Bairro Alvorada;2799505102;2022-01-03;F;989.763.934-82;
+14;Gráfica Nova Imagem;Rua Rio Grande, 77 - Bela Vista;2799389831;2022-01-21;J;11.817.579/0001-86;2023009
+15;João Pedro Martins;Rua das Flores, 123 - Centro;2799651302;2022-02-09;F;576.615.848-94;
+16;Empresa Tech Ltda;Rua das Flores, 123 - Centro;2799146995;2023-12-27;J;71.919.656/0001-82;2023010
+17;Lucas Moreira;Rua das Flores, 123 - Centro;2799176500;2024-11-04;F;447.530.564-36;
+18;Thiago Almeida;Rua das Flores, 123 - Centro;2799559333;2023-04-21;F;927.720.984-13;
+19;Clínica Vida Saudável;Av. Vitória, 301 - Cidade Alta;2799780609;2024-08-03;J;25.337.747/0001-64;2023011
+20;Gráfica Nova Imagem;Rua Maranhão, 123 - Bairro Sol;2799638133;2025-05-15;J;41.197.841/0001-97;2023012

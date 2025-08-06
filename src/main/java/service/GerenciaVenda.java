@@ -31,6 +31,7 @@ public class GerenciaVenda {
         escritorCSV = new Escrita();
     }
     
+    
     public void registrarVenda(Venda v){
         
     }

@@ -4,14 +4,14 @@ import model.Cliente;
 import model.ClienteFisico;
 import model.ClienteJuridico;
 import io.Leitura;
-import io.Escrita;
+//import io.Escrita;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class GerenciaCliente {
     private List<Cliente> clientes;
-    private final String ARQUIVO_CLIENTE = "clientes.csv";
+    //private final String ARQUIVO_CLIENTE = "clientes_20.csv";
     private Leitura leitorCSV;
     //private Escrita escritorCSV;
     public GerenciaCliente(){
@@ -21,21 +21,30 @@ public class GerenciaCliente {
     }
     
     
-    public void carregarClientesCSV(String caminhoArquivo){
+    public void carregarClientesCSV(String caminhoArquivo) {
+    List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
 
-        List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
-        for (String[] campos : linhas) {
-            Cliente c = new Cliente(
-                Integer.parseInt(campos[0]),
-                campos[1],
-                campos[2],
-                campos[3],
-                campos[4],
-                campos[5]
-            );
-            clientes.add(c);
-        }
-    } 
+    for (String[] campos : linhas) {
+            int idCliente = Integer.parseInt(campos[0]);
+            String nome = campos[1];
+            String endereco = campos[2];
+            String telefone = campos[3];
+            String dataCadastro = campos[4];
+            String tipo = campos[5];
+
+            if (tipo.equalsIgnoreCase("F")) {
+                String cpf = campos[6];
+                ClienteFisico cf = new ClienteFisico(cpf, idCliente, nome, endereco, telefone, dataCadastro, tipo);
+                clientes.add(cf);
+            } else if (tipo.equalsIgnoreCase("J")) {
+                String cnpj = campos[6];
+                int inscricaoEstadual = Integer.parseInt(campos[7]);
+                ClienteJuridico cj = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
+                clientes.add(cj);
+            }
+    }
+}
+
     
     /**
     * Adiciona um novo cliente ao sistema e persiste a alteração no arquivo de dados.
@@ -65,7 +74,7 @@ public class GerenciaCliente {
         Cliente c = buscarCliente(codigo);
         if(c != null){
             clientes.remove(c);
-            escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
+            //escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
         }else System.out.println("Cliente nao encontrado");   
     }
     
@@ -184,7 +193,7 @@ public class GerenciaCliente {
                     case 7 ->{
                         if(c instanceof ClienteJuridico){
                             System.out.println("Insira a nova Inscrição Estadual: ");
-                            ((ClienteJuridico)c).setInscricaoEstadual(sc.nextLine());
+                            ((ClienteJuridico)c).setInscricaoEstadual(sc.nextInt());
                         }else{
                             System.out.println("Um cliente fisico nao possui Inscricao Estadual.");
                         }
