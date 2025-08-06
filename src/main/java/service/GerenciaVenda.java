@@ -11,13 +11,13 @@ import io.Leitura;
 import io.Escrita;
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import model.Produto;
 import model.Venda;
 import model.VendaAVista;
 import model.VendaFiado;
-import service.
 
 /**
  *
@@ -121,7 +121,8 @@ public class GerenciaVenda {
             BigDecimal total = new BigDecimal("0");
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
-                    total.add(produto.getValorDeVenda().multiply(total, MathContext.UNLIMITED));
+                    BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
+                    total.add(produto.getValorDeVenda().multiply(quantidadeProd));
                 }
             }
             return total;
@@ -129,7 +130,22 @@ public class GerenciaVenda {
     }
     
     
-    public BigDecimal lucroPorProduto(String codigoProd){
+    public BigDecimal lucroPorProduto(String idProd){
+        Produto produto =gp.buscarProduto(idProd);
+        if(produto == null){
+            System.out.println("Produto não encontrado");
+            return null;
+        }
+        else{
+            BigDecimal total = new BigDecimal("0");
+            for(Venda v : vendas){
+                if(produto.getIdProduto() == v.getIdProduto()){
+                   BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
+                    total.add(produto.getLucro().multiply(quantidadeProd));
+                }
+            }
+            return total;
+        }
     }
     
     public BigDecimal receitaPorMP(char meioPagamento){}
