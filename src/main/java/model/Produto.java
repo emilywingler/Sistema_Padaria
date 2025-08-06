@@ -68,10 +68,14 @@ public class Produto {
     }
     
     public BigDecimal getValorDeVenda() {
+        return custo.add(this.getLucro()).setScale(2, RoundingMode.HALF_UP);
+    }
+    
+    public BigDecimal getLucro(){
         BigDecimal cem = new BigDecimal("100");
         BigDecimal percentual = new BigDecimal(percentualLucro);
         BigDecimal lucro = custo.multiply(percentual).divide(cem, 2, RoundingMode.HALF_UP);
-        return custo.add(lucro).setScale(2, RoundingMode.HALF_UP);
+        return lucro.setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
