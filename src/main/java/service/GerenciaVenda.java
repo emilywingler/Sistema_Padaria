@@ -13,7 +13,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import model.Produto;
 import model.Venda;
 import model.VendaAVista;
@@ -113,46 +115,97 @@ public class GerenciaVenda {
     
     public BigDecimal receitaPorProduto(String idProd){
         Produto produto =gp.buscarProduto(idProd);
+        BigDecimal total = BigDecimal.ZERO;
         if(produto == null){
             System.out.println("Produto não encontrado");
             return null;
         }
-        else{
-            BigDecimal total = new BigDecimal("0");
+        else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
                     BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
                     total.add(produto.getValorDeVenda().multiply(quantidadeProd));
                 }
             }
-            return total;
         }
+        else{
+            System.out.println("Ainda não há nehuma venda registrada no sistema!");
+            return null;
+        }
+        return total;
     }
     
     
     public BigDecimal lucroPorProduto(String idProd){
         Produto produto =gp.buscarProduto(idProd);
+        BigDecimal total = BigDecimal.ZERO;
         if(produto == null){
             System.out.println("Produto não encontrado");
             return null;
         }
-        else{
-            BigDecimal total = new BigDecimal("0");
+        else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
                    BigDecimal quantidadeProd = new BigDecimal(v.getQuantidade());
                     total.add(produto.getLucro().multiply(quantidadeProd));
                 }
             }
-            return total;
         }
+        else{
+            System.out.println("Ainda não há nehuma venda registrada no sistema!");
+            return null;
+        }
+        return total;
     }
     
-    public BigDecimal receitaPorMP(char meioPagamento){}
-    public BigDecimal lucroPorMP(char meioPagamento){}
+    public BigDecimal receitaPorMP(char meioPagamento){
+        BigDecimal total = BigDecimal.ZERO;
+        Map<Integer,Produto>  cacheProdutos = new HashMap<>(); //evitar buscas infinitas na memória
+        
+        
+        if (!vendas.isEmpty()){
+            
+            for(Venda v : vendas){
+                if(v.getMeioPagamento() == meioPagamento){
+                    Produto produto = cacheProdutos.get(v.getIdProduto());
+                    if(produto == null){
+                        produto = 
+                    }
+                }
+            }
+            
+            return total;
+        }
+         else{
+            System.out.println("Ainda não há nehuma venda registrada no sistema!");
+            return null;
+        }
+    }
+        
+    public BigDecimal buscaValorDeVenda(String idProduto){
+        
+    }
+    public BigDecimal lucroPorMP(char meioPagamento){
+    
+    }
     
     
-    public BigDecimal totalAReceberCliente(String codigo){}
+    public BigDecimal totalAReceberCliente(String codigo){
     
-    public List<Venda> filtrarVendasAReceber(){}
-}
+    }
+    
+    public List<Venda> filtrarVendasAReceber(){
+        List<Venda> vendasAreceber = new ArrayList<>();
+        if(!vendas.isEmpty()){
+            for(Venda v:vendas){
+                if(v.getMeioPagamento() == 'F'){
+                    vendasAreceber.add(v);
+                }
+            }
+        }
+        return vendasAreceber;
+        }
+    
+    
+    
+    }
