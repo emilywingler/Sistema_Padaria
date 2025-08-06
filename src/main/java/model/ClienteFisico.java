@@ -8,7 +8,7 @@ public class ClienteFisico extends Cliente{
     private String cpf;
     private static int totalClientesFisicos = 0;
 
-    public ClienteFisico(String cpf, int idCliente, String nome, String endereco, String telefone, String dataCadastro, String tipo) {
+    public ClienteFisico(int idCliente, String nome, String endereco, String telefone, String dataCadastro, String tipo, String cpf) {
         super(idCliente, nome, endereco, telefone, dataCadastro, tipo);
         this.cpf = cpf;
         totalClientesFisicos++;

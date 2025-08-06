@@ -34,7 +34,7 @@ public class GerenciaCliente {
 
             if (tipo.equalsIgnoreCase("F")) {
                 String cpf = campos[6];
-                ClienteFisico cf = new ClienteFisico(cpf, idCliente, nome, endereco, telefone, dataCadastro, tipo);
+                ClienteFisico cf = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
                 clientes.add(cf);
             } else if (tipo.equalsIgnoreCase("J")) {
                 String cnpj = campos[6];

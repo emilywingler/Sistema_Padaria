@@ -4,11 +4,13 @@
  */
 package service;
 
+import model.ClienteFisico;
+
 /**
  *
  * @author clara
  */
-public class Service {
+public class Teste {
 
     /**
      * @param args the command line arguments
@@ -17,7 +19,9 @@ public class Service {
         
         GerenciaCliente teste = new GerenciaCliente();
         
-        teste.carregarClientesCSV("clientes_20.csv");
+        //ClienteFisico cliente1 = new ClienteFisico(1,"Juliana Ferreira","Rua Maranhão, 123 - Bairro Sol","2799239467","2024-09-28","F","466.750.508-77");
+        teste.carregarClientesCSV("C:\\Users\\clara\\Documents\\clientes.csv");
+        //System.out.println(cliente1.getCpf());
     }
     
 }
