@@ -57,6 +57,7 @@ public class GerenciaVenda {
      * Construtor da classe GerenciaVenda.
      *
      * @param gerenciaProd instância de GerenciaProduto
+     * @param gerenciaCliente instância de GerenciaCliente
      */
     public GerenciaVenda(GerenciaProduto gerenciaProd, GerenciaCliente gerenciaCliente) {
         vendas = new ArrayList<>();
