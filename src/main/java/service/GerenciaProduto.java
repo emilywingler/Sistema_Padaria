@@ -26,6 +26,24 @@ public class GerenciaProduto{
         escritorCSV = new Escrita();
     }
     
+    public void carregarProdutosCSV(String caminhoArquivo){
+        List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
+        
+        for (String[] campos : linhas) {
+            int idProduto = Integer.parseInt(campos[0]);
+            String descricao = campos[1];
+            int minEstoque = Integer.parseInt(campos[2]);
+            int estoqueAtual = Integer.parseInt(campos[3]);
+            BigDecimal custo = new BigDecimal(campos[4]);
+            int percentualLucro = Integer.parseInt(campos[5]);
+            
+            Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
+            produtos.add(produto);
+       
+        }
+        
+    }
+    
     //aqui adiciona o novo produto na lista em memoria
     //chama o metodo atualizarArquivo para reescrer o csv com o produtos atualizados 
     public void inserirProduto(Produto p) {

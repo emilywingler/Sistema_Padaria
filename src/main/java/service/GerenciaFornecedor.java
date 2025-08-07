@@ -28,6 +28,21 @@ public class GerenciaFornecedor {
         escritorCSV = new Escrita();
     }
     
+    public void carregarFornecedorCSV(String caminhoArquivo){
+        List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
+        
+        for (String[] campos : linhas) {
+            int idFornecedor = Integer.parseInt(campos[0]);
+            String nomeEmpresa = campos[1];
+            String endereco = campos[2];
+            String telefone = campos[3];
+            String cnpj = campos[4];
+            String pessoaContato = campos[5];
+        
+            Fornecedor fornecedor = new Fornecedor(idFornecedor, nomeEmpresa, endereco, telefone, cnpj, pessoaContato);
+            fornecedores.add(fornecedor);
+        }
+    }
     /**
     * Adiciona um novo fornecedor ao sistema e persiste a alteração no arquivo de dados.
     * <p>
@@ -40,7 +55,7 @@ public class GerenciaFornecedor {
     */
     public void inserirFornecedor(Fornecedor fornecedor){
         fornecedores.add(fornecedor);
-        escritorCSV.atualizarArquivo();
+        //escritorCSV.atualizarArquivo();
     }
     
     /**
@@ -56,7 +71,7 @@ public class GerenciaFornecedor {
         Fornecedor f = buscarFornecedor(codigo);
         if(f != null){
             fornecedores.remove(f);
-            escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+            //escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
         }else System.out.println("Fornecedor nao encontrado.");
         
     }
@@ -158,7 +173,7 @@ public class GerenciaFornecedor {
                     }
                 }
             }
-            escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+            //escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
             sc.close();
         }else{
             System.out.println("Fornecedor nao encontrado.");
