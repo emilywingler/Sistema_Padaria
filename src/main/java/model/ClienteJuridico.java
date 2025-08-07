@@ -13,7 +13,7 @@ public class ClienteJuridico extends Cliente {
     private String cnpj;
 
     /** Inscrição estadual do cliente jurídico. */
-    private int InscricaoEstadual;
+    private int inscricaoEstadual;
 
     /** Total de instâncias criadas de ClienteJuridico. */
     private static int totalClientesJuridicos = 0;
@@ -33,7 +33,7 @@ public class ClienteJuridico extends Cliente {
     public ClienteJuridico(String cnpj, int InscricaoEstadual, int idCliente, String nome, String endereco, String telefone, String dataCadastro, String tipo) {
         super(idCliente, nome, endereco, telefone, dataCadastro, tipo);
         this.cnpj = cnpj;
-        this.InscricaoEstadual = InscricaoEstadual;
+        this.inscricaoEstadual = InscricaoEstadual;
         totalClientesJuridicos++;
     }
 
@@ -61,7 +61,7 @@ public class ClienteJuridico extends Cliente {
      * @return número da inscrição estadual
      */
     public int getInscricaoEstadual() {
-        return InscricaoEstadual;
+        return inscricaoEstadual;
     }
 
     /**
@@ -70,7 +70,7 @@ public class ClienteJuridico extends Cliente {
      * @param InscricaoEstadual Novo número de inscrição estadual
      */
     public void setInscricaoEstadual(int InscricaoEstadual) {
-        this.InscricaoEstadual = InscricaoEstadual;
+        this.inscricaoEstadual = InscricaoEstadual;
     }
 
     /**
@@ -89,6 +89,6 @@ public class ClienteJuridico extends Cliente {
      */
     @Override
     public String toString() {
-        return super.toString() + "cnpj: " + cnpj + ", InscricaoEstadual: " + InscricaoEstadual;
+        return super.toString() + "cnpj: " + cnpj + ", InscricaoEstadual: " + inscricaoEstadual;
     }
 }
