@@ -23,6 +23,4 @@ public class VendaFiado extends Venda {
     }
     
     
-    
-    
 }
