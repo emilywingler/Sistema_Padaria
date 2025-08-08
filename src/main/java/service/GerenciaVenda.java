@@ -137,13 +137,13 @@ public class GerenciaVenda {
     /**
      * Busca uma venda específica pelo código.
      *
-     * @param codigoVenda Código da venda
+     * @param idVenda Código da venda
      * @return A venda correspondente ou null, se não encontrada
      */
-    public Venda buscarVenda(int codigoVenda){
+    public Venda buscarVenda(int idVenda){
         if(!vendas.isEmpty()){
             for(Venda v : vendas){
-                if(v.getIdVenda() == codigoVenda){
+                if(v.getIdVenda() == idVenda){
                     return v;
                 }
             }

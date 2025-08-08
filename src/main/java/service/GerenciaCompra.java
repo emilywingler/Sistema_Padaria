@@ -53,4 +53,15 @@ public class GerenciaCompra {
             System.out.println("Não há vendas registradas no sistema");
         }
     }
+    
+    public Compra buscarCompra(int idCompra){
+        if(!compras.isEmpty()){
+            for(Compra c : compras){
+                if(c.getIdCompra() == idCompra){
+                    return c;
+                }
+            }
+        }
+        return null;
+    }
 }
