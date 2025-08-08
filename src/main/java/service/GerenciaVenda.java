@@ -198,7 +198,7 @@ public class GerenciaVenda {
         else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
-                    total.add(this.receitaTotalDoPedido(v, produto));
+                    total = total.add(this.receitaTotalDoPedido(v, produto));
                 }
             }
         }
@@ -229,7 +229,7 @@ public class GerenciaVenda {
         else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
-                    total.add(this.lucroTotalDoPedido(v, produto));
+                   total = total.add(this.lucroTotalDoPedido(v, produto));
                 }
             }
         }
@@ -275,7 +275,7 @@ public class GerenciaVenda {
                         }
                     }
                     
-                    total.add(this.receitaTotalDoPedido(v, produto));
+                    total = total.add(this.receitaTotalDoPedido(v, produto));
                 }
             }
             
@@ -320,7 +320,7 @@ public class GerenciaVenda {
                             continue;
                         }
                     }
-                    total.add(this.lucroTotalDoPedido(v, produto));
+                    total = total.add(this.lucroTotalDoPedido(v, produto));
                 }
             }
             
