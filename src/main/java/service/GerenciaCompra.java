@@ -3,11 +3,12 @@ package service;
 
 import io.Escrita;
 import io.Leitura;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import model.Compra;
 import model.Produto;
-import model.Venda;
+import model.Fornecedor;
 
 /**
  * Registar compra
@@ -23,6 +24,7 @@ public class GerenciaCompra {
     private Leitura leitorCSV;
     private Escrita escritorCSV;
     private GerenciaProduto gp;
+    private GerenciaFornecedor gf;
     
     public GerenciaCompra(GerenciaProduto gerenciarProd){
         compras = new ArrayList<>();
@@ -63,5 +65,28 @@ public class GerenciaCompra {
             }
         }
         return null;
+    }
+    
+    public BigDecimal valorTotalDaCompra(Compra c ,Produto p){
+        BigDecimal quantidadeProd = new BigDecimal(c.getQuantidade());
+        return p.getCusto().multiply(quantidadeProd);
+    }
+    
+    public BigDecimal totalAPagarPorFornecedor(int idFornecedor){
+        Fornecedor fornecedor = gf.buscarFornecedor(idFornecedor);
+        if(fornecedor == null){
+            System.out.println("Fornecedor não encontrado!");
+            return null;
+        }
+        else{
+            BigDecimal total = BigDecimal.ZERO;
+            for(Compra c: compras){
+                if(c.getIdFornecedor() == idFornecedor){
+                    Produto produto = gp.buscarProduto(c.getIdProduto());
+                    total = total.add(this.valorTotalDaCompra(c, produto));
+                }
+            }
+            return total;
+        }
     }
 }
