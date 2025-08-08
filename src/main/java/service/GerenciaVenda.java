@@ -129,6 +129,9 @@ public class GerenciaVenda {
                 System.out.println(v.toString());
             }
         }
+        else{
+            System.out.println("Não há vendas registradas no sistema");
+        }
     }
     
     /**
