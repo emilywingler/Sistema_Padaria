@@ -67,11 +67,12 @@ public class GerenciaCompra {
      * 
      * @param gerenciarProd instância de {@link GerenciaProduto} para controle de produtos
      */
-    public GerenciaCompra(GerenciaProduto gerenciarProd) {
+    public GerenciaCompra(GerenciaProduto gerenciarProd, GerenciaFornecedor gerenciarFornecedor) {
         compras = new ArrayList<>();
         leitorCSV = new Leitura();
         escritorCSV = new Escrita();
         this.gp = gerenciarProd;
+        this.gf = gerenciarFornecedor;
     }
     
     /**
@@ -88,7 +89,7 @@ public class GerenciaCompra {
         if (produto == null) {
             System.out.println("Produto não encontrado");
         } else {
-            produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
+            produto.setEstoqueAtual(produto.getEstoqueAtual() + quantidade);
             Compra c = new Compra(idCompra, idFornecedor, DataCompra, idProduto, quantidade);
             compras.add(c);
         }
