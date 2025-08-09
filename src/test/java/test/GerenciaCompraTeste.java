@@ -9,6 +9,7 @@ import model.Produto;
 import service.GerenciaCompra;
 import service.GerenciaFornecedor;
 import service.GerenciaProduto;
+import report.Apagar;
 
 /**
  * Classe de teste para GerenciaCompra.
@@ -19,6 +20,7 @@ public class GerenciaCompraTeste {
     public static void main(String[] args) {
         // --- 1. CONFIGURAÇÃO DO AMBIENTE DE TESTE ---
         System.out.println("--- INICIANDO TESTES PARA GERENCIACOMPRA ---");
+        
 
         // Criando gerenciadores de mock (simulados) para os testes
         GerenciaProduto mockGerenciaProduto = new GerenciaProduto();
@@ -43,12 +45,14 @@ public class GerenciaCompraTeste {
         
         // Criando a instância da classe que queremos testar (com as correções)
         GerenciaCompra gerenciaCompra = new GerenciaCompra(mockGerenciaProduto, mockGerenciaFornecedor);
-
+        
+        Apagar apagarCSV = new Apagar(mockGerenciaFornecedor,gerenciaCompra);
         // --- 2. EXECUÇÃO DOS TESTES ---
         
         testarRegistrarEBuscarCompra(gerenciaCompra, mockGerenciaProduto);
         testarCalculosDeValores(gerenciaCompra, mockGerenciaProduto);
         testarListarCompras(gerenciaCompra);
+        System.out.println(apagarCSV.geraLinha(1));
 
         System.out.println("\n--- TESTES FINALIZADOS ---");
     }
