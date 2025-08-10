@@ -265,5 +265,6 @@ Entrega pelo Google Classroom, em formato compactado.
 * Aulas de laboratório poderão ser usadas para o projeto a partir de **30/07**
 
 
-## Coisas para fazer depois
+## 9 Coisas para fazer depois
 * refatorar gerenciarProdutos para gerenciarProduto
+- adicionar verificação nas buscas se a lista está vazia
