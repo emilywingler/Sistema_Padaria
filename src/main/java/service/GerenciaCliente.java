@@ -14,17 +14,37 @@ public class GerenciaCliente {
     //private final String ARQUIVO_CLIENTE = "clientes_20.csv";
     private Leitura leitorCSV;
     //private Escrita escritorCSV;
+    
+    /**
+    * Construtor padrão da classe GerenciaCliente.
+    * Inicializa a lista de clientes como um novo ArrayList e instancia um objeto
+    * da classe Leitura para manipulação de arquivos CSV.
+    */
     public GerenciaCliente(){
         clientes = new ArrayList<>();
         leitorCSV = new Leitura();
         //escritorCSV = new Escrita();
     }
     
-    
+    /**
+    * Carrega os dados de clientes a partir de um arquivo CSV para a lista de clientes.
+    * O método lê o arquivo especificado, processa cada linha para extrair os dados
+    * do cliente e instancia objetos de {@code ClienteFisico} ou {@code ClienteJuridico}
+    * com base no tipo de cliente indicado no arquivo.
+    *
+    * <p>A estrutura esperada do CSV é a seguinte:
+    * <ul>
+    * <li><b>Para Cliente Físico (tipo "F"):</b> idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf</li>
+    * <li><b>Para Cliente Jurídico (tipo "J"):</b> idCliente, nome, endereco, telefone, dataCadastro, tipo, cnpj, inscricaoEstadual</li>
+    * </ul>
+    * </p>
+    *
+    * @param caminhoArquivo O caminho completo para o arquivo CSV que contém os dados dos clientes.
+    */
     public void carregarClientesCSV(String caminhoArquivo) {
-    List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
+        List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
 
-    for (String[] campos : linhas) {
+        for (String[] campos : linhas) {
             int idCliente = Integer.parseInt(campos[0]);
             String nome = campos[1];
             String endereco = campos[2];
@@ -42,16 +62,14 @@ public class GerenciaCliente {
                 ClienteJuridico cj = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
                 clientes.add(cj);
             }
+        }
     }
-}
 
     
     /**
     * Adiciona um novo cliente ao sistema e persiste a alteração no arquivo de dados.
     * <p>
-    * Este método primeiro insere o objeto {@code Cliente} na lista em memória e,
-    * em seguida, invoca o método de atualização do {@code escritorCSV} para
-    * garantir que o novo cliente seja salvo permanentemente no arquivo CSV.
+    * Este método primeiro insere o objeto {@code Cliente} na lista em memória.
     *
     * @param cliente O objeto {@code Cliente} a ser adicionado. Este objeto deve estar
     * devidamente instanciado e preenchido.
@@ -66,7 +84,7 @@ public class GerenciaCliente {
     * <p>
     * O método primeiro utiliza o {@link #buscarCliente(int)} para encontrar a instância
     * do cliente correspondente ao código. Se encontrado, o cliente é removido
-    * da lista em memória e o arquivo CSV é reescrito para refletir esta remoção.
+    * da lista em memória.
     *
     * @param codigo O código inteiro (ID) do cliente que deve ser removido.
     */
@@ -105,11 +123,7 @@ public class GerenciaCliente {
     * <p>
     * Este método verifica se a lista interna de clientes está vazia. Se estiver, exibe
     * uma mensagem informativa. Caso contrário, itera sobre a lista e imprime os dados
-    * de cada cliente, incluin
-
-
-
-do informações específicas como CPF para {@code ClienteFisico}
+    * de cada cliente, incluindo informações específicas como CPF para {@code ClienteFisico}
     * ou CNPJ e Inscrição Estadual para {@code ClienteJuridico}.
     */
     public void listarClientes() {
@@ -135,15 +149,9 @@ do informações específicas como CPF para {@code ClienteFisico}
     * {@link ClienteFisico} ou {@link ClienteJuridico} possam ser editados e informando
     * o usuário em caso de uma escolha inadequada.
     * <p>
-    * Todas as alterações são aplicadas ao objeto em memória durante a sessão e são
-    * persistidas no arquivo CSV de uma só vez, apenas ao final do processo, quando
-    * o usuário decide sair do menu de edição.
+    * Todas as alterações são aplicadas ao objeto em memória durante a sessão.
     *
-    * @param codigo O cód
-
-
-
-igo numérico (ID) do cliente que se deseja editar.
+    * @param codigo O código numérico (ID) do cliente que se deseja editar.
     */
     public void editarCliente(int codigo){
         Cliente c = buscarCliente(codigo);
