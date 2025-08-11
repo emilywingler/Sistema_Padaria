@@ -133,7 +133,7 @@ public class GerenciaFornecedor {
             int op = 0;
             Scanner sc = new Scanner(System.in);
 
-            while(op != 8){
+            while(op != 6){
                 System.out.println("""
                                    1. Nome da Empresa
                                    2. Endereco
