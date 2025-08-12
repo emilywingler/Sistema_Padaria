@@ -57,6 +57,7 @@ public class GerenciaVenda {
      * Construtor da classe GerenciaVenda.
      *
      * @param gerenciaProd instância de GerenciaProduto
+     * @param gerenciaCliente instância de GerenciaCliente
      */
     public GerenciaVenda(GerenciaProduto gerenciaProd, GerenciaCliente gerenciaCliente) {
         vendas = new ArrayList<>();
@@ -65,7 +66,6 @@ public class GerenciaVenda {
         this.gp = gerenciaProd;
         this.gc = gerenciaCliente;
     }
-    
 
     
     //public void registrarVenda(Venda v){
@@ -133,18 +133,21 @@ public class GerenciaVenda {
                 System.out.println(v.toString());
             }
         }
+        else{
+            System.out.println("Não há vendas registradas no sistema");
+        }
     }
     
     /**
      * Busca uma venda específica pelo código.
      *
-     * @param codigoVenda Código da venda
+     * @param idVenda Código da venda
      * @return A venda correspondente ou null, se não encontrada
      */
-    public Venda buscarVenda(int codigoVenda){
+    public Venda buscarVenda(int idVenda){
         if(!vendas.isEmpty()){
             for(Venda v : vendas){
-                if(v.getIdVenda() == codigoVenda){
+                if(v.getIdVenda() == idVenda){
                     return v;
                 }
             }
@@ -202,7 +205,7 @@ public class GerenciaVenda {
         else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
-                    total.add(this.receitaTotalDoPedido(v, produto));
+                    total = total.add(this.receitaTotalDoPedido(v, produto));
                 }
             }
         }
@@ -233,7 +236,7 @@ public class GerenciaVenda {
         else if (!vendas.isEmpty()){
             for(Venda v : vendas){
                 if(produto.getIdProduto() == v.getIdProduto()){
-                    total.add(this.lucroTotalDoPedido(v, produto));
+                   total = total.add(this.lucroTotalDoPedido(v, produto));
                 }
             }
         }
@@ -279,7 +282,7 @@ public class GerenciaVenda {
                         }
                     }
                     
-                    total.add(this.receitaTotalDoPedido(v, produto));
+                    total = total.add(this.receitaTotalDoPedido(v, produto));
                 }
             }
             
@@ -324,7 +327,7 @@ public class GerenciaVenda {
                             continue;
                         }
                     }
-                    total.add(this.lucroTotalDoPedido(v, produto));
+                    total = total.add(this.lucroTotalDoPedido(v, produto));
                 }
             }
             

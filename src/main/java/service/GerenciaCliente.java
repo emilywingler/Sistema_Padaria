@@ -1,5 +1,6 @@
 
 package service;
+import io.Escrita;
 import model.Cliente;
 import model.ClienteFisico;
 import model.ClienteJuridico;
@@ -11,13 +12,13 @@ import java.util.Scanner;
 
 public class GerenciaCliente {
     private List<Cliente> clientes;
-    //private final String ARQUIVO_CLIENTE = "clientes_20.csv";
+    private final String ARQUIVO_CLIENTE = "clientes_20.csv";
     private Leitura leitorCSV;
-    //private Escrita escritorCSV;
+    private Escrita escritorCSV;
     public GerenciaCliente(){
         clientes = new ArrayList<>();
         leitorCSV = new Leitura();
-        //escritorCSV = new Escrita();
+        escritorCSV = new Escrita();
     }
     
     
@@ -36,11 +37,13 @@ public class GerenciaCliente {
                 String cpf = campos[6];
                 ClienteFisico cf = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
                 clientes.add(cf);
+                escritorCSV.atualizarArquivoClienteFisico(caminhoArquivo, cf);
             } else if (tipo.equalsIgnoreCase("J")) {
                 String cnpj = campos[6];
                 int inscricaoEstadual = Integer.parseInt(campos[7]);
                 ClienteJuridico cj = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
                 clientes.add(cj);
+                escritorCSV.atualizarArquivoClienteJuridico(caminhoArquivo, cj);
             }
     }
 }
@@ -58,7 +61,12 @@ public class GerenciaCliente {
     */
     public void inserirCliente(Cliente cliente){
         clientes.add(cliente);
-        //escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, cliente);
+        if("F".equalsIgnoreCase(cliente.getTipo())){
+            escritorCSV.atualizarArquivoClienteFisico(ARQUIVO_CLIENTE, cliente);
+        }
+        else{
+            escritorCSV.atualizarArquivoClienteJuridico(ARQUIVO_CLIENTE, cliente);
+        }
     }
     
     /**

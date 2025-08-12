@@ -67,7 +67,7 @@ public class Escrita {
         }
     }
     
-    public void atualizarArquivoProdutos(String caminhoArquivo, Produto produto) {
+   /* public void atualizarArquivoProdutos(String caminhoArquivo, Produto produto) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminhoArquivo, true))) {
             //adicionar cliente 
         } catch (IOException e) {
@@ -81,6 +81,6 @@ public class Escrita {
         } catch (IOException e) {
             System.out.println("Erro ao escrever o arquivo: " + e.getMessage());
         }
-    }
+    }*/
 
 }
