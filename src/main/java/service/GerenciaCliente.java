@@ -62,10 +62,10 @@ public class GerenciaCliente {
     public void inserirCliente(Cliente cliente){
         clientes.add(cliente);
         if("F".equalsIgnoreCase(cliente.getTipo())){
-            escritorCSV.atualizarArquivoClienteFisico(ARQUIVO_CLIENTE, cliente);
+            escritorCSV.atualizarArquivoClienteFisico(ARQUIVO_CLIENTE, (ClienteFisico) cliente);
         }
         else{
-            escritorCSV.atualizarArquivoClienteJuridico(ARQUIVO_CLIENTE, cliente);
+            escritorCSV.atualizarArquivoClienteJuridico(ARQUIVO_CLIENTE, (ClienteJuridico) cliente);
         }
     }
     
@@ -79,10 +79,15 @@ public class GerenciaCliente {
     * @param codigo O código inteiro (ID) do cliente que deve ser removido.
     */
     public void removerCliente(int codigo){
-        Cliente c = buscarCliente(codigo);
-        if(c != null){
-            clientes.remove(c);
-            //escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
+        Cliente cliente = buscarCliente(codigo);
+        if(cliente != null){
+            clientes.remove(cliente);
+            for (Cliente c : clientes) {
+                if(c.getTipo().equalsIgnoreCase("F")){
+                    escritorCSV.reescreverArquivoCliente(clientes, ARQUIVO_CLIENTE);
+                }
+                                
+            }
         }else System.out.println("Cliente nao encontrado");   
     }
     
