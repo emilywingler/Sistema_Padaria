@@ -1,5 +1,6 @@
 
 package service;
+import io.Escrita;
 import model.Cliente;
 import model.ClienteFisico;
 import model.ClienteJuridico;
@@ -11,13 +12,13 @@ import java.util.Scanner;
 
 public class GerenciaCliente {
     private List<Cliente> clientes;
-    //private final String ARQUIVO_CLIENTE = "clientes_20.csv";
+    private final String ARQUIVO_CLIENTE = "clientes_20.csv";
     private Leitura leitorCSV;
-    //private Escrita escritorCSV;
+    private Escrita escritorCSV;
     public GerenciaCliente(){
         clientes = new ArrayList<>();
         leitorCSV = new Leitura();
-        //escritorCSV = new Escrita();
+        escritorCSV = new Escrita();
     }
     
     
@@ -36,11 +37,13 @@ public class GerenciaCliente {
                 String cpf = campos[6];
                 ClienteFisico cf = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
                 clientes.add(cf);
+                //escritorCSV.escreverArquivo(caminhoArquivo, cf);
             } else if (tipo.equalsIgnoreCase("J")) {
                 String cnpj = campos[6];
                 int inscricaoEstadual = Integer.parseInt(campos[7]);
                 ClienteJuridico cj = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
                 clientes.add(cj);
+                //escritorCSV.atualizarArquivoCliente(caminhoArquivo, cj);
             }
     }
 }
@@ -58,7 +61,12 @@ public class GerenciaCliente {
     */
     public void inserirCliente(Cliente cliente){
         clientes.add(cliente);
-        //escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, cliente);
+        /*if("F".equalsIgnoreCase(cliente.getTipo())){
+            escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, (ClienteFisico) cliente);
+        }
+        else{
+            escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, (ClienteJuridico) cliente);
+        }*/
     }
     
     /**
@@ -71,10 +79,15 @@ public class GerenciaCliente {
     * @param codigo O código inteiro (ID) do cliente que deve ser removido.
     */
     public void removerCliente(int codigo){
-        Cliente c = buscarCliente(codigo);
-        if(c != null){
-            clientes.remove(c);
-            //escritorCSV.atualizarArquivo(ARQUIVO_CLIENTE);
+        Cliente cliente = buscarCliente(codigo);
+        if(cliente != null){
+            clientes.remove(cliente);
+            /*for (Cliente c : clientes) {
+                if(c.getTipo().equalsIgnoreCase("F")){
+                    escritorCSV.reescreverArquivoCliente(clientes, ARQUIVO_CLIENTE);
+                }
+                                
+            }*/
         }else System.out.println("Cliente nao encontrado");   
     }
     

@@ -66,7 +66,10 @@ public class GerenciaVenda {
         this.gp = gerenciaProd;
         this.gc = gerenciaCliente;
     }
+
     
+    //public void registrarVenda(Venda v){
+        
     /**
      * Registra uma venda à vista no sistema.
      *
@@ -91,6 +94,7 @@ public class GerenciaVenda {
             Venda v = new VendaAVista(idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
             vendas.add(v);
         } 
+
     }
     
     /**
