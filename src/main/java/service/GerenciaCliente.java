@@ -69,6 +69,8 @@ public class GerenciaCliente {
     /**
      * Solicita os dados ao usuário, cria um ClienteFisico ou ClienteJuridico
      * e o adiciona à lista de clientes.
+     * 
+     * @param sc Scanner que será utilizado.
      */
     public void inserirCliente(Scanner sc){
 
@@ -113,7 +115,7 @@ public class GerenciaCliente {
             String cnpj = sc.nextLine();
             
             System.out.println("Digite a Inscrição Estadual: ");
-            String inscricaoEstadual = sc.nextLine();
+            int inscricaoEstadual = sc.nextInt();
 
             cliente = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
         }
