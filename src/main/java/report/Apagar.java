@@ -21,7 +21,7 @@ public class Apagar {
 
         // Lista de fornecedores
         List<Fornecedor> fornecedores = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) { // não temos getter direto, simulação
+        for (int i = 0; i < 10000; i++) { 
             Fornecedor f = gf.buscarFornecedor(i);
             if (f != null) fornecedores.add(f);
         }

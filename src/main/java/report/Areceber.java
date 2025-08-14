@@ -5,6 +5,8 @@ import java.util.*;
 import service.GerenciaVenda;
 import service.GerenciaCliente;
 import model.Cliente;
+import model.ClienteFisico;
+import model.ClienteJuridico;
 
 public class Areceber {
 
@@ -26,18 +28,26 @@ public class Areceber {
         }
 
         for (Cliente c : clientes) {
-            BigDecimal total = gv.totalAReceberCliente(c.getId());
-            if (total == null) total = BigDecimal.ZERO;
+        BigDecimal total = gv.totalAReceberCliente(c.getId());
+        if (total == null) total = BigDecimal.ZERO;
 
-            dados.add(new String[]{
-                c.getNome(),
-                c.getTipo(),
-                c.getTipo().equalsIgnoreCase("F") ? c.getcpf : c.getcnpj(),
-                c.getTelefone(),
-                c.getDataCadastro(),
-                String.format("%.2f", total)
-            });
-        }
+        String documento = "";
+            switch (c) {
+                case ClienteFisico clienteFisico -> documento = clienteFisico.getCpf();
+                case ClienteJuridico clienteJuridico -> documento = clienteJuridico.getCnpj();
+                default -> {
+                }
+            }
+
+        dados.add(new String[]{
+            c.getNome(),
+            c instanceof ClienteFisico ? "F" : "J",
+            documento,
+            c.getTelefone(),
+            c.getDataCadastro(),
+            String.format("%.2f", total)
+        });
+}
 
         // Ordenar por nome do cliente
         dados.sort(Comparator.comparing(a -> a[0]));
