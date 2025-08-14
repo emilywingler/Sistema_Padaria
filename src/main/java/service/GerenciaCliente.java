@@ -67,16 +67,59 @@ public class GerenciaCliente {
 
     
     /**
-    * Adiciona um novo cliente ao sistema e persiste a alteração no arquivo de dados.
-    * <p>
-    * Este método primeiro insere o objeto {@code Cliente} na lista em memória.
-    *
-    * @param cliente O objeto {@code Cliente} a ser adicionado. Este objeto deve estar
-    * devidamente instanciado e preenchido.
-    */
-    public void inserirCliente(Cliente cliente){
+     * Solicita os dados ao usuário, cria um ClienteFisico ou ClienteJuridico
+     * e o adiciona à lista de clientes.
+     */
+    public void inserirCliente(Scanner sc){
+
+        // Solicita os dados comuns
+        System.out.println("Digite o ID do cliente: ");
+        int idCliente = sc.nextInt();
+        sc.nextLine(); // Consome a quebra de linha pendente
+
+        System.out.println("Digite o nome: ");
+        String nome = sc.nextLine();
+
+        System.out.println("Digite o endereço: ");
+        String endereco = sc.nextLine();
+
+        System.out.println("Digite o telefone: ");
+        String telefone = sc.nextLine();
+        
+        System.out.println("Digite a data de cadastro: ");
+        String dataCadastro = sc.nextLine();
+
+        Cliente cliente;
+        String tipo;
+
+        // Loop para garantir que o usuário digite 'F' ou 'J'
+        do {
+            System.out.println("Digite o tipo (F para Físico, J para Jurídico): ");
+            tipo = sc.nextLine().toUpperCase();
+            if (!tipo.equals("F") && !tipo.equals("J")) {
+                System.out.println("Opção inválida! Por favor, digite F ou J.");
+            }
+        } while (!tipo.equals("F") && !tipo.equals("J"));
+
+
+        // Verifica o tipo para solicitar os dados específicos
+        if (tipo.equals("F")) {
+            System.out.println("Digite o CPF: ");
+            String cpf = sc.nextLine();
+            
+            cliente = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
+        } else { // Se não é "F", com certeza é "J"
+            System.out.println("Digite o CNPJ: ");
+            String cnpj = sc.nextLine();
+            
+            System.out.println("Digite a Inscrição Estadual: ");
+            String inscricaoEstadual = sc.nextLine();
+
+            cliente = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
+        }
+
         clientes.add(cliente);
-        //escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, cliente);
+        System.out.println(">>> Cliente cadastrado com sucesso! <<<");
     }
     
     /**
