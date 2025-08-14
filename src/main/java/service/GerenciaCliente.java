@@ -37,13 +37,13 @@ public class GerenciaCliente {
                 String cpf = campos[6];
                 ClienteFisico cf = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
                 clientes.add(cf);
-                escritorCSV.atualizarArquivoClienteFisico(caminhoArquivo, cf);
+                //escritorCSV.escreverArquivo(caminhoArquivo, cf);
             } else if (tipo.equalsIgnoreCase("J")) {
                 String cnpj = campos[6];
                 int inscricaoEstadual = Integer.parseInt(campos[7]);
                 ClienteJuridico cj = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
                 clientes.add(cj);
-                escritorCSV.atualizarArquivoClienteJuridico(caminhoArquivo, cj);
+                //escritorCSV.atualizarArquivoCliente(caminhoArquivo, cj);
             }
     }
 }
@@ -61,12 +61,12 @@ public class GerenciaCliente {
     */
     public void inserirCliente(Cliente cliente){
         clientes.add(cliente);
-        if("F".equalsIgnoreCase(cliente.getTipo())){
-            escritorCSV.atualizarArquivoClienteFisico(ARQUIVO_CLIENTE, (ClienteFisico) cliente);
+        /*if("F".equalsIgnoreCase(cliente.getTipo())){
+            escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, (ClienteFisico) cliente);
         }
         else{
-            escritorCSV.atualizarArquivoClienteJuridico(ARQUIVO_CLIENTE, (ClienteJuridico) cliente);
-        }
+            escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, (ClienteJuridico) cliente);
+        }*/
     }
     
     /**
@@ -82,12 +82,12 @@ public class GerenciaCliente {
         Cliente cliente = buscarCliente(codigo);
         if(cliente != null){
             clientes.remove(cliente);
-            for (Cliente c : clientes) {
+            /*for (Cliente c : clientes) {
                 if(c.getTipo().equalsIgnoreCase("F")){
                     escritorCSV.reescreverArquivoCliente(clientes, ARQUIVO_CLIENTE);
                 }
                                 
-            }
+            }*/
         }else System.out.println("Cliente nao encontrado");   
     }
     
