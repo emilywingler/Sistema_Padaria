@@ -1,7 +1,9 @@
 package report;
 
+import io.Escrita;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.Locale;
 import service.GerenciaVenda;
 import service.GerenciaProduto;
 import model.Produto;
@@ -53,11 +55,6 @@ public class VendasPorProduto {
 
     /**
      * Gera o relatório de vendas e lucros de todos os produtos cadastrados.
-     * <p>
-     * O método percorre um intervalo de IDs para buscar produtos (0 a 9999),
-     * obtém a receita e o lucro correspondentes a cada um e adiciona os dados
-     * a uma lista. Valores nulos são substituídos por {@code BigDecimal.ZERO}.
-     * </p>
      *
      * @return uma lista de arrays de {@code String} contendo os dados no seguinte formato:
      *         [idProduto, descricao, receita, lucro]
@@ -72,7 +69,9 @@ public class VendasPorProduto {
             if (p != null) produtos.add(p);
         }
 
-        // Montar dados de cada produto
+        // Estrutura temporária para manter BigDecimal até ordenar
+        List<Object[]> temp = new ArrayList<>();
+
         for (Produto p : produtos) {
             BigDecimal receita = gv.receitaPorProduto(p.getIdProduto());
             BigDecimal lucro = gv.lucroPorProduto(p.getIdProduto());
@@ -80,21 +79,38 @@ public class VendasPorProduto {
             if (receita == null) receita = BigDecimal.ZERO;
             if (lucro == null) lucro = BigDecimal.ZERO;
 
-            dados.add(new String[]{
-                String.valueOf(p.getIdProduto()),
+            temp.add(new Object[]{
+                p.getIdProduto(),
                 p.getDescricao(),
-                String.format("%.2f", receita),
-                String.format("%.2f", lucro)
+                receita,
+                lucro
             });
         }
 
-        // Ordenar por lucro decrescente, depois por código
-        dados.sort((a, b) -> {
-            int cmp = new BigDecimal(b[3]).compareTo(new BigDecimal(a[3]));
+        // Ordenar por lucro decrescente, depois por código do produto
+        temp.sort((a, b) -> {
+            int cmp = ((BigDecimal) b[3]).compareTo((BigDecimal) a[3]);
             if (cmp != 0) return cmp;
-            return Integer.compare(Integer.parseInt(a[0]), Integer.parseInt(b[0]));
+            return Integer.compare((int) a[0], (int) b[0]);
         });
+
+        // Converter para String já formatada no padrão americano (ponto decimal)
+        for (Object[] t : temp) {
+            dados.add(new String[]{
+                String.valueOf(t[0]),
+                (String) t[1],
+                String.format(Locale.US, "%.2f", (BigDecimal) t[2]),
+                String.format(Locale.US, "%.2f", (BigDecimal) t[3])
+            });
+        }
 
         return dados;
     }
+
+    public void gerarCSV(String caminhoArquivo) {
+        List<String[]> dados = gerar();
+        Escrita escrita = new Escrita();
+        escrita.escreverVendasPorProduto(caminhoArquivo, dados);
+    }
 }
+

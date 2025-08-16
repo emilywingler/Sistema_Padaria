@@ -1,5 +1,6 @@
 package report;
 
+import io.Escrita;
 import java.math.BigDecimal;
 import java.util.*;
 import service.GerenciaVenda;
@@ -62,31 +63,43 @@ public class VendasPorPagamento {
      *         [codigoMeioPagamento, receita, lucro]
      */
     public List<String[]> gerar() {
-        List<String[]> dados = new ArrayList<>();
+    List<String[]> dados = new ArrayList<>();
 
-        // Lista de meios de pagamento
-        char[] meios = {'$', 'X', 'D', 'C', 'T', 'F'};
-        for (char mp : meios) {
-            BigDecimal receita = gv.receitaPorMP(mp);
-            BigDecimal lucro = gv.lucroPorMP(mp);
+    char[] meios = {'$', 'X', 'D', 'C', 'T', 'F'};
+    for (char mp : meios) {
+        BigDecimal receita = gv.receitaPorMP(mp);
+        BigDecimal lucro = gv.lucroPorMP(mp);
 
-            if (receita == null) receita = BigDecimal.ZERO;
-            if (lucro == null) lucro = BigDecimal.ZERO;
+        if (receita == null) receita = BigDecimal.ZERO;
+        if (lucro == null) lucro = BigDecimal.ZERO;
 
-            dados.add(new String[]{
-                String.valueOf(mp),
-                String.format("%.2f", receita),
-                String.format("%.2f", lucro)
-            });
-        }
-
-        // Ordenar por lucro decrescente, depois por letra
-        dados.sort((a, b) -> {
-            int cmp = new BigDecimal(b[2]).compareTo(new BigDecimal(a[2]));
-            if (cmp != 0) return cmp;
-            return a[0].compareTo(b[0]);
+        dados.add(new String[]{
+            String.valueOf(mp),
+            receita.toPlainString(), // mantém formato "123.45"
+            lucro.toPlainString()
         });
+    }
 
-        return dados;
+    // Ordenar por lucro decrescente, depois por letra
+    dados.sort((a, b) -> {
+        int cmp = new BigDecimal(b[2]).compareTo(new BigDecimal(a[2]));
+        if (cmp != 0) return cmp;
+        return a[0].compareTo(b[0]);
+    });
+
+    // Só aqui você formata para exibir no CSV
+    for (String[] linha : dados) {
+        linha[1] = String.format(Locale.US, "%.2f", new BigDecimal(linha[1]));
+        linha[2] = String.format(Locale.US, "%.2f", new BigDecimal(linha[2]));
+    }
+
+    return dados;
+}
+
+    
+    public void gerarCSV(String caminhoArquivo) {
+        List<String[]> dados = gerar();
+        Escrita escrita = new Escrita();
+        escrita.escreverVendasPorPagamento(caminhoArquivo, dados);
     }
 }

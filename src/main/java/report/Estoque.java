@@ -1,5 +1,6 @@
 package report;
 
+import io.Escrita;
 import java.util.*;
 import service.GerenciaProduto;
 import model.Produto;
@@ -77,5 +78,11 @@ public class Estoque {
         // Ordenar por descrição
         dados.sort(Comparator.comparing(a -> a[1]));
         return dados;
+    }
+
+    public void gerarCSV(String caminhoArquivo) {
+        List<String[]> dados = gerar();
+        Escrita escrita = new Escrita();
+        escrita.escreverEstoque(caminhoArquivo, dados);
     }
 }

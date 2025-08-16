@@ -1,6 +1,11 @@
 package test;
 
 
+import report.Apagar;
+import report.Areceber;
+import report.Estoque;
+import report.VendasPorPagamento;
+import report.VendasPorProduto;
 import service.GerenciaCliente;
 import service.GerenciaCompra;
 import service.GerenciaFornecedor;
@@ -38,6 +43,23 @@ public class Teste {
         //mockGerenciaFornecedor.listarFornecedores();
         teste1.listarCompras();
         teste2.listarVendas();
+        
+        Apagar apagar = new Apagar(teste1, mockGerenciaFornecedor); 
+        apagar.gerarCSV("apagar.csv");
+        
+        Areceber areceber = new Areceber(teste2, teste);
+        areceber.gerarCSV("areceber.csv");
+        
+        Estoque estoque = new Estoque(mockGerenciaProduto);
+        estoque.gerarCSV("estoque.csv");
+        
+        VendasPorPagamento vppg = new VendasPorPagamento(teste2);
+        vppg.gerarCSV("vendasprod.csv");
+        
+        VendasPorProduto vpp = new VendasPorProduto(teste2, mockGerenciaProduto);
+        vpp.gerarCSV("vendaspgmt.csv");
+        
+        
         
         
         

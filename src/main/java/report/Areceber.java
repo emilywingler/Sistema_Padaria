@@ -1,5 +1,6 @@
 package report;
 
+import io.Escrita;
 import java.math.BigDecimal;
 import java.util.*;
 import service.GerenciaVenda;
@@ -95,5 +96,11 @@ public class Areceber {
         // Ordenar por nome do cliente
         dados.sort(Comparator.comparing(a -> a[0]));
         return dados;
+    }
+    
+    public void gerarCSV(String caminhoArquivo) {
+        List<String[]> dados = gerar();
+        Escrita escrita = new Escrita();
+        escrita.escreverAreceber(caminhoArquivo, dados);
     }
 }

@@ -1,5 +1,6 @@
 package report;
 
+import io.Escrita;
 import java.math.BigDecimal;
 import java.util.*;
 import service.GerenciaCompra;
@@ -86,6 +87,17 @@ public class Apagar {
         // Ordenar por nome do fornecedor
         dados.sort(Comparator.comparing(a -> a[0]));
         return dados;
+    }
+    
+    /**
+     * Gera e salva o relatório em arquivo CSV.
+     *
+     * @param caminhoArquivo caminho do CSV de saída
+     */
+    public void gerarCSV(String caminhoArquivo) {
+        List<String[]> dados = gerar();
+        Escrita escrita = new Escrita();
+        escrita.escreverApagar(caminhoArquivo, dados);
     }
 }
 
