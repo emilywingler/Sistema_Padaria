@@ -37,3 +37,4 @@ public class Escrita {
         escreverArquivo(caminho, "idProduto;descricao;estoqueAtual;observacao", dados);
     }
 }
+
