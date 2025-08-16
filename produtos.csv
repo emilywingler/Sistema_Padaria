@@ -1,0 +1,4 @@
+idProduto;descricao;estoqueMinimo;estoqueAtual;valorCusto;percentualLucro
+101;Pão Francês;100;200;0.5;50
+102;Bolo de Chocolate;20;50;15.0;40
+103;Sonho Recheado;30;40;5.0;60

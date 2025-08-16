@@ -37,13 +37,11 @@ public class GerenciaCliente {
                 String cpf = campos[6];
                 ClienteFisico cf = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
                 clientes.add(cf);
-                //escritorCSV.escreverArquivo(caminhoArquivo, cf);
             } else if (tipo.equalsIgnoreCase("J")) {
                 String cnpj = campos[6];
                 int inscricaoEstadual = Integer.parseInt(campos[7]);
                 ClienteJuridico cj = new ClienteJuridico(cnpj, inscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
                 clientes.add(cj);
-                //escritorCSV.atualizarArquivoCliente(caminhoArquivo, cj);
             }
     }
 }

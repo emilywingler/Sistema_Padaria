@@ -15,6 +15,7 @@ public class Leitura {
     List<String[]> linhas = new ArrayList<>();
     
     try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            br.readLine();
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] campos = linha.split(";");

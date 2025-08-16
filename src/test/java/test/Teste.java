@@ -1,7 +1,11 @@
 package test;
 
-import model.ClienteFisico;
+
 import service.GerenciaCliente;
+import service.GerenciaCompra;
+import service.GerenciaFornecedor;
+import service.GerenciaProduto;
+import service.GerenciaVenda;
 
 /**
  *
@@ -17,10 +21,26 @@ public class Teste {
     public static void main(String[] args) {
         
         GerenciaCliente teste = new GerenciaCliente();
+        GerenciaProduto mockGerenciaProduto = new GerenciaProduto();
+        GerenciaFornecedor mockGerenciaFornecedor = new GerenciaFornecedor();
+        GerenciaCompra teste1 = new GerenciaCompra(mockGerenciaProduto, mockGerenciaFornecedor);
+        GerenciaVenda teste2 = new GerenciaVenda(mockGerenciaProduto, teste);
         
-        ClienteFisico cliente1 = new ClienteFisico(1,"Juliana Ferreira","Rua Maranhão, 123 - Bairro Sol","2799239467","2024-09-28","F","466.750.508-77");
-        teste.carregarClientesCSV("C:\\Users\\clara\\Documents\\clientes.csv");
-        System.out.println(cliente1.getCpf());
+        teste.carregarClientesCSV("clientes.csv");
+        mockGerenciaFornecedor.carregarFornecedorCSV("fornecedores.csv");
+        mockGerenciaProduto.carregarProdutosCSV("produtos.csv");
+        teste1.carregarComprasCSV("compras.csv");
+        teste2.carregarVendasCSV("vendas.csv");
+        System.out.println("Sucesso!");
+        
+        //teste.listarClientes();
+        //mockGerenciaProduto.listarProdutos();
+        //mockGerenciaFornecedor.listarFornecedores();
+        teste1.listarCompras();
+        teste2.listarVendas();
+        
+        
+        
     }
     
 }
