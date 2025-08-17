@@ -75,14 +75,35 @@ public class GerenciaProduto{
      * 
      * @param produto Produto a ser inserido.
      */  
-    public void inserirProduto(Produto produto) {
-        if (produto != null){
-            produtos.add(produto);
-            // escritorCSV.atualizarArquivoProduto(ARQUIVO_PRODUTO, produto);
-        }else{
-            System.out.println("produto invalido, nao foi inserido");
-        }
-    
+    public void inserirProduto(Scanner sc) {
+        
+        System.out.println("Digite o ID do produto: ");
+        int idProduto = sc.nextInt();
+        sc.nextLine();
+        
+        System.out.println("Digite a descrição do produto: ");
+        String descricao = sc.nextLine();
+        
+        System.out.println("Digite o estoque mínimo: ");
+        int minEstoque= sc.nextInt();
+        sc.nextLine();
+        
+        System.out.println("Digite o estoque atual: ");
+        int estoqueAtual = sc.nextInt();
+        sc.nextLine();
+        
+        System.out.println("Digite o valor de custo desse produto: ");
+        String custoString = sc.nextLine();
+        BigDecimal custo = new BigDecimal(custoString);
+        
+        System.out.println("Digite o estoque atual: ");
+        int percentualLucro = sc.nextInt();
+        sc.nextLine();
+        
+        Produto produto = new Produto(idProduto,descricao,minEstoque,estoqueAtual,custo,percentualLucro);
+        
+        produtos.add(produto);
+        System.out.println(">>> Produto cadastrado com sucesso! <<<");
     }
     
     /**
