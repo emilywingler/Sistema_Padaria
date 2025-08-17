@@ -76,10 +76,18 @@ public class GerenciaCliente {
      */
     public void inserirCliente(Scanner sc){
 
-        // Solicita os dados comuns
-        System.out.println("Digite o ID do cliente: ");
-        int idCliente = sc.nextInt();
-        sc.nextLine(); // Consome a quebra de linha pendente
+        int idCliente;
+        while (true) {
+            System.out.println("Digite o ID do cliente: ");
+            idCliente = sc.nextInt();
+            sc.nextLine(); // Consome a quebra de linha
+
+            if (this.buscarCliente(idCliente) == null) {
+                break; // ID válido, sai do laço
+            } else {
+                System.out.println("Já existe um cliente com esse ID! Digite novamente.");
+            }
+        }
 
         System.out.println("Digite o nome: ");
         String nome = sc.nextLine();

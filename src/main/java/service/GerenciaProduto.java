@@ -77,34 +77,45 @@ public class GerenciaProduto{
      */  
     public void inserirProduto(Scanner sc) {
         
-        System.out.println("Digite o ID do produto: ");
-        int idProduto = sc.nextInt();
-        sc.nextLine();
+        int idProduto;
         
+        while (true) {
+            System.out.println("Digite o ID do produto: ");
+            idProduto = sc.nextInt();
+            sc.nextLine();
+
+            if (this.buscarProduto(idProduto) != null) {
+                System.out.println("Já existe um produto com esse ID! Digite novamente");
+            } else {
+                break; // sai do loop quando o ID é válido
+            }
+        }
+
         System.out.println("Digite a descrição do produto: ");
         String descricao = sc.nextLine();
-        
+
         System.out.println("Digite o estoque mínimo: ");
         int minEstoque= sc.nextInt();
         sc.nextLine();
-        
+
         System.out.println("Digite o estoque atual: ");
         int estoqueAtual = sc.nextInt();
         sc.nextLine();
-        
+
         System.out.println("Digite o valor de custo desse produto: ");
         String custoString = sc.nextLine();
         BigDecimal custo = new BigDecimal(custoString);
-        
-        System.out.println("Digite o estoque atual: ");
+
+        System.out.println("Digite o percentual de lucro: ");
         int percentualLucro = sc.nextInt();
         sc.nextLine();
-        
-        Produto produto = new Produto(idProduto,descricao,minEstoque,estoqueAtual,custo,percentualLucro);
-        
+
+        Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
+
         produtos.add(produto);
         System.out.println(">>> Produto cadastrado com sucesso! <<<");
     }
+
     
     /**
      * Remove um produto da lista com base no seu ID.

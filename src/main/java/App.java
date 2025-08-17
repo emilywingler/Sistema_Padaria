@@ -5,10 +5,18 @@ import io.*;
 import report.*;
 import service.*;
 
+@SuppressWarnings("FieldMayBeFinal")
 public class App {
     private static String caminhoArquivoCliente;
     private static String caminhoArquivoFornecedor;
     private static String caminhoArquivoProduto;
+    
+    private static GerenciaCliente gerenciaCliente= new GerenciaCliente();
+    private static GerenciaProduto gerenciaProduto = new GerenciaProduto();
+    private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor();
+    private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor);
+    private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int op = 0;
@@ -30,9 +38,12 @@ public class App {
                     menuControleContas(sc);
                 }
                 case 4 ->{
-                    
+                    System.out.println("AINDA NÃO IMPLEMENTADO");
                 }
-                case 5 ->{ }
+                case 5 ->{
+                    System.out.println("Fechando aplicação!");
+                    return;
+                }
                 default ->{
                     System.out.println("Opção inválida. Tente novamente.");
                 }
@@ -40,6 +51,8 @@ public class App {
             
         }
     }
+    
+    
     public static void menuPrincipal(){
         System.out.println("""
                            ----------------------------------
@@ -52,6 +65,7 @@ public class App {
                             5. Sair             
                            """);
     }
+    
     public static void menuCadastro(Scanner sc){
         int op=0;
         while(op != 4){
@@ -68,21 +82,22 @@ public class App {
 
             switch(op){
                 case 1 ->{
-                    
+                    gerenciaCliente.inserirCliente(sc);
                 }
                 case 2 ->{
-                    
+                    gerenciaFornecedor.inserirFornecedor(sc);
                 }
                 case 3 ->{
-                    
+                    gerenciaProduto.inserirProduto(sc);
                 }
-                case 4 ->{ }
+                case 4 ->{ 
+                    return;
+                }
                 default ->{
                     System.out.println("Opção inválida. Tente novamente.");
                 }
             }
         }
-        
     }
     public static void menuRegistroVendas(Scanner sc){
         int op=0;
