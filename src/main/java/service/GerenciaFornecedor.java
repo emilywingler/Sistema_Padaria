@@ -46,12 +46,34 @@ public class GerenciaFornecedor {
     * em seguida, invoca o método de atualização do {@code escritorCSV} para
     * garantir que o novo fornecedor seja salvo permanentemente no arquivo CSV.
     *
-    * @param fornecedor O objeto {@code Fornecedor} a ser adicionado. Este objeto deve estar
-    * devidamente instanciado e preenchido.
+    * @param sc O scanner que será utilizado.
     */
-    public void inserirFornecedor(Fornecedor fornecedor){
+    public void inserirFornecedor(Scanner sc){
+
+        System.out.println("Digite o ID do fornecedor: ");
+        int idFornecedor = sc.nextInt();
+        sc.nextLine();
+
+        System.out.println("Digite o nome da empresa: ");
+        String nomeEmpresa = sc.nextLine();
+
+        System.out.println("Digite o endereço: ");
+        String endereco = sc.nextLine();
+
+        System.out.println("Digite o telefone: ");
+        String telefone = sc.nextLine();
+
+        System.out.println("Digite o CNPJ: ");
+        String cnpj = sc.nextLine();
+
+        System.out.println("Digite o nome da pessoa de contato: ");
+        String pessoaContato = sc.nextLine();
+
+        Fornecedor fornecedor = new Fornecedor(idFornecedor, nomeEmpresa, endereco, telefone, cnpj, pessoaContato);
+
         fornecedores.add(fornecedor);
-        //escritorCSV.atualizarArquivo();
+        
+        System.out.println(">>> Fornecedor cadastrado com sucesso! <<<");
     }
     
     /**

@@ -49,7 +49,7 @@ public class App {
                            2. Registro de Vendas
                            3. Controle de Contas (a Pagar e a Receber)
                            4. Geração de Relatórios Mensais
-                           5. Sair
+                            5. Sair             
                            """);
     }
     public static void menuCadastro(Scanner sc){
