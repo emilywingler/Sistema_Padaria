@@ -19,6 +19,7 @@ public class Teste {
         GerenciaCliente teste = new GerenciaCliente();
         
         ClienteFisico cliente1 = new ClienteFisico(1,"Juliana Ferreira","Rua Maranhão, 123 - Bairro Sol","2799239467","2024-09-28","F","466.750.508-77");
+        //teste.carregarClientesCSV("C:\\Users\\clara\\Documents\\clientes.csv");
         teste.carregarClientesCSV("C:\\Users\\clara\\Documents\\clientes.csv");
         System.out.println(cliente1.getCpf());
     }

@@ -46,7 +46,7 @@ public class GerenciaProduto{
     
     //aqui adiciona o novo produto na lista em memoria
     //chama o metodo atualizarArquivo para reescrer o csv com o produtos atualizados 
-    public void inserirProduto(Produto p) {
+    public void inserirProduto(int idProduto, String descricao, int minEstoque, int estoqueAtual, BigDecimal custo, int percentualLucro) {
         produtos.add(p);
         //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
     }
