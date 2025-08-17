@@ -9,25 +9,52 @@ import java.util.List;
 import io.Leitura;
 import io.Escrita;
 
-
 /**
- *
- * @author mikae
+ * Classe responsável pelo gerenciamento de produtos,
+ * permite operações de CRUD (criar, ler, atualizar, remover),
+ * verificação de estoque baixo e integração com arquivos CSV.
+ * 
+ * <p>
+ * Esta classe mantém uma lista de produtos em memória e fornece
+ * métodos para manipular esses produtos. Os dados podem ser
+ * carregados ou salvos em arquivos CSV através das classes Leitura e Escrita.
+ * </p>
+ * 
+ *  @author mikae
  */
+
 public class GerenciaProduto{
-    private List<Produto> produtos; //lista que armazena os objetos Produto em memoria
-    private final String ARQUIVO_PRODUTO = "produtos.csv"; //nome do arquivo csv que os produtos sao salvos 
-    private Leitura leitorCSV;//objeto responsavel por lerdados no csv
-    private Escrita escritorCSV;//objeto responsavel por escrever dados no csv
+    /** Lista que armazena os objetos Produto em memória */
+    private List<Produto> produtos;
     
+    /** Nome do arquivo CSV onde os produtos são salvos */
+    private final String ARQUIVO_PRODUTO = "produtos.csv";
+    
+    /** Objeto responsável por ler dados de arquivos CSV */
+    private Leitura leitorCSV;
+    
+    /** Objeto responsável por escrever dados em arquivos CSV */
+    private Escrita escritorCSV;
+    
+    /**
+     * Construtor da classe GerenciaProduto.
+     * Inicializa a lista de produtos e os objetos de leitura/escrita de CSV.
+     */
     public GerenciaProduto() {
         produtos = new ArrayList<>();
         leitorCSV = new Leitura();
-        escritorCSV = new Escrita();
+        escritorCSV = new Escrita();     
     }
     
+    
+    /**
+     * Carrega produtos de um arquivo CSV para a memória.
+     * 
+     * @param caminhoArquivo Caminho do arquivo CSV a ser lido.
+     */
     public void carregarProdutosCSV(String caminhoArquivo){
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
+        
         
         for (String[] campos : linhas) {
             int idProduto = Integer.parseInt(campos[0]);
@@ -39,20 +66,32 @@ public class GerenciaProduto{
             
             Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
             produtos.add(produto);
-       
         }
         
     }
     
-    //aqui adiciona o novo produto na lista em memoria
-    //chama o metodo atualizarArquivo para reescrer o csv com o produtos atualizados 
-    public void inserirProduto(int idProduto, String descricao, int minEstoque, int estoqueAtual, BigDecimal custo, int percentualLucro) {
-        produtos.add(p);
-        //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
+    /**
+     * Insere um novo produto na lista.
+     * 
+     * @param produto Produto a ser inserido.
+     */  
+    public void inserirProduto(Produto produto) {
+        if (produto != null){
+            produtos.add(produto);
+            // escritorCSV.atualizarArquivoProduto(ARQUIVO_PRODUTO, produto);
+        }else{
+            System.out.println("produto invalido, nao foi inserido");
+        }
+    
     }
     
-    public void removerProduto(int codigo) {
-        Produto p = buscarProduto(codigo);
+    /**
+     * Remove um produto da lista com base no seu ID.
+     * 
+     * @param idProduto ID do produto a ser removido.
+     */
+    public void removerProduto(int idProduto) {
+        Produto p = buscarProduto(idProduto);
         if (p != null) {
             produtos.remove(p);
             //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
@@ -61,17 +100,23 @@ public class GerenciaProduto{
         }
     }
     
-    //percorre a lista e retorna o produto com o id correspondente 
-    public Produto buscarProduto(int codigo) {
+    /**
+     * Busca um produto pelo seu ID.
+     * 
+     * @param idProduto ID do produto a ser buscado.
+     * @return Produto correspondente ao ID ou null se não encontrado.
+     */
+    public Produto buscarProduto(int idProduto) {
         for (Produto p : produtos) {
-            if (p.getIdProduto() == codigo) return p;
+            if (p.getIdProduto() == idProduto) return p;
         }
         return null;
     }
     
-    //exibe todos os produtos cadastrados no terminal com suas informações 
-    //mostra o valor de venda ja calculado
-     public void listarProdutos() {
+    /**
+     * Lista todos os produtos cadastrados no console.
+     */
+    public void listarProdutos() {
         if (produtos.isEmpty()) {
             System.out.println("Lista de produtos vazia.");
         } else {
@@ -79,11 +124,16 @@ public class GerenciaProduto{
                 System.out.println(p); // usa o toString()
             }
         }
-     }
+    }
     
-    //permite editar um produto interativamente 
-    //as alterações são feitas diretamente no objeto em memoria 
-    // e no final salva todas as mudanças no arquivo csv 
+    
+    /**
+     * Permite editar os atributos de um produto pelo seu ID.
+     * Exibe um menu interativo no console para alterar descrição,
+     * estoque mínimo, estoque atual, custo e percentual de lucro.
+     * 
+     * @param codigo ID do produto a ser editado.
+     */
     public void editarProduto(int codigo) {
         Produto p = buscarProduto(codigo);
         if (p == null) {
@@ -104,7 +154,8 @@ public class GerenciaProduto{
                                6. Sair
                                """);
             System.out.print("Escolha uma opção: ");
-            op = sc.nextInt(); sc.nextLine();
+            op = sc.nextInt();
+            sc.nextLine(); // consome a quebra de linha após nextInt()
 
             switch (op) {
                 case 1 -> {
@@ -121,7 +172,13 @@ public class GerenciaProduto{
                 }
                 case 4 -> {
                     System.out.print("Novo valor de custo: ");
-                    p.setCusto(new BigDecimal(sc.nextLine()));
+                    try {
+                        p.setCusto(sc.nextBigDecimal());
+                        sc.nextLine(); // consome a quebra de linha
+                    } catch (Exception e) {
+                        System.out.println("Valor inválido para custo.");
+                        sc.nextLine(); // limpa entrada inválida
+                    }
                 }
                 case 5 -> {
                     System.out.print("Novo percentual de lucro: ");
@@ -132,11 +189,13 @@ public class GerenciaProduto{
             }
         }
 
-        //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
-        // sc.close(); // não feche aqui!
+        // escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
     }
-        
-    //analisar se estoque mim será usada em outra classe para obter esse retorno 
+
+  
+    /**
+     * Verifica quais produtos estão com estoque abaixo do mínimo.
+     */ 
     public void verificarEstoqueBaixo(){
         for (Produto p : produtos) {
             if (p.getEstoqueAtual() < p.getMinEstoque()) {
@@ -146,6 +205,12 @@ public class GerenciaProduto{
             }
         }
     }
+    
+    /**
+     * Verifica se existe algum produto com estoque abaixo do mínimo.
+     * 
+     * @return true se existir pelo menos um produto com estoque baixo, false caso contrário.
+     */
     public boolean existeProdutoComEstoqueBaixo() {
         for (Produto p : produtos) {
             if (p.getEstoqueAtual() < p.getMinEstoque()) {
@@ -155,6 +220,21 @@ public class GerenciaProduto{
     return false; // nenhum produto está abaixo do mínimo
     }
     
+    
+    /**
+     * Gera um novo ID único para um produto.
+     * 
+     * @return Próximo ID disponível.
+     */
+    public int gerarNovoId() {
+        int maxId = 0;
+        for (Produto p : produtos) {
+            if (p.getIdProduto() > maxId) {
+                maxId = p.getIdProduto();
+            }
+        }
+        return maxId + 1;
+    }
 }
           
 

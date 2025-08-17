@@ -66,6 +66,30 @@ public class GerenciaVenda {
         this.gp = gerenciaProd;
         this.gc = gerenciaCliente;
     }
+    
+    public void carregarVendasCSV(String caminhoArquivo) {
+        List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
+
+        for (String[] campos : linhas) {
+            String campoCliente = campos[0];
+            String dataVenda = campos[1];
+            int idProduto = Integer.parseInt(campos[2]);
+            int quantidade = Integer.parseInt(campos[3]);
+            char meioPagamento = campos[4].charAt(0);
+
+            if (meioPagamento == 'F') {
+                // venda fiado → cliente identificado
+                int idCliente = Integer.parseInt(campoCliente);
+                Venda v = new VendaFiado(idCliente, /* idVenda (gerar ou ler) */ 0, dataVenda, idProduto, quantidade, meioPagamento);
+                vendas.add(v);
+            } else {
+                // venda à vista → cliente vazio
+                Venda v = new VendaAVista(/* idVenda (gerar ou ler) */ 0, dataVenda, idProduto, quantidade, meioPagamento);
+                vendas.add(v);
+            }
+        }
+    }
+
 
     
     //public void registrarVenda(Venda v){

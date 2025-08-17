@@ -75,6 +75,21 @@ public class GerenciaCompra {
         this.gf = gerenciarFornecedor;
     }
     
+    public void carregarComprasCSV(String caminhoArquivo) {
+        List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
+
+        for (String[] campos : linhas) {
+            int numeroNotaFiscal = Integer.parseInt(campos[0]);
+            int idFornecedor = Integer.parseInt(campos[1]);
+            String dataCompra = campos[2];
+            int idProduto = Integer.parseInt(campos[3]);
+            int quantidade = Integer.parseInt(campos[4]);
+
+            Compra compra = new Compra(numeroNotaFiscal, idFornecedor, dataCompra, idProduto, quantidade);
+            compras.add(compra);
+        }
+    }
+    
     /**
      * Registra uma nova compra no sistema, atualizando o estoque do produto.
      * 

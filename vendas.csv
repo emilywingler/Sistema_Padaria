@@ -1,0 +1,6 @@
+idCliente;dataVenda;idProduto;quantidade;meioPagamento
+1;09/08/2025;101;10;C
+2;10/08/2025;102;2;D
+;11/08/2025;103;5;$
+3;12/08/2025;101;15;F
+4;13/08/2025;103;3;T

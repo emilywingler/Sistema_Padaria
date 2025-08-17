@@ -15,13 +15,15 @@ public class Leitura {
     List<String[]> linhas = new ArrayList<>();
     
     try (BufferedReader br = new BufferedReader(new FileReader(caminhoArquivo))) {
+            br.readLine();
             String linha;
             while ((linha = br.readLine()) != null) {
                 String[] campos = linha.split(";");
                 linhas.add(campos);
             }
         } catch (IOException e) {
-            System.out.println("Erro ao ler o arquivo: " + e.getMessage());
+            System.out.println("Erro de I/O");
+            System.exit(1);
         }
 
         return linhas;
