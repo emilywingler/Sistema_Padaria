@@ -99,6 +99,8 @@ public class App {
             }
         }
     }
+    
+    
     public static void menuRegistroVendas(Scanner sc){
         int op=0;
         while(op != 4){
@@ -113,12 +115,14 @@ public class App {
             op = selecionarOpcao(sc);
             switch(op){
                 case 1 ->{
-                    
+                    gerenciaVenda.registrarVenda(sc);
                 }
                 case 2 ->{
-                    
+                    gerenciaVenda.listarVendas();
                 }
-                case 3 ->{ }
+                case 3 ->{ 
+                    return;
+                }
                 default ->{
                     System.out.println("Opção inválida. Tente novamente.");
                 }
@@ -126,6 +130,7 @@ public class App {
         }
         
     }
+    
     public static void menuControleContas(Scanner sc){
         int op=0;
         while(op != 3){
@@ -153,6 +158,7 @@ public class App {
         }
 
     }
+    
     public static int selecionarOpcao(Scanner sc){
         System.out.println("Selecione uma opção: ");
         return sc.nextInt();

@@ -9,20 +9,19 @@ package model;
 public class VendaFiado extends Venda {
     
     /** ID do cliente que realizou a compra fiado. */
-    private int idCliente;
+    private final int idCliente;
 
     /**
      * Construtor da classe {@code VendaFiado}.
      *
      * @param idCliente      o ID do cliente
-     * @param idVenda        o ID da venda
      * @param DataVenda      a data da venda
      * @param idProduto      o ID do produto vendido
      * @param quantidade     a quantidade vendida
      * @param MeioPagamento  o meio de pagamento utilizado
      */
-    public VendaFiado(int idCliente, int idVenda, String DataVenda, int idProduto, int quantidade, char MeioPagamento) {
-        super(idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
+    public VendaFiado(int idCliente, String DataVenda, int idProduto, int quantidade, char MeioPagamento) {
+        super(DataVenda, idProduto, quantidade, MeioPagamento);
         this.idCliente = idCliente;
     }
 
@@ -43,6 +42,6 @@ public class VendaFiado extends Venda {
      */
     @Override
     public String toString() {
-        return super.toString() + ", idCliente: " + idCliente;
+        return "idCliente: " + idCliente + super.toString();
     }
 }

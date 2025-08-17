@@ -18,13 +18,12 @@ public class VendaAVista extends Venda {
     /**
      * Construtor que inicializa uma venda à vista com os dados fornecidos.
      * 
-     * @param idVenda        identificador único da venda
      * @param DataVenda      data em que a venda foi realizada
      * @param idProduto      identificador do produto vendido
      * @param quantidade     quantidade de produtos vendidos
      * @param MeioPagamento  meio de pagamento utilizado (ex: D para dinheiro, C para cartão)
      */
-    public VendaAVista(int idVenda, String DataVenda, int idProduto, int quantidade, char MeioPagamento) {
-        super(idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
+    public VendaAVista(String DataVenda, int idProduto, int quantidade, char MeioPagamento) {
+        super(DataVenda, idProduto, quantidade, MeioPagamento);
     }
 }

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Scanner;
 import model.Produto;
 import model.Venda;
 import model.VendaAVista;
@@ -80,72 +82,122 @@ public class GerenciaVenda {
             if (meioPagamento == 'F') {
                 // venda fiado → cliente identificado
                 int idCliente = Integer.parseInt(campoCliente);
-                Venda v = new VendaFiado(idCliente, /* idVenda (gerar ou ler) */ 0, dataVenda, idProduto, quantidade, meioPagamento);
+                Venda v = new VendaFiado(idCliente, dataVenda, idProduto, quantidade, meioPagamento);
                 vendas.add(v);
             } else {
                 // venda à vista → cliente vazio
-                Venda v = new VendaAVista(/* idVenda (gerar ou ler) */ 0, dataVenda, idProduto, quantidade, meioPagamento);
+                Venda v = new VendaAVista(dataVenda, idProduto, quantidade, meioPagamento);
                 vendas.add(v);
             }
         }
     }
 
-
-    
-    //public void registrarVenda(Venda v){
         
     /**
      * Registra uma venda à vista no sistema.
      *
-     * @param idVenda ID da venda
-     * @param DataVenda Data da venda
-     * @param idProduto ID do produto vendido
-     * @param quantidade Quantidade vendida
-     * @param MeioPagamento Meio de pagamento utilizado
+     * @param sc
      */
-    public void registrarVenda(int idVenda, String DataVenda, int idProduto, int quantidade, char MeioPagamento){
-        Produto produto =gp.buscarProduto(idProduto);
-        if(produto == null){
-            System.out.println("Produto não encontrado");
-        }
-        else if (produto.getEstoqueAtual() < quantidade){
-            System.out.println("Não há estoque para essa compra");
-        }
-        else{
-            produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
-            // gerenciaProdutos.salvarProdutosAtualizados(); //criar esse método - package IO!!!
-            //escritorCSV.atualizarArquivoVenda(,v); 
-            Venda v = new VendaAVista(idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
-            vendas.add(v);
-        } 
+    public void registrarVenda(Scanner sc){
+        int idProduto;
+        int quantidade;
+        Produto produto;
+        char MeioPagamento;
+        
+        System.out.println("Produtos que podem ser vendidos");
+        gp.listarProdutos();
+        System.out.println();
 
-    }
-    
-    /**
-     * Registra uma venda fiado (cliente identificado).
-     *
-     * @param idCliente ID do cliente
-     * @param idVenda ID da venda
-     * @param DataVenda Data da venda
-     * @param idProduto ID do produto vendido
-     * @param quantidade Quantidade vendida
-     * @param MeioPagamento Meio de pagamento utilizado
-     */
-    public void registrarVenda( int idCliente, int idVenda, String DataVenda, int idProduto, int quantidade, char MeioPagamento){
-        Produto produto =gp.buscarProduto(idProduto);
-        if(produto == null){
-            System.out.println("Produto não encontrado");
+        while (true) {
+        System.out.println("Digite o ID do Produto que foi vendido: ");
+        idProduto = sc.nextInt();
+        sc.nextLine();
+        produto = gp.buscarProduto(idProduto);
+        if (produto == null) {
+            System.out.println("Produto não encontrado. Digite Novamente!");
+        } else {
+            break;
+            }
         }
-        else if (produto.getEstoqueAtual() < quantidade){
-            System.out.println("Não há estoque para essa compra");
+
+        produto = Objects.requireNonNull(produto); // garante para o compilador que o produto nunca será nulo
+
+        while (true) {
+            System.out.println("Digite a quantidade: ");
+            quantidade = sc.nextInt();
+            sc.nextLine();
+            if (produto.getEstoqueAtual() < quantidade) {
+                System.out.println("Não há estoque para essa compra. O estoque atual desse produto é " 
+                    + produto.getEstoqueAtual() + "\nTente Novamente!");
+            } else {
+                break;
+            }
         }
+        
+        System.out.println("Digite a Data da Venda: ");
+        String DataVenda = sc.nextLine();
+        
+
+        while(true) {
+            System.out.println("""
+                               * `$` Dinheiro
+                               * `X` Cheque
+                               * `D` Cartão de Débito
+                               * `C` Cartão de Crédito
+                               * `T` Ticket Alimentação
+                               * `F` Fiado
+
+                               Digite o meio de Pagamento:
+                               """);
+
+            String entrada = sc.nextLine().trim(); // remove espaços extras
+            if (entrada.isEmpty()) {
+                System.out.println("Você não digitou nada. Tente novamente!");
+                continue;
+            }
+
+            MeioPagamento = entrada.charAt(0); // pega o primeiro caractere
+
+            // verifica se é um dos caracteres válidos
+            if (MeioPagamento == 'D' || MeioPagamento == 'C' || MeioPagamento == 'T' ||
+                MeioPagamento == 'F' || MeioPagamento == 'X' || MeioPagamento == '$') {
+                break; // entrada válida
+            } else {
+                System.out.println("Meio de pagamento inválido. Digite um dos caracteres válidos!");
+            }
+        }
+        
+        if(MeioPagamento == 'F'){
+            int idCliente;
+            
+            while(true){
+                System.out.println("Digite o ID do Cliente: ");
+                idCliente = sc.nextInt();
+                Cliente cliente = gc.buscarCliente(idCliente);
+                if(cliente == null){
+                    System.out.println("Cliente não encontrado! Tente Novamente");
+                }
+                else{
+                    break;
+                }
+            }
+            
+            produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
+            
+            Venda v = new VendaFiado(idCliente, DataVenda, idProduto, quantidade, MeioPagamento);
+            vendas.add(v);
+            
+        }
+        
         else{
             produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
-            // gerenciaProdutos.salvarProdutosAtualizados(); //criar esse método - package IO!!!
-            //escritorCSV.atualizarArquivoVenda(,v); 
-            Venda v = new VendaFiado(idCliente, idVenda, DataVenda, idProduto, quantidade, MeioPagamento);
+            
+            Venda v = new VendaAVista(DataVenda, idProduto, quantidade, MeioPagamento);
             vendas.add(v);
-        } 
+        }
+        
+        // gerenciaProdutos.salvarProdutosAtualizados(); //criar esse método - package IO!!!
+        //escritorCSV.atualizarArquivoVenda(,v); 
     }
     
     /**

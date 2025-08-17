@@ -33,15 +33,15 @@ public class Venda {
 
     /**
      * Construtor da classe {@code Venda}.
-     *
-     * @param idVenda        ID único da venda
+     *Aqui cada venda tem o seu id único atribuido pela variável estática total vendas
+     * 
      * @param DataVenda      Data da venda (formato string, ex: "2025-08-07")
      * @param idProduto      ID do produto vendido
      * @param quantidade     Quantidade de unidades vendidas
      * @param MeioPagamento  Código representando o meio de pagamento
      */
-    public Venda(int idVenda, String DataVenda, int idProduto, int quantidade, char MeioPagamento) {
-        this.idVenda = idVenda;
+    public Venda(String DataVenda, int idProduto, int quantidade, char MeioPagamento) {
+        this.idVenda = totalVendas;
         this.DataVenda = DataVenda;
         this.idProduto = idProduto;
         this.quantidade = quantidade;
