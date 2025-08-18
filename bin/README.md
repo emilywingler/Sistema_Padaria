@@ -263,8 +263,3 @@ Entrega pelo Google Classroom, em formato compactado.
 
 * Erratas serão divulgadas em sala ou na página da disciplina
 * Aulas de laboratório poderão ser usadas para o projeto a partir de **30/07**
-
-
-## 9 Coisas para fazer depois
-* refatorar gerenciarProdutos para gerenciarProduto
-- adicionar verificação nas buscas se a lista está vazia
