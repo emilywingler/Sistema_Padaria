@@ -66,6 +66,7 @@ public class GerenciaCompra {
      * Constrói um gerenciador de compras.
      * 
      * @param gerenciarProd instância de {@link GerenciaProduto} para controle de produtos
+     * @param gerenciarFornecedor instância de {@link GerenciaFornecedor} para controle de fornecedores
      */
     public GerenciaCompra(GerenciaProduto gerenciarProd, GerenciaFornecedor gerenciarFornecedor) {
         compras = new ArrayList<>();

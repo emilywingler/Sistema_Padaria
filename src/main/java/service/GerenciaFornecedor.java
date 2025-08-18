@@ -8,6 +8,23 @@ import io.Leitura;
 import io.Escrita;
 
 /**
+ * Classe de serviço responsável pelo gerenciamento de fornecedores.
+ * <p>
+ * Encapsula operações de CRUD (criação, leitura, atualização e remoção) sobre
+ * fornecedores, mantendo uma lista em memória e oferecendo integração com
+ * arquivos CSV para persistência dos dados.
+ * </p>
+ *
+ * <p>
+ * Funcionalidades principais:
+ * <ul>
+ *   <li>Carregar fornecedores a partir de um arquivo CSV</li>
+ *   <li>Cadastrar novos fornecedores interativamente</li>
+ *   <li>Buscar fornecedores pelo código identificador</li>
+ *   <li>Remover fornecedores existentes</li>
+ *   <li>Listar todos os fornecedores cadastrados</li>
+ *   <li>Editar dados de fornecedores já registrados</li>
+ * </ul>
  *
  * @author Usuario
  */
@@ -18,12 +35,35 @@ public class GerenciaFornecedor {
     private Leitura leitorCSV;
     private Escrita escritorCSV;
     
+    /**
+     * Construtor padrão.
+     * <p>
+     * Inicializa a lista de fornecedores em memória e as instâncias utilitárias
+     * para leitura e escrita em arquivos CSV.
+     * </p>
+     */
     public GerenciaFornecedor(){
         fornecedores = new ArrayList<>();
         leitorCSV = new Leitura();
         escritorCSV = new Escrita();
     }
     
+    /**
+     * Carrega fornecedores de um arquivo CSV para a memória.
+     * <p>
+     * Cada linha do arquivo deve representar um fornecedor, com os campos
+     * organizados na seguinte ordem:
+     * <ol>
+     *   <li>ID do fornecedor</li>
+     *   <li>Nome da empresa</li>
+     *   <li>Endereço</li>
+     *   <li>Telefone</li>
+     *   <li>CNPJ</li>
+     *   <li>Pessoa de contato</li>
+     * </ol>
+     *
+     * @param caminhoArquivo caminho para o arquivo CSV de fornecedores.
+     */
     public void carregarFornecedorCSV(String caminhoArquivo){
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
         

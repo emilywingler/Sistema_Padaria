@@ -69,6 +69,28 @@ public class GerenciaVenda {
         this.gc = gerenciaCliente;
     }
     
+    /**
+    * Carrega as vendas a partir de um arquivo CSV e as adiciona à lista interna de vendas.
+    * <p>
+    * O método lê cada linha do arquivo CSV usando a classe {@link Leitura}, extrai os campos
+    * correspondentes e cria objetos de {@link VendaFiado} ou {@link VendaAVista} dependendo
+    * do tipo de pagamento indicado no arquivo.
+    * </p>
+    * 
+    * <p>
+    * Estrutura esperada do CSV:
+    * <ul>
+    *   <li>Para vendas fiado (meioPagamento = 'F'): idCliente, dataVenda, idProduto, quantidade, meioPagamento</li>
+    *   <li>Para vendas à vista (meioPagamento diferente de 'F'): campoCliente vazio ou irrelevante, dataVenda, idProduto, quantidade, meioPagamento</li>
+    * </ul>
+    *
+    * <p>
+    * A função converte os campos numéricos usando {@code Integer.parseInt} e o campo do
+    * meio de pagamento usando {@code charAt(0)}. Cada venda criada é adicionada à lista
+    * interna {@code vendas}.
+    *
+    * @param caminhoArquivo O caminho completo do arquivo CSV que contém os dados das vendas.
+    */
     public void carregarVendasCSV(String caminhoArquivo) {
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
 

@@ -24,7 +24,6 @@ import model.Produto;
  *   <li>Receita total</li>
  *   <li>Lucro total</li>
  * </ul>
- * </p>
  * 
  * <p>
  * O resultado final é ordenado de forma decrescente pelo lucro e, em caso de empate,
@@ -106,7 +105,14 @@ public class VendasPorProduto {
 
         return dados;
     }
-
+    /**
+    * Gera um arquivo CSV contendo os dados de vendas agrupadas por produto.
+    * <p>
+    * Este método obtém os dados utilizando o método {@link #gerar()}, que retorna uma lista
+    * de arrays de {@code String}, cada um represent
+    * 
+    * @param caminhoArquivo Caminho do arquivo
+   */
     public void gerarCSV(String caminhoArquivo) {
         List<String[]> dados = gerar();
         Escrita escrita = new Escrita();

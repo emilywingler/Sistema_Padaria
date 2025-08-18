@@ -6,7 +6,24 @@ import java.util.List;
 import report.*;
 import service.*;
 
-@SuppressWarnings("FieldMayBeFinal")
+/**
+ * Classe principal da aplicação da Padaria.
+ * <p>
+ * Responsável por inicializar o sistema, carregar os dados a partir de arquivos CSV
+ * (clientes, fornecedores, produtos, compras e vendas) e oferecer um menu interativo
+ * no console para o usuário realizar operações de cadastro, registro de vendas,
+ * controle de contas e geração de relatórios.
+ * </p>
+ *
+ * <p>
+ * Principais funcionalidades:
+ * <ul>
+ *   <li>Cadastro de clientes, fornecedores e produtos</li>
+ *   <li>Registro e listagem de vendas</li>
+ *   <li>Controle de contas a pagar e a receber</li>
+ *   <li>Geração de relatórios mensais em arquivos CSV</li>
+ * </ul>
+ */
 public class App {
     private static String caminhoArquivoCliente;
     private static String caminhoArquivoFornecedor;
@@ -18,7 +35,12 @@ public class App {
     private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor);
     private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
     
-    
+    /**
+     * Método principal da aplicação.
+     * Inicializa os gerenciadores, carrega os arquivos CSV e exibe o menu principal.
+     *
+     * @param args argumentos da linha de comando (não utilizados).
+     */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int op = 0;
@@ -57,7 +79,9 @@ public class App {
         }
     }
     
-    
+    /**
+     * Exibe o menu principal com as opções disponíveis.
+     */
     public static void menuPrincipal(){
         System.out.println("""
                            ----------------------------------
@@ -71,6 +95,11 @@ public class App {
                            """);
     }
     
+    /**
+     * Exibe o menu de cadastro e permite inserir clientes, fornecedores ou produtos.
+     *
+     * @param sc Scanner para entrada de dados do usuário.
+     */
     public static void menuCadastro(Scanner sc){
         int op=0;
         while(op != 4){
@@ -105,7 +134,12 @@ public class App {
         }
     }
     
-    
+    /**
+     * Exibe o menu de registro de vendas, permitindo cadastrar novas vendas
+     * ou listar as vendas registradas.
+     *
+     * @param sc Scanner para entrada de dados do usuário.
+     */
     public static void menuRegistroVendas(Scanner sc){
         int op=0;
         while(op != 4){
@@ -136,6 +170,12 @@ public class App {
         
     }
     
+    /**
+     * Exibe o menu de controle de contas, permitindo consultar
+     * contas a pagar (fornecedores) ou contas a receber (clientes).
+     *
+     * @param sc Scanner para entrada de dados do usuário.
+     */
     public static void menuControleContas(Scanner sc){
         int op=0;
         while(op != 3){
@@ -166,6 +206,16 @@ public class App {
 
     }
     
+    /**
+     * Gera relatórios em formato CSV para:
+     * <ul>
+     *   <li>Contas a pagar</li>
+     *   <li>Contas a receber</li>
+     *   <li>Estoque</li>
+     *   <li>Vendas por forma de pagamento</li>
+     *   <li>Vendas por produto</li>
+     * </ul>
+     */
     public static void gerarRelatorios(){
         Apagar apagar = new Apagar(gerenciaCompra,gerenciaFornecedor); 
         apagar.gerarCSV("apagar.csv");
@@ -185,6 +235,12 @@ public class App {
         System.out.println("<<< Relatórios gerados com sucesso! >>>");
     }
     
+    /**
+     * Função utilizada para guardar a opção que será utilizada para guiar o menu.
+     * 
+     * @param sc Scanner para entrada de dados do usuário.
+     * @return opção seleionada
+     */
     public static int selecionarOpcao(Scanner sc){
         System.out.println("Selecione uma opção: ");
         return sc.nextInt();
