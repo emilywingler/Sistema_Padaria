@@ -13,8 +13,7 @@ public class GerenciaCliente {
     private List<Cliente> clientes;
     private final String ARQUIVO_CLIENTE = "clientes_20.csv";
     private Leitura leitorCSV;
-    //private Escrita escritorCSV;
-    
+   
     /**
     * Construtor padrão da classe GerenciaCliente.
     * Inicializa a lista de clientes como um novo ArrayList e instancia um objeto
@@ -73,10 +72,18 @@ public class GerenciaCliente {
      */
     public void inserirCliente(Scanner sc){
 
-        // Solicita os dados comuns
-        System.out.println("Digite o ID do cliente: ");
-        int idCliente = sc.nextInt();
-        sc.nextLine(); // Consome a quebra de linha pendente
+        int idCliente;
+        while (true) {
+            System.out.println("Digite o ID do cliente: ");
+            idCliente = sc.nextInt();
+            sc.nextLine(); // Consome a quebra de linha
+
+            if (this.buscarCliente(idCliente) == null) {
+                break; // ID válido, sai do laço
+            } else {
+                System.out.println("Já existe um cliente com esse ID! Digite novamente.");
+            }
+        }
 
         System.out.println("Digite o nome: ");
         String nome = sc.nextLine();
@@ -130,10 +137,10 @@ public class GerenciaCliente {
     * do cliente correspondente ao código. Se encontrado, o cliente é removido
     * da lista em memória.
     *
-    * @param codigo O código inteiro (ID) do cliente que deve ser removido.
+    * @param idCliente O código inteiro (ID) do cliente que deve ser removido.
     */
-    public void removerCliente(int codigo){
-        Cliente cliente = buscarCliente(codigo);
+    public void removerCliente(int idCliente){
+        Cliente cliente = buscarCliente(idCliente);
         if(cliente != null){
             clientes.remove(cliente);
             /*for (Cliente c : clientes) {
@@ -152,16 +159,16 @@ public class GerenciaCliente {
      * o código de cada um com o valor fornecido.
      * </p>
      *
-     * @param codigo O código único (int) do cliente a ser procurado. 
+     * @param idCliente O código único (int) do cliente a ser procurado. 
      * Não deve ser nulo ou vazio.
      * @return O objeto {@code Cliente} correspondente ao código, se encontrado. 
      * Retorna {@code null} se nenhum cliente com o código especificado
      * for encontrado na lista.
      */
-    public Cliente buscarCliente(int codigo){
+    public Cliente buscarCliente(int idCliente){
         
         for(Cliente c : clientes){
-            if(c.getId() == codigo){
+            if(c.getId() == idCliente){
                 return c;
             }
         }return null;
@@ -200,10 +207,10 @@ public class GerenciaCliente {
     * <p>
     * Todas as alterações são aplicadas ao objeto em memória durante a sessão.
     *
-    * @param codigo O código numérico (ID) do cliente que se deseja editar.
+    * @param idCliente O código numérico (ID) do cliente que se deseja editar.
     */
-    public void editarCliente(int codigo){
-        Cliente c = buscarCliente(codigo);
+    public void editarCliente(int idCliente){
+        Cliente c = buscarCliente(idCliente);
         if(c != null){
             int op = 0;
             Scanner sc = new Scanner(System.in);

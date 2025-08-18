@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package service;
 
 import java.util.ArrayList;
@@ -54,9 +50,19 @@ public class GerenciaFornecedor {
     */
     public void inserirFornecedor(Scanner sc){
 
-        System.out.println("Digite o ID do fornecedor: ");
-        int idFornecedor = sc.nextInt();
-        sc.nextLine();
+        int idFornecedor;
+
+        while (true) {
+            System.out.println("Digite o ID do fornecedor: ");
+            idFornecedor = sc.nextInt();
+            sc.nextLine();
+
+            if (this.buscarFornecedor(idFornecedor) != null) {
+                System.out.println("Já existe um fornecedor com esse ID! Digite novamente.");
+            } else {
+                break; // sai do loop quando o ID for válido
+            }
+        }
 
         System.out.println("Digite o nome da empresa: ");
         String nomeEmpresa = sc.nextLine();
