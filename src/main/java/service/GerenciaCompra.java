@@ -127,6 +127,15 @@ public class GerenciaCompra {
             produto.setEstoqueAtual(produto.getEstoqueAtual() + quantidade);
             Compra c = new Compra(idCompra, idFornecedor, DataCompra, idProduto, quantidade);
             compras.add(c);
+            String[] linha = new String[]{
+                String.valueOf(c.getIdCompra()),
+                String.valueOf(c.getIdFornecedor()),
+                c.getDataCompra(),
+                String.valueOf(c.getIdProduto()),
+                String.valueOf(c.getQuantidade())
+            };
+            escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
+            gp.reescreverProdutosCSV();
         }
     }
     
@@ -197,4 +206,5 @@ public class GerenciaCompra {
             return total;
         }
     }
+    
 }

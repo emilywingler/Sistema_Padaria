@@ -66,6 +66,7 @@ public class GerenciaProduto{
             
             Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
             produtos.add(produto);
+            
         }
         
     }
@@ -122,6 +123,15 @@ public class GerenciaProduto{
         Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
 
         produtos.add(produto);
+        String[] linha = new String[]{
+        String.valueOf(produto.getIdProduto()),
+            produto.getDescricao(),
+            String.valueOf(produto.getMinEstoque()),
+            String.valueOf(produto.getEstoqueAtual()),
+            String.valueOf(produto.getCusto()),
+            String.valueOf(produto.getPercentualLucro())
+        };
+        escritorCSV.escreverLinha(ARQUIVO_PRODUTO, linha);
         System.out.println(">>> Produto cadastrado com sucesso! <<<");
     }
 
@@ -135,7 +145,7 @@ public class GerenciaProduto{
         Produto p = buscarProduto(idProduto);
         if (p != null) {
             produtos.remove(p);
-            //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
+            reescreverProdutosCSV();
         } else {
             System.out.println("Produto não encontrado.");
         }
@@ -230,7 +240,7 @@ public class GerenciaProduto{
             }
         }
 
-        // escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
+        reescreverProdutosCSV();
     }
 
   
@@ -276,7 +286,21 @@ public class GerenciaProduto{
         }
         return maxId + 1;
     }
-}
-          
+
+    public void reescreverProdutosCSV() {
+    List<String[]> dados = new ArrayList<>();
+    for (Produto p : produtos) {
+        dados.add(new String[]{
+            String.valueOf(p.getIdProduto()),
+            p.getDescricao(),
+            String.valueOf(p.getMinEstoque()),
+            String.valueOf(p.getEstoqueAtual()),
+            String.valueOf(p.getCusto()),
+            String.valueOf(p.getPercentualLucro())
+        });
+    }
+    escritorCSV.escreverProdutos(ARQUIVO_PRODUTO, dados);
+    }
+}       
 
 

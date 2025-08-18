@@ -231,7 +231,15 @@ public class GerenciaVenda {
             
             Venda v = new VendaFiado(idCliente, DataVenda, idProduto, quantidade, MeioPagamento);
             vendas.add(v);
-            
+            String[] linha = new String[]{
+            String.valueOf(v.getIdVenda()),
+            v.getDataVenda(),
+            String.valueOf(v.getIdProduto()),
+            String.valueOf(v.getQuantidade()),
+            String.valueOf(v.getMeioPagamento())
+        };
+            escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
+            gp.reescreverProdutosCSV();
         }
         
         else{
@@ -239,10 +247,18 @@ public class GerenciaVenda {
             
             Venda v = new VendaAVista(DataVenda, idProduto, quantidade, MeioPagamento);
             vendas.add(v);
+            
+            String[] linha = new String[]{
+            v.getDataVenda(),
+            String.valueOf(v.getIdProduto()),
+            String.valueOf(v.getQuantidade()),
+            String.valueOf(v.getMeioPagamento())
+        };
+            escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
+            gp.reescreverProdutosCSV();
         }
+
         
-        // gerenciaProdutos.salvarProdutosAtualizados(); //criar esse método - package IO!!!
-        //escritorCSV.atualizarArquivoVenda(,v); 
     }
     
     /**

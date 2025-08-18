@@ -1,6 +1,7 @@
 package test;
 
 
+import java.util.Scanner;
 import report.Apagar;
 import report.Areceber;
 import report.Estoque;
@@ -58,6 +59,11 @@ public class Teste {
         
         VendasPorProduto vpp = new VendasPorProduto(teste2, mockGerenciaProduto);
         vpp.gerarCSV("vendaspgmt.csv");
+        
+        Scanner sc = new Scanner(System.in);
+        //teste.inserirCliente(sc);
+        //teste.editarCliente(5);
+        //teste.removerCliente(5);
         
         
         
