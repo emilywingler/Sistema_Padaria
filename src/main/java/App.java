@@ -2,6 +2,7 @@
 import java.util.Scanner;
 import model.*;
 import io.*;
+import java.util.List;
 import report.*;
 import service.*;
 
@@ -17,12 +18,16 @@ public class App {
     private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor);
     private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
     
+    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int op = 0;
-        //carregarClientesCSV(caminhoArquivoCliente);;
-        //carregarFornecedoresCSV(caminhoArquivoFornecedor);
-        //carregarProdutoCSV(caminhoArquivoProduto);
+        gerenciaCliente.carregarClientesCSV("clientes.csv");
+        gerenciaFornecedor.carregarFornecedorCSV("fornecedores.csv");
+        gerenciaProduto.carregarProdutosCSV("produtos.csv");
+        gerenciaCompra.carregarComprasCSV("compras.csv");
+        gerenciaVenda.carregarVendasCSV("vendas.csv");
+        
         
         while(op != 5){
             menuPrincipal();
@@ -38,7 +43,7 @@ public class App {
                     menuControleContas(sc);
                 }
                 case 4 ->{
-                    System.out.println("AINDA NÃO IMPLEMENTADO");
+                    gerarRelatorios();
                 }
                 case 5 ->{
                     System.out.println("Fechando aplicação!");
@@ -62,7 +67,7 @@ public class App {
                            2. Registro de Vendas
                            3. Controle de Contas (a Pagar e a Receber)
                            4. Geração de Relatórios Mensais
-                            5. Sair             
+                           5. Sair             
                            """);
     }
     
@@ -145,18 +150,39 @@ public class App {
             op = selecionarOpcao(sc);
             switch(op){
                 case 1 ->{
-                    
+                    gerenciaCompra.listarCompras();
                 }
                 case 2 ->{
-                    
+                    gerenciaVenda.listarVendas();
                 }
-                case 3 ->{ }
+                case 3 ->{
+                    return;
+                }
                 default ->{
                     System.out.println("Opção inválida. Tente novamente.");
                 }
             }
         }
 
+    }
+    
+    public static void gerarRelatorios(){
+        Apagar apagar = new Apagar(gerenciaCompra,gerenciaFornecedor); 
+        apagar.gerarCSV("apagar.csv");
+        
+        Areceber areceber = new Areceber(gerenciaVenda,gerenciaCliente);
+        areceber.gerarCSV("areceber.csv");
+        
+        Estoque estoque = new Estoque(gerenciaProduto);
+        estoque.gerarCSV("estoque.csv");
+        
+        VendasPorPagamento vppg = new VendasPorPagamento(gerenciaVenda);
+        vppg.gerarCSV("vendasprod.csv");
+        
+        VendasPorProduto vpp = new VendasPorProduto(gerenciaVenda,gerenciaProduto);
+        vpp.gerarCSV("vendaspgmt.csv");
+        
+        System.out.println("<<< Relatórios gerados com sucesso! >>>");
     }
     
     public static int selecionarOpcao(Scanner sc){
