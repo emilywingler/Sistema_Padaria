@@ -467,5 +467,5 @@ public class GerenciaVenda {
             }
         }
         return vendasAreceber;
-        }
-    }
+        }  
+}

@@ -42,6 +42,6 @@ public class VendaFiado extends Venda {
      */
     @Override
     public String toString() {
-        return "idCliente: " + idCliente + super.toString();
+        return "idCliente: " + idCliente +", " +super.toString();
     }
 }
