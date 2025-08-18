@@ -32,6 +32,10 @@ public class Escrita {
     public void escreverFornecedores(String caminho, List<String[]> dados) {
         escreverArquivo(caminho, "idFornecedor;nome;endereco;telefone;cnpj;pessoaContato", dados);
     }
+    
+    public void escreverProdutos(String caminho, List<String[]> dados) {
+        escreverArquivo(caminho, "idProduto;descricao;estoqueMinimo;estoqueAtual;valorCusto;percentualLucro", dados);
+    }    
 
     public void escreverApagar(String caminho, List<String[]> dados) {
         escreverArquivo(caminho, "nomeFornecedor;cnpj;pessoaContato;telefone;totalAPagar", dados);
