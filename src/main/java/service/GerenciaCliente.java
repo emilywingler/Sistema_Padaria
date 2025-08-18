@@ -1,5 +1,6 @@
 
 package service;
+import io.Escrita;
 import model.Cliente;
 import model.ClienteFisico;
 import model.ClienteJuridico;
@@ -11,8 +12,9 @@ import java.util.Scanner;
 
 public class GerenciaCliente {
     private List<Cliente> clientes;
-    private final String ARQUIVO_CLIENTE = "clientes_20.csv";
+    private final String ARQUIVO_CLIENTE = "clientes.csv";
     private Leitura leitorCSV;
+    private Escrita escritorCSV;
    
     /**
     * Construtor padrão da classe GerenciaCliente.
@@ -22,6 +24,7 @@ public class GerenciaCliente {
     public GerenciaCliente(){
         clientes = new ArrayList<>();
         leitorCSV = new Leitura();
+        escritorCSV = new Escrita();
     }
     
     /**
@@ -61,6 +64,8 @@ public class GerenciaCliente {
                 clientes.add(cj);
             }
         }
+        
+        
     }
 
     
@@ -127,7 +132,35 @@ public class GerenciaCliente {
         }
 
         clientes.add(cliente);
-        System.out.println(">>> Cliente cadastrado com sucesso! <<<");
+        
+         // Salvar no CSV 
+        List<String> dados = new ArrayList<>();
+        String[] linha;
+        if (cliente instanceof ClienteFisico cf) {
+            linha = new String[]{
+                String.valueOf(cf.getId()),
+                cf.getNome(),
+                cf.getEndereco(),
+                cf.getTelefone(),
+                cf.getDataCadastro(),
+                cf.getTipo(),
+                cf.getCpf()
+            };
+        } else {
+            ClienteJuridico cj = (ClienteJuridico) cliente;
+            linha = new String[]{
+                String.valueOf(cj.getId()),
+                cj.getNome(),
+                cj.getEndereco(),
+                cj.getTelefone(),
+                cj.getDataCadastro(),
+                cj.getTipo(),
+                cj.getCnpj(),
+                String.valueOf(cj.getInscricaoEstadual())
+            };
+        }
+        escritorCSV.escreverLinha(ARQUIVO_CLIENTE, linha);
+        System.out.println("Cliente cadastrado com sucesso!");
     }
     
     /**
@@ -143,12 +176,7 @@ public class GerenciaCliente {
         Cliente cliente = buscarCliente(idCliente);
         if(cliente != null){
             clientes.remove(cliente);
-            /*for (Cliente c : clientes) {
-                if(c.getTipo().equalsIgnoreCase("F")){
-                    escritorCSV.reescreverArquivoCliente(clientes, ARQUIVO_CLIENTE);
-                }
-                                
-            }*/
+            reescreverClientesCSV();
         }else System.out.println("Cliente nao encontrado");   
     }
     
@@ -278,7 +306,40 @@ public class GerenciaCliente {
                 }
             } 
             sc.close();
+            reescreverClientesCSV();
+            System.out.println("Cliente editado com sucesso!");
         }else System.out.println("Cliente nao encontrado.");
         
-    }   
+    }
+    
+   
+    private void reescreverClientesCSV() {
+        List<String[]> dados = new ArrayList<>();
+        for (Cliente c : clientes) {
+            if (c instanceof ClienteFisico cf) {
+                dados.add(new String[]{
+                    String.valueOf(cf.getId()),
+                    cf.getNome(),
+                    cf.getEndereco(),
+                    cf.getTelefone(),
+                    cf.getDataCadastro(),
+                    cf.getTipo(),
+                    cf.getCpf()
+                });
+            } else if (c instanceof ClienteJuridico cj) {
+                dados.add(new String[]{
+                    String.valueOf(cj.getId()),
+                    cj.getNome(),
+                    cj.getEndereco(),
+                    cj.getTelefone(),
+                    cj.getDataCadastro(),
+                    cj.getTipo(),
+                    cj.getCnpj(),
+                    String.valueOf(cj.getInscricaoEstadual())
+                });
+            }
+        }
+        escritorCSV.escreverClientes(ARQUIVO_CLIENTE, dados);
+    }
 }
+

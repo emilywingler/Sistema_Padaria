@@ -99,7 +99,7 @@ public class GerenciaFornecedor {
         Fornecedor f = buscarFornecedor(codigo);
         if(f != null){
             fornecedores.remove(f);
-            //escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+            reescreverFornecedoresCSV();
         }else System.out.println("Fornecedor nao encontrado.");
         
     }
@@ -201,11 +201,24 @@ public class GerenciaFornecedor {
                     }
                 }
             }
-            //escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+            reescreverFornecedoresCSV();
+            System.out.println("Fornecedor editado com sucesso!");
             sc.close();
         }else{
             System.out.println("Fornecedor nao encontrado.");
         }
         
-    }   
+    } 
+    
+    private void reescreverFornecedoresCSV() {
+        List<String[]> dados = new ArrayList<>();
+        for (Fornecedor f : fornecedores) {
+            dados.add(new String[]{
+                String.valueOf(f.getIdFornecedor()),
+                f.getNomeEmpresa(),
+                f.getEndereco()
+            });
+        }
+        escritorCSV.escreverFornecedores(ARQUIVO_FORNECEDOR, dados);
+    }
 }
