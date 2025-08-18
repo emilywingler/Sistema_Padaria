@@ -115,6 +115,7 @@ public class GerenciaCompra {
                 String.valueOf(c.getQuantidade())
             };
             escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
+            gp.reescreverProdutosCSV();
         }
     }
     

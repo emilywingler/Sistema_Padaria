@@ -83,7 +83,17 @@ public class GerenciaFornecedor {
 
         fornecedores.add(fornecedor);
         
-        System.out.println(">>> Fornecedor cadastrado com sucesso! <<<");
+        String[] linha = new String[]{
+                String.valueOf(fornecedor.getIdFornecedor()),
+                fornecedor.getNomeEmpresa(),
+                fornecedor.getEndereco(),
+                fornecedor.getTelefone(),
+                fornecedor.getCnpj(),
+                fornecedor.getPessoaContato()
+            };
+            escritorCSV.escreverLinha(ARQUIVO_FORNECEDOR, linha);
+        
+        System.out.println("Fornecedor cadastrado com sucesso!");
     }
     
     /**
