@@ -93,11 +93,34 @@ public class GerenciaVenda {
     }
 
         
-    /**
-     * Registra uma venda à vista no sistema.
-     *
-     * @param sc
-     */
+   /**
+    * Registra uma nova venda no sistema de forma interativa via terminal.
+    * <p>
+    * O método guia o usuário pelo processo de registro de uma venda:
+    * <ul>
+    *   <li>Lista os produtos disponíveis e solicita a seleção de um ID válido.</li>
+    *   <li>Solicita a quantidade a ser vendida, validando se há estoque suficiente.</li>
+    *   <li>Pede a data da venda.</li>
+    *   <li>Solicita o meio de pagamento, aceitando apenas os seguintes caracteres:
+    *       <ul>
+    *           <li>`$` - Dinheiro</li>
+    *           <li>`X` - Cheque</li>
+    *           <li>`D` - Cartão de Débito</li>
+    *           <li>`C` - Cartão de Crédito</li>
+    *           <li>`T` - Ticket Alimentação</li>
+    *           <li>`F` - Fiado</li>
+    *       </ul>
+    *   </li>
+    *   <li>Se o pagamento for <b>Fiado</b>, também é solicitado o ID de um cliente válido.</li>
+    * </ul>
+    * Após as validações, o estoque do produto é atualizado e uma instância de {@link VendaAVista} 
+    * ou {@link VendaFiado} é criada e adicionada à lista de vendas.
+    * 
+    * @param sc Scanner utilizado para capturar a entrada do usuário no terminal.
+    * 
+    * @throws NullPointerException se, em algum ponto, o produto selecionado não for encontrado 
+    *         (tratado internamente com {@link java.util.Objects#requireNonNull(Object)}).
+    */
     public void registrarVenda(Scanner sc){
         int idProduto;
         int quantidade;
