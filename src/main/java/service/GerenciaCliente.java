@@ -84,8 +84,9 @@ public class GerenciaCliente {
 
     
     /**
+     * VERSÃO LINHA DE COMANDO
      * Solicita os dados ao usuário, cria um ClienteFisico ou ClienteJuridico
-     * e o adiciona à lista de clientes.
+     * e o adiciona à lista de clientes. 
      * 
      * @param sc Scanner que será utilizado.
      */
@@ -149,6 +150,7 @@ public class GerenciaCliente {
         
          // Salvar no CSV 
         List<String> dados = new ArrayList<>();
+        //
         String[] linha;
         if (cliente instanceof ClienteFisico cf) {
             linha = new String[]{
@@ -176,6 +178,48 @@ public class GerenciaCliente {
         escritorCSV.escreverLinha(ARQUIVO_CLIENTE, linha);
         System.out.println("Cliente cadastrado com sucesso!");
     }
+    
+    //Versão interface grafica Cliente Físico
+    public void inserirCliente(int idCliente, String nome, String endereco, String telefone, String dataCadastro, String tipo, String cpf){
+        Cliente cliente = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
+        clientes.add(cliente);
+        
+        String[] linha;
+        if (cliente instanceof ClienteFisico cf) {
+            linha = new String[]{
+                String.valueOf(cf.getId()),
+                cf.getNome(),
+                cf.getEndereco(),
+                cf.getTelefone(),
+                cf.getDataCadastro(),
+                cf.getTipo(),
+                cf.getCpf()
+            };
+            escritorCSV.escreverLinha(ARQUIVO_CLIENTE, linha);
+        }
+    }
+    
+    //Versão interface grafica Cliente Juridico
+    public void inserirCliente(String cnpj, int InscricaoEstadual, int idCliente, String nome, String endereco, String telefone, String dataCadastro, String tipo){
+        Cliente cliente = new ClienteJuridico(cnpj, InscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
+        clientes.add(cliente);
+        
+        String[] linha;
+        if (cliente instanceof ClienteJuridico cj) {
+            linha = new String[]{
+                String.valueOf(cj.getId()),
+                cj.getNome(),
+                cj.getEndereco(),
+                cj.getTelefone(),
+                cj.getDataCadastro(),
+                cj.getTipo(),
+                cj.getCnpj(),
+                String.valueOf(cj.getInscricaoEstadual())
+            };
+            escritorCSV.escreverLinha(ARQUIVO_CLIENTE, linha);
+        }
+        
+   }
     
     /**
     * Remove um cliente do sistema com base no seu código de identificação.
