@@ -40,10 +40,10 @@ public class Teste {
         System.out.println("Sucesso!");
         
         //teste.listarClientes();
-        //mockGerenciaProduto.listarProdutos();
+        mockGerenciaProduto.listarProdutos();
         //mockGerenciaFornecedor.listarFornecedores();
-        teste1.listarCompras();
-        teste2.listarVendas();
+        //teste1.listarCompras();
+        //teste2.listarVendas();
         
         Apagar apagar = new Apagar(teste1, mockGerenciaFornecedor); 
         apagar.gerarCSV("apagar.csv");
@@ -61,9 +61,7 @@ public class Teste {
         vpp.gerarCSV("vendaspgmt.csv");
         
         Scanner sc = new Scanner(System.in);
-        //teste.inserirCliente(sc);
-        //teste.editarCliente(5);
-        //teste.removerCliente(5);
+        
         
         
         

@@ -45,12 +45,13 @@ public class Escrita {
     }
     
     public void escreverLinha(String caminho, String[] linha) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(caminho, true))) {
-            pw.println(String.join(";", linha));
-        } catch (IOException e) {
-            System.out.println("Erro de I/O.");
-        }
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminho, true))) {
+        bw.write(String.join(";", linha));
+        bw.newLine(); 
+    } catch (IOException e) {
+        System.out.println("Erro de I/O: " + e.getMessage());
     }
+}
     
     public void escreverClientes(String caminho, List<String[]> dados) {
         escreverArquivo(caminho, "idCliente;nome;endereco;telefone;dataCadastro;tipo;documento;inscricaoEstadual", dados);

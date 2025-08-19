@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import io.Leitura;
 import io.Escrita;
+import java.util.Arrays;
 
 /**
  * Classe responsável pelo gerenciamento de produtos,
@@ -57,6 +58,11 @@ public class GerenciaProduto{
         
         
         for (String[] campos : linhas) {
+            
+            if (campos.length < 6 || campos[0].trim().isEmpty()) {
+            System.out.println("Linha inválida ignorada: " + Arrays.toString(campos));
+            continue;
+        }
             int idProduto = Integer.parseInt(campos[0]);
             String descricao = campos[1];
             int minEstoque = Integer.parseInt(campos[2]);

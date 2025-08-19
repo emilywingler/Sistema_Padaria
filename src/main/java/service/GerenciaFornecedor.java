@@ -133,7 +133,7 @@ public class GerenciaFornecedor {
             };
             escritorCSV.escreverLinha(ARQUIVO_FORNECEDOR, linha);
         
-        System.out.println("Fornecedor cadastrado com sucesso!");
+        System.out.println("Fornecedor cadastrado com sucesso! ");
     }
     
     /**
@@ -251,9 +251,10 @@ public class GerenciaFornecedor {
                     }
                 }
             }
+            sc.close();
             reescreverFornecedoresCSV();
             System.out.println("Fornecedor editado com sucesso!");
-            sc.close();
+            
         }else{
             System.out.println("Fornecedor nao encontrado.");
         }
@@ -266,7 +267,10 @@ public class GerenciaFornecedor {
             dados.add(new String[]{
                 String.valueOf(f.getIdFornecedor()),
                 f.getNomeEmpresa(),
-                f.getEndereco()
+                f.getEndereco(),
+                f.getTelefone(),
+                f.getCnpj(),
+                f.getPessoaContato()
             });
         }
         escritorCSV.escreverFornecedores(ARQUIVO_FORNECEDOR, dados);
