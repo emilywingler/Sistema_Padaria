@@ -61,9 +61,7 @@ public class Teste {
         vpp.gerarCSV("vendaspgmt.csv");
         
         Scanner sc = new Scanner(System.in);
-        //mockGerenciaProduto.inserirProduto(sc);
         
-        teste2.registrarVenda(sc);
         
         
         

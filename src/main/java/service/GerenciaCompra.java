@@ -40,7 +40,7 @@ public class GerenciaCompra {
     /**
      * Nome do arquivo CSV utilizado para armazenar as compras.
      */
-    private final String ARQUIVO_VENDA = "vendas.csv";
+    private final String ARQUIVO_COMPRA = "compras.csv";
 
     /**
      * Utilitário para leitura de arquivos CSV.
@@ -114,7 +114,7 @@ public class GerenciaCompra {
                 String.valueOf(c.getIdProduto()),
                 String.valueOf(c.getQuantidade())
             };
-            escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
+            escritorCSV.escreverLinha(ARQUIVO_COMPRA, linha);
             gp.reescreverProdutosCSV();
         }
     }
