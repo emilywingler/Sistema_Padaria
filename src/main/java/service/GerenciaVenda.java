@@ -4,6 +4,7 @@ import io.Leitura;
 import io.Escrita;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +73,12 @@ public class GerenciaVenda {
     public void carregarVendasCSV(String caminhoArquivo) {
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
 
+        
         for (String[] campos : linhas) {
+            if (campos.length < 4 || campos[0].isBlank()) {
+            System.out.println("Linha inválida ignorada: " + Arrays.toString(campos));
+            continue;
+        }
             String campoCliente = campos[0];
             String dataVenda = campos[1];
             int idProduto = Integer.parseInt(campos[2]);
@@ -191,7 +197,7 @@ public class GerenciaVenda {
             v.getDataVenda(),
             String.valueOf(v.getIdProduto()),
             String.valueOf(v.getQuantidade()),
-            String.valueOf(v.getMeioPagamento())
+            Character.toString(v.getMeioPagamento())
         };
             escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
             gp.reescreverProdutosCSV();
@@ -204,13 +210,15 @@ public class GerenciaVenda {
             vendas.add(v);
             
             String[] linha = new String[]{
+            String.valueOf(v.getIdVenda()),
             v.getDataVenda(),
             String.valueOf(v.getIdProduto()),
             String.valueOf(v.getQuantidade()),
-            String.valueOf(v.getMeioPagamento())
+            Character.toString(v.getMeioPagamento())
         };
             escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
             gp.reescreverProdutosCSV();
+            
         }
 
         

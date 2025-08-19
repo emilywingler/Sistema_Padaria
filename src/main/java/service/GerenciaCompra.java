@@ -40,7 +40,7 @@ public class GerenciaCompra {
     /**
      * Nome do arquivo CSV utilizado para armazenar as compras.
      */
-    private final String ARQUIVO_VENDA = "compras.csv";
+    private final String ARQUIVO_VENDA = "vendas.csv";
 
     /**
      * Utilitário para leitura de arquivos CSV.
@@ -180,7 +180,11 @@ public class GerenciaCompra {
             for (Compra c : compras) {
                 if (c.getIdFornecedor() == idFornecedor) {
                     Produto produto = gp.buscarProduto(c.getIdProduto());
-                    total = total.add(this.valorTotalDaCompra(c, produto));
+                    if (produto != null) {
+                        total = total.add(this.valorTotalDaCompra(c, produto));
+                    } else {
+                        System.out.println("Produto não encontrado para a compra ID: " + c.getIdCompra());
+                    }
                 }
             }
             return total;
