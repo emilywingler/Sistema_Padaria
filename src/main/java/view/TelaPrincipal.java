@@ -63,6 +63,7 @@ public class TelaPrincipal {
         JButton btnVendas = new JButton("Registro de Vendas");
         JButton btnContas = new JButton("Controle de Contas");
         JButton btnRelatorios = new JButton("Geração de Relatórios Mensais");
+        JButton btnCarregarCSV = new JButton("Carregar arquivos CSV");
         JButton btnSair = new JButton("Sair");
 
         // Adicionar "ação" ao botão de Cadastro
@@ -81,6 +82,7 @@ public class TelaPrincipal {
         painel.add(btnVendas);
         painel.add(btnContas);
         painel.add(btnRelatorios);
+        painel.add(btnCarregarCSV);
         painel.add(btnSair);
 
         return painel;

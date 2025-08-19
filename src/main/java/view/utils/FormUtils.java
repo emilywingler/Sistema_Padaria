@@ -2,8 +2,10 @@
 package view.utils;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 /**
@@ -37,5 +39,22 @@ public class FormUtils {
             }
         });
         return campoData;
+    }
+    
+    /**
+     * Valida se um campo de texto está vazio.
+     * Se estiver vazio, exibe uma mensagem de erro e retorna false.
+     * @param campo O JTextField a ser validado.
+     * @param nomeDoCampo O nome do campo para a mensagem de erro (ex: "Nome").
+     * @param framePai O componente pai para a caixa de diálogo de erro.
+     * @return true se o campo for válido (não vazio), false caso contrário.
+     */
+    public static boolean validarCampoTextoVazio(JTextField campo, String nomeDoCampo, Component framePai) {
+        if (campo.getText().trim().isEmpty()) {
+            String mensagem = "O campo '" + nomeDoCampo + "' não pode estar vazio.";
+            JOptionPane.showMessageDialog(framePai, mensagem, "Erro de Validação", JOptionPane.ERROR_MESSAGE);
+            return false; // Validação falhou
+        }
+        return true; // Validação passou
     }
 }

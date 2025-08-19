@@ -9,6 +9,8 @@ import java.awt.event.FocusEvent;
 import java.util.List;
 import report.*;
 import service.*;
+import view.forms.*;
+import view.utils.FormUtils;
 
 public class TelaCadastro{
     
@@ -48,6 +50,12 @@ public class TelaCadastro{
             JFrame framePai = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
             exibirFormularioCadastroCliente(framePai);
         });
+        
+        btnCadastrarFornecedor.addActionListener(e -> {
+            JFrame framePai = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+            exibirFormularioCadastroFornecedor(framePai);
+        
+        });
 
         // Adicionar os botões ao painel
         painel.add(btnCadastrarCliente);
@@ -58,184 +66,88 @@ public class TelaCadastro{
         return painel;
     }
     
-    // Este método pode ficar na sua classe da interface, como a TelaPrincipal.java
     private void exibirFormularioCadastroCliente(JFrame framePai) {
-        
-        while(true){
-            // --- PARTE ESTÁTICA DO FORMULÁRIO ---
-        JPanel painelFormulario = new JPanel(new GridLayout(0, 2, 10, 10));
+    while (true) {
+        FormularioClientePanel formulario = new FormularioClientePanel();
 
-        JTextField campoCodigo = new JTextField(10);
-        JTextField campoNome = new JTextField(30);
-        JTextField campoEndereco = new JTextField(30);
-        JTextField campoTelefone = new JTextField(15);
-
-        painelFormulario.add(new JLabel("Código:"));
-        painelFormulario.add(campoCodigo);
-
-        painelFormulario.add(new JLabel("Nome Completo:"));
-        painelFormulario.add(campoNome);
-
-        painelFormulario.add(new JLabel("Endereço:"));
-        painelFormulario.add(campoEndereco);
-
-        painelFormulario.add(new JLabel("Telefone:"));
-        painelFormulario.add(campoTelefone);
-        
-        // No método exibirFormularioCadastroCliente, adicione isso junto com os outros campos:
-
-        JTextField campoData = new JTextField("dd/MM/yyyy");
-        campoData.setForeground(Color.GRAY); // Deixa o texto de ajuda cinza
-
-        campoData.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (campoData.getText().equals("dd/MM/yyyy")) {
-                    campoData.setText("");
-                    campoData.setForeground(Color.BLACK);
-                }
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (campoData.getText().isEmpty()) {
-                    campoData.setForeground(Color.GRAY);
-                    campoData.setText("dd/MM/yyyy");
-                    }
-                }
-            });
-
-        // E adicione o campo ao painel do formulário:
-        painelFormulario.add(new JLabel("Data de Cadastro:"));
-        painelFormulario.add(campoData);
-
-        // --- PARTE DINÂMICA DO FORMULÁRIO ---
-
-        // 1. O SELETOR (JComboBox)
-        String[] tiposPessoa = { "Pessoa Física", "Pessoa Jurídica" };
-        JComboBox<String> seletorTipo = new JComboBox<>(tiposPessoa);
-
-        // 2. O "MINI PALCO" com CardLayout para os campos que vão mudar
-        CardLayout cardLayoutDinamico = new CardLayout();
-        JPanel painelDinamico = new JPanel(cardLayoutDinamico);
-
-        // 3. CENÁRIO 1: Painel para Pessoa Física
-        JPanel painelFisica = new JPanel(new GridLayout(0, 2, 10, 10));
-        JTextField campoCpf = new JTextField(20);
-        painelFisica.add(new JLabel("CPF:"));
-        painelFisica.add(campoCpf);
-
-        // 4. CENÁRIO 2: Painel para Pessoa Jurídica
-        JPanel painelJuridica = new JPanel(new GridLayout(0, 2, 10, 10));
-        JTextField campoCnpj = new JTextField(20);
-        JTextField campoInscricao = new JTextField(20);
-        painelJuridica.add(new JLabel("CNPJ:"));
-        painelJuridica.add(campoCnpj);
-        painelJuridica.add(new JLabel("Inscrição Estadual:"));
-        painelJuridica.add(campoInscricao);
-
-        // Adiciona os cenários ao "mini palco" com nomes
-        painelDinamico.add(painelFisica, "Pessoa Física");
-        painelDinamico.add(painelJuridica, "Pessoa Jurídica");
-
-        // 5. O "OUVINTE" que faz a mágica acontecer
-        // Adiciona uma ação ao seletor para trocar o painel visível
-        seletorTipo.addItemListener(e -> {
-            String itemSelecionado = (String) e.getItem();
-            cardLayoutDinamico.show(painelDinamico, itemSelecionado);
-        });
-
-        // 6. ADICIONA O SELETOR E O PAINEL DINÂMICO AO FORMULÁRIO PRINCIPAL
-        painelFormulario.add(new JLabel("Tipo de Cliente:"));
-        painelFormulario.add(seletorTipo);
-
-        // Adicionamos o painel dinâmico, fazendo-o ocupar as 2 colunas
-        // Criamos um painel extra para conter o painelDinamico e evitar que o GridLayout o divida
-        JPanel containerDinamico = new JPanel(new BorderLayout());
-        containerDinamico.add(painelDinamico, BorderLayout.CENTER);
-        painelFormulario.add(containerDinamico);
-
-
-        // --- EXIBIÇÃO E PROCESSAMENTO ---
-        int resultado = JOptionPane.showConfirmDialog(framePai, painelFormulario, "Cadastrar Novo Cliente",
+        int resultado = JOptionPane.showConfirmDialog(framePai, formulario, "Cadastrar Novo Cliente",
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (resultado == JOptionPane.OK_OPTION) {
-            int codigo = 0;
-            try{
-                codigo = Integer.parseInt(campoCodigo.getText());
-                if(gc.buscarCliente(codigo)!=null){
-                    JOptionPane.showMessageDialog(framePai, "Já existe um usuário cadastrao com esse ID, tente novamente!", "Erro de Duplicata", JOptionPane.ERROR_MESSAGE);
-                    continue;
-                }
-            }
-            catch(NumberFormatException ex){
-                 JOptionPane.showMessageDialog(framePai, "Erro: O código deve ser um número.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
-            }
-            String nome = campoNome.getText();
-            String endereco = campoEndereco.getText();
-            String telefone = campoTelefone.getText();
-            String dataCadastro = campoData.getText(); // Vou adicionar Verificação depois.
-            String tipoSelecionado = (String) seletorTipo.getSelectedItem();
-            
-            if (nome.trim().isEmpty()) {
-            JOptionPane.showMessageDialog(framePai, "O campo 'Nome' não pode estar vazio.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
-            continue;
-            }
-            if (endereco.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(framePai, "O campo 'Endereço' não pode estar vazio.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
-                continue;
-            }
-            if (telefone.trim().isEmpty()) {
-                JOptionPane.showMessageDialog(framePai, "O campo 'Telefone' não pode estar vazio.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
-                continue;
-            }
-            // Valida se a data está vazia ou se ainda é o placeholder
-            if (dataCadastro.trim().isEmpty() || dataCadastro.equals("dd/MM/yyyy")) {
-                JOptionPane.showMessageDialog(framePai, "O campo 'Data de Cadastro' deve ser preenchido.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
-                continue;
-            }
-            // Adicione a validação do formato da data aqui se desejar (com try-catch para DateTimeParseException)
-            
-            if("Pessoa Física".equals(tipoSelecionado)){
-                String cpf = campoCpf.getText();
-                if (cpf.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(framePai, "O campo 'CPF' não pode estar vazio.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
-                    continue;
-                }
-                System.out.println("Cadastrando Pessoa Física: " + nome + " com CPF: " + cpf);
-                gc.inserirCliente(codigo, nome, endereco, telefone, dataCadastro,"F", cpf);
-                JOptionPane.showMessageDialog(framePai, "Cliente '" + nome + "' cadastrado com sucesso!");
-                break;
-            }
-            else{
-                String cnpj = campoCnpj.getText();
-                if (cnpj.trim().isEmpty()) {
-                    JOptionPane.showMessageDialog(framePai, "O campo 'CNPJ' não pode estar vazio.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
-                    continue;
-                }
-                try{
-                    int inscricao = Integer.parseInt(campoInscricao.getText());
-                    System.out.println("Cadastrando Pessoa Jurídica: " + nome + " com CNPJ: " + cnpj + " e IE: " + inscricao);
-                    gc.inserirCliente(cnpj, inscricao, codigo, nome, endereco, telefone, dataCadastro, "J");
-                    JOptionPane.showMessageDialog(framePai, "Cliente '" + nome + "' cadastrado com sucesso!");
-                    break;
-                }
-                catch(NumberFormatException ex){
-                    JOptionPane.showMessageDialog(framePai, "Erro: A inscrição estadual deve ser um número.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
-                }
-                
-                
-            }
-            
+            // 1. CHAMA O MÉTODO DE VALIDAÇÃO DO PRÓPRIO FORMULÁRIO
+            if (formulario.validarCampos(framePai)) {
+                try {
+                    // 2. SE A VALIDAÇÃO PASSOU, OBTÉM OS DADOS E SALVA
+                    int codigo = formulario.getCodigo();
+                    if (gc.buscarCliente(codigo) != null) {
+                        JOptionPane.showMessageDialog(framePai, "Já existe um cliente cadastrado com este código.", "Erro de Duplicata", JOptionPane.ERROR_MESSAGE);
+                        continue; // Pede para corrigir o código
+                    }
 
+                    String nome = formulario.getNome(); // Pega o nome para a mensagem de sucesso
+                    
+                    if ("Pessoa Física".equals(formulario.getTipoPessoa())) {
+                        gc.inserirCliente(codigo, nome, formulario.getEndereco(), formulario.getTelefone(), 
+                                          formulario.getDataCadastro(), "F", formulario.getCpf());
+                    } else {
+                        gc.inserirCliente(formulario.getCnpj(), formulario.getInscricaoEstadual(), codigo, nome, 
+                                          formulario.getEndereco(), formulario.getTelefone(), formulario.getDataCadastro(), "J");
+                    }
+
+                    JOptionPane.showMessageDialog(framePai, "Cliente '" + nome + "' cadastrado com sucesso!");
+                    break; // SUCESSO: Sai do loop
+
+                } catch (NumberFormatException e) {
+                    // Este catch agora serve principalmente para o campo Código
+                    JOptionPane.showMessageDialog(framePai, "Erro: O 'Código' deve ser um número e não pode estar vazio.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                    // O loop continua para o usuário corrigir
+                }
             }
-        else{
+            // Se validarCampos() retornou false, a mensagem de erro já foi exibida.
+            // O loop continua para o usuário corrigir os dados.
+        } else {
+            // Se o usuário clicou em Cancelar ou fechou a janela
             break;
         }
-        }
-        
-     }
+    }
 }
+    
+    private void exibirFormularioCadastroFornecedor(JFrame framePai){
+        while(true){
+            FormularioFornecedorPanel formulario = new FormularioFornecedorPanel();
+            
+            int resultado = JOptionPane.showConfirmDialog(framePai, formulario, "Cadastrar Novo Fornecedor",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+            
+            if(resultado == JOptionPane.OK_OPTION){
+                
+                if(formulario.validarCampos(framePai)){
+                    try{
+                        int id = formulario.getIdFornecedor();
+                        
+                        if(gf.buscarFornecedor(id)!=null){
+                            JOptionPane.showMessageDialog(framePai, "Já existe um fornecedor cadastrado com este código.", "Erro de Duplicata", JOptionPane.ERROR_MESSAGE);
+                            continue; 
+                        }
+                        
+                        String nome = formulario.getNomeEmpresa();
+                        gf.inserirFornecedor(id, nome, formulario.getEndereco(), formulario.getTelefone(), formulario.getCnpj(), formulario.getPessoaContato());
+                        
+                        JOptionPane.showMessageDialog(framePai, "Fornecedor '" + nome + "' cadastrado com sucesso!");
+                        break;
+                    }
+                    catch(NumberFormatException e){
+                        JOptionPane.showMessageDialog(framePai, "Erro: O 'ID' deve ser um número e não pode estar vazio.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+            else{
+                break;
+            }
+            
+    }
+}
+}   
 
 
     
