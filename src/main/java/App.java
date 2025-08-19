@@ -237,19 +237,19 @@ public class App {
      */
     public static void gerarRelatorios(){
         Apagar apagar = new Apagar(gerenciaCompra,gerenciaFornecedor); 
-        apagar.gerarCSV("apagar.csv");
+        apagar.gerarCSV("1-apagar.csv");
         
         Areceber areceber = new Areceber(gerenciaVenda,gerenciaCliente);
-        areceber.gerarCSV("areceber.csv");
+        areceber.gerarCSV("2-areceber.csv");
         
         Estoque estoque = new Estoque(gerenciaProduto);
-        estoque.gerarCSV("estoque.csv");
+        estoque.gerarCSV("5-estoque.csv");
         
         VendasPorPagamento vppg = new VendasPorPagamento(gerenciaVenda);
-        vppg.gerarCSV("vendasprod.csv");
+        vppg.gerarCSV("4-vendaspgto.csvv");
         
         VendasPorProduto vpp = new VendasPorProduto(gerenciaVenda,gerenciaProduto);
-        vpp.gerarCSV("vendaspgmt.csv");
+        vpp.gerarCSV("3-vendasprod.csv");
         
         System.out.println("<<< Relatórios gerados com sucesso! >>>");
     }
