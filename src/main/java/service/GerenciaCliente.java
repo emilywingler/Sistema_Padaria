@@ -10,6 +10,21 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * Classe responsável pelo gerenciamento dos clientes do sistema.
+ * <p>
+ * Esta classe fornece métodos para carregar clientes a partir de arquivos CSV,
+ * inserir novos clientes, remover clientes existentes, buscar clientes por ID,
+ * listar todos os clientes cadastrados e editar informações de clientes
+ * específicos de forma interativa.
+ * <p>
+ * Os clientes podem ser do tipo {@link ClienteFisico} ou {@link ClienteJuridico},
+ * e a classe realiza verificações de tipo para manipular corretamente os dados
+ * específicos de cada tipo, como CPF, CNPJ e inscrição estadual.
+ * <p>
+ * A classe também mantém instâncias de {@link Leitura} e {@link Escrita} para
+ * facilitar a leitura e gravação de arquivos CSV.
+ */
 public class GerenciaCliente {
     private List<Cliente> clientes;
     private final String ARQUIVO_CLIENTE = "clientes.csv";
@@ -38,8 +53,7 @@ public class GerenciaCliente {
     * <li><b>Para Cliente Físico (tipo "F"):</b> idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf</li>
     * <li><b>Para Cliente Jurídico (tipo "J"):</b> idCliente, nome, endereco, telefone, dataCadastro, tipo, cnpj, inscricaoEstadual</li>
     * </ul>
-    * </p>
-    *
+    * 
     * @param caminhoArquivo O caminho completo para o arquivo CSV que contém os dados dos clientes.
     */
     public void carregarClientesCSV(String caminhoArquivo) {

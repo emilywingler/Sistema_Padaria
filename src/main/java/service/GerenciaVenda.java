@@ -70,6 +70,28 @@ public class GerenciaVenda {
         this.gc = gerenciaCliente;
     }
     
+    /**
+    * Carrega as vendas a partir de um arquivo CSV e as adiciona à lista interna de vendas.
+    * <p>
+    * O método lê cada linha do arquivo CSV usando a classe {@link Leitura}, extrai os campos
+    * correspondentes e cria objetos de {@link VendaFiado} ou {@link VendaAVista} dependendo
+    * do tipo de pagamento indicado no arquivo.
+    * </p>
+    * 
+    * <p>
+    * Estrutura esperada do CSV:
+    * <ul>
+    *   <li>Para vendas fiado (meioPagamento = 'F'): idCliente, dataVenda, idProduto, quantidade, meioPagamento</li>
+    *   <li>Para vendas à vista (meioPagamento diferente de 'F'): campoCliente vazio ou irrelevante, dataVenda, idProduto, quantidade, meioPagamento</li>
+    * </ul>
+    *
+    * <p>
+    * A função converte os campos numéricos usando {@code Integer.parseInt} e o campo do
+    * meio de pagamento usando {@code charAt(0)}. Cada venda criada é adicionada à lista
+    * interna {@code vendas}.
+    *
+    * @param caminhoArquivo O caminho completo do arquivo CSV que contém os dados das vendas.
+    */
     public void carregarVendasCSV(String caminhoArquivo) {
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
 
@@ -99,11 +121,34 @@ public class GerenciaVenda {
     }
 
         
-    /**
-     * Registra uma venda à vista no sistema.
-     *
-     * @param sc
-     */
+   /**
+    * Registra uma nova venda no sistema de forma interativa via terminal.
+    * <p>
+    * O método guia o usuário pelo processo de registro de uma venda:
+    * <ul>
+    *   <li>Lista os produtos disponíveis e solicita a seleção de um ID válido.</li>
+    *   <li>Solicita a quantidade a ser vendida, validando se há estoque suficiente.</li>
+    *   <li>Pede a data da venda.</li>
+    *   <li>Solicita o meio de pagamento, aceitando apenas os seguintes caracteres:
+    *       <ul>
+    *           <li>`$` - Dinheiro</li>
+    *           <li>`X` - Cheque</li>
+    *           <li>`D` - Cartão de Débito</li>
+    *           <li>`C` - Cartão de Crédito</li>
+    *           <li>`T` - Ticket Alimentação</li>
+    *           <li>`F` - Fiado</li>
+    *       </ul>
+    *   </li>
+    *   <li>Se o pagamento for <b>Fiado</b>, também é solicitado o ID de um cliente válido.</li>
+    * </ul>
+    * Após as validações, o estoque do produto é atualizado e uma instância de {@link VendaAVista} 
+    * ou {@link VendaFiado} é criada e adicionada à lista de vendas.
+    * 
+    * @param sc Scanner utilizado para capturar a entrada do usuário no terminal.
+    * 
+    * @throws NullPointerException se, em algum ponto, o produto selecionado não for encontrado 
+    *         (tratado internamente com {@link java.util.Objects#requireNonNull(Object)}).
+    */
     public void registrarVenda(Scanner sc){
         int idProduto;
         int quantidade;

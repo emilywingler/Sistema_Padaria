@@ -25,7 +25,6 @@ import model.Fornecedor;
  *   <li>Telefone</li>
  *   <li>Valor total a pagar (formatado com duas casas decimais)</li>
  * </ul>
- * </p>
  * 
  * @author Clara
  * @version 1.0

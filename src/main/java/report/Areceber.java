@@ -28,7 +28,6 @@ import model.ClienteJuridico;
  *   <li>Data de cadastro</li>
  *   <li>Valor total a receber (formatado com duas casas decimais)</li>
  * </ul>
- * </p>
  */
 public class Areceber {
 
@@ -98,6 +97,17 @@ public class Areceber {
         return dados;
     }
     
+    /**
+    * Gera um arquivo CSV contendo os dados de contas a receber dos clientes.
+    * <p>
+    * Este método obtém os dados utilizando o método {@link #gerar()}, que retorna uma lista
+    * de arrays de {@code String} representando cada linha do relatório de contas a receber.
+    * Em seguida, utiliza a classe {@link io.Escrita} para escrever os dados no arquivo CSV
+    * especificado pelo parâmetro.
+    * </p>
+    *
+    * @param caminhoArquivo o caminho completo (incluindo nome e extensão) do arquivo CSV a ser gerado
+    */
     public void gerarCSV(String caminhoArquivo) {
         List<String[]> dados = gerar();
         Escrita escrita = new Escrita();

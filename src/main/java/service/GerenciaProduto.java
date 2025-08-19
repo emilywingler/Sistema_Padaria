@@ -78,10 +78,19 @@ public class GerenciaProduto{
     }
     
     /**
-     * Insere um novo produto na lista.
-     * 
-     * @param produto Produto a ser inserido.
-     */  
+    * Realiza o cadastro de um novo produto interativamente via terminal.
+    * 
+    * O método solicita ao usuário todos os dados necessários para criar um objeto {@link Produto}, 
+    * incluindo ID, descrição, estoque mínimo, estoque atual, custo e percentual de lucro.
+    * 
+    * Antes de aceitar o ID, o método verifica se já existe um produto com o mesmo identificador. 
+    * Caso exista, o usuário será solicitado a digitar um novo ID até que seja único.
+    * 
+    * Ao final, o produto é criado e adicionado à lista interna {@code produtos}, 
+    * e uma mensagem de sucesso é exibida.
+    *
+    * @param sc Scanner utilizado para leitura dos dados digitados pelo usuário no terminal.
+    */
     public void inserirProduto(Scanner sc) {
         
         int idProduto;

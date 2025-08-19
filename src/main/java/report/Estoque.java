@@ -22,7 +22,6 @@ import model.Produto;
  *   <li>Quantidade atual em estoque</li>
  *   <li>Observação (por exemplo, "COMPRAR MAIS" caso o estoque esteja abaixo do mínimo)</li>
  * </ul>
- * </p>
  */
 public class Estoque {
 
@@ -79,7 +78,18 @@ public class Estoque {
         dados.sort(Comparator.comparing(a -> a[1]));
         return dados;
     }
-
+    
+    /**
+    * Gera um arquivo CSV contendo os dados do estoque de produtos.
+    * <p>
+    * Este método obtém os dados chamando o método {@link #gerar()}, que retorna uma lista
+    * de arrays de {@code String}, onde cada array representa um produto com suas informações.
+    * Em seguida, utiliza a classe {@link Escrita} para persistir esses dados no arquivo
+    * CSV especificado pelo parâmetro {@code caminhoArquivo}.
+    *
+    * @param caminhoArquivo O caminho completo do arquivo CSV onde os dados do estoque
+    *                       serão gravados.
+    */
     public void gerarCSV(String caminhoArquivo) {
         List<String[]> dados = gerar();
         Escrita escrita = new Escrita();

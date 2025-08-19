@@ -14,7 +14,6 @@ import service.GerenciaVenda;
  *   <li>Receita total obtida</li>
  *   <li>Lucro total obtido</li>
  * </ul>
- * </p>
  * 
  * <p>
  * Os meios de pagamento considerados são representados pelos seguintes códigos:
@@ -26,7 +25,6 @@ import service.GerenciaVenda;
  *   'T' - Transferência
  *   'F' - Fiado
  * </pre>
- * </p>
  * 
  * <p>
  * O relatório final é ordenado de forma decrescente pelo lucro e, em caso de empate, 
@@ -96,7 +94,16 @@ public class VendasPorPagamento {
     return dados;
 }
 
-    
+    /**
+    * Gera um arquivo CSV contendo os dados de vendas agrupadas por meio de pagamento.
+    * <p>
+    * Este método obtém os dados utilizando o método {@link #gerar()}, que retorna uma lista
+    * de arrays de {@code String} representando cada linha do relatório. Em seguida, utiliza
+    * a classe {@link io.Escrita} para escrever os dados no arquivo CSV especificado.
+    * </p>
+    *
+    * @param caminhoArquivo o caminho completo (incluindo nome e extensão) do arquivo CSV a ser gerado
+    */
     public void gerarCSV(String caminhoArquivo) {
         List<String[]> dados = gerar();
         Escrita escrita = new Escrita();

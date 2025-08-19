@@ -66,6 +66,7 @@ public class GerenciaCompra {
      * Constrói um gerenciador de compras.
      * 
      * @param gerenciarProd instância de {@link GerenciaProduto} para controle de produtos
+     * @param gerenciarFornecedor instância de {@link GerenciaFornecedor} para controle de fornecedores
      */
     public GerenciaCompra(GerenciaProduto gerenciarProd, GerenciaFornecedor gerenciarFornecedor) {
         compras = new ArrayList<>();
@@ -75,6 +76,25 @@ public class GerenciaCompra {
         this.gf = gerenciarFornecedor;
     }
     
+    /**
+    * Carrega compras a partir de um arquivo CSV e adiciona à lista de compras em memória.
+    * 
+    * Cada linha do arquivo CSV deve conter os seguintes campos, nessa ordem:
+    * <ol>
+    *     <li>Número da nota fiscal (int)</li>
+    *     <li>ID do fornecedor (int)</li>
+    *     <li>Data da compra (String)</li>
+    *     <li>ID do produto (int)</li>
+    *     <li>Quantidade comprada (int)</li>
+    * </ol>
+    * 
+    * O método percorre todas as linhas do arquivo, cria um objeto {@link Compra} 
+    * para cada linha e adiciona à lista interna {@code compras}.
+    *
+    * @param caminhoArquivo Caminho completo ou relativo do arquivo CSV que contém os dados das compras.
+    * @throws NumberFormatException Se algum campo numérico no CSV não puder ser convertido para inteiro.
+    * @throws NullPointerException Se o {@link Leitura#lerArquivo(String)} retornar {@code null}.
+    */
     public void carregarComprasCSV(String caminhoArquivo) {
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
 
