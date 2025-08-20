@@ -6,6 +6,7 @@ import model.*;
 import io.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.math.BigDecimal;
 import java.util.List;
 import report.*;
 import service.*;
@@ -55,6 +56,11 @@ public class TelaCadastro{
             JFrame framePai = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
             exibirFormularioCadastroFornecedor(framePai);
         
+        });
+        
+        btnCadastrarProduto.addActionListener(e->{
+            JFrame framePai = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
+            exibirFormularioCadastroProduto(framePai);
         });
 
         // Adicionar os botões ao painel
@@ -145,9 +151,46 @@ public class TelaCadastro{
                 break;
             }
             
+            
+            }
+        
     }
-}
-}   
+    
+    private void exibirFormularioCadastroProduto(JFrame framePai){while(true){
+                    FormularioProdutoPanel formulario = new FormularioProdutoPanel();
+                    
+                    int resultado = JOptionPane.showConfirmDialog(framePai, formulario, "Cadastrar Novo Produto",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                    
+                    if(resultado == JOptionPane.OK_OPTION){
+                        if(formulario.validarCampos(framePai)){
+                            try{
+                                int id = formulario.getIdProduto();
+                                
+                                if(gp.buscarProduto(id)!=null){
+                                    JOptionPane.showMessageDialog(framePai, "Já existe um produto cadastrado com este código.", "Erro de Duplicata", JOptionPane.ERROR_MESSAGE);
+                                    continue;
+                                }
+                                // int idProduto, String descricao, int minEstoque, int estoqueAtual, BigDecimal custo, int percentualLucro
+                                String descricao = formulario.getDescricao();
+                                
+                                gp.inserirProduto(id, descricao, formulario.getMinEstoque(), formulario.getEstoqueAtual(), formulario.getCusto(), formulario.getPercentualLucro());
+                                JOptionPane.showMessageDialog(framePai, "Produto '" + descricao + "' cadastrado com sucesso!");
+                                break;
+                                
+                            }catch(NumberFormatException e){
+                                    JOptionPane.showMessageDialog(framePai, "Erro: O 'ID' deve ser um número e não pode estar vazio.", "Erro de Formato", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+
+                }
+    }   
+    }
+
+    
 
 
     

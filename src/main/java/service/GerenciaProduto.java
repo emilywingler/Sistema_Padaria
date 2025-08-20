@@ -29,7 +29,7 @@ public class GerenciaProduto{
     private List<Produto> produtos;
     
     /** Nome do arquivo CSV onde os produtos são salvos */
-    private final String ARQUIVO_PRODUTO = "produtos.csv";
+    private final String ARQUIVO_PRODUTO = "bancoprodutos.csv";
     
     /** Objeto responsável por ler dados de arquivos CSV */
     private Leitura leitorCSV;
@@ -74,10 +74,11 @@ public class GerenciaProduto{
             produtos.add(produto);
             
         }
-        
+       reescreverProdutosCSV(); 
     }
     
     /**
+     * VERSÃO TERMINAL
     * Realiza o cadastro de um novo produto interativamente via terminal.
     * 
     * O método solicita ao usuário todos os dados necessários para criar um objeto {@link Produto}, 
@@ -125,6 +126,45 @@ public class GerenciaProduto{
         System.out.println("Digite o percentual de lucro: ");
         int percentualLucro = sc.nextInt();
         sc.nextLine();
+
+        Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
+
+        produtos.add(produto);
+        String[] linha = new String[]{
+        String.valueOf(produto.getIdProduto()),
+            produto.getDescricao(),
+            String.valueOf(produto.getMinEstoque()),
+            String.valueOf(produto.getEstoqueAtual()),
+            String.valueOf(produto.getCusto()),
+            String.valueOf(produto.getPercentualLucro())
+        };
+        escritorCSV.escreverLinha(ARQUIVO_PRODUTO, linha);
+        System.out.println(">>> Produto cadastrado com sucesso! <<<");
+    }
+    
+    
+    /**
+     * VERSÃO INTERFACE GRÁFICA
+    * Realiza o cadastro de um novo produto interativamente via terminal.
+    * 
+    * O método solicita ao usuário todos os dados necessários para criar um objeto {@link Produto}, 
+    * incluindo ID, descrição, estoque mínimo, estoque atual, custo e percentual de lucro.
+    * 
+    * Antes de aceitar o ID, o método verifica se já existe um produto com o mesmo identificador. 
+    * Caso exista, o usuário será solicitado a digitar um novo ID até que seja único.
+    * 
+    * Ao final, o produto é criado e adicionado à lista interna {@code produtos}, 
+    * e uma mensagem de sucesso é exibida.
+    *
+    * 
+     * @param idProduto
+     * @param descricao
+     * @param percentualLucro
+     * @param minEstoque
+     * @param estoqueAtual
+     * @param custo
+    */
+    public void inserirProduto(int idProduto, String descricao, int minEstoque, int estoqueAtual, BigDecimal custo, int percentualLucro) {
 
         Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
 

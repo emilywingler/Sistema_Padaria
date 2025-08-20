@@ -31,7 +31,7 @@ import io.Escrita;
 public class GerenciaFornecedor {
     
     private List<Fornecedor> fornecedores;
-    private final String ARQUIVO_FORNECEDOR = "fornecedores.csv";
+    private final String ARQUIVO_FORNECEDOR = "bancofornecedores.csv";
     private Leitura leitorCSV;
     private Escrita escritorCSV;
     
@@ -78,6 +78,8 @@ public class GerenciaFornecedor {
             Fornecedor fornecedor = new Fornecedor(idFornecedor, nomeEmpresa, endereco, telefone, cnpj, pessoaContato);
             fornecedores.add(fornecedor);
         }
+        
+        reescreverFornecedoresCSV();
     }
     /**
      * VERSÃO TERMINAL

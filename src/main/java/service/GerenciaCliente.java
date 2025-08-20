@@ -27,7 +27,7 @@ import java.util.Scanner;
  */
 public class GerenciaCliente {
     private List<Cliente> clientes;
-    private final String ARQUIVO_CLIENTE = "clientes.csv";
+    private final String ARQUIVO_CLIENTE = "bancoclientes.csv";
     private Leitura leitorCSV;
     private Escrita escritorCSV;
    
@@ -79,6 +79,7 @@ public class GerenciaCliente {
             }
         }
         
+        reescreverClientesCSV();
         
     }
 

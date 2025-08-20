@@ -7,6 +7,7 @@ import io.*;
 import java.util.List;
 import report.*;
 import service.*;
+import view.forms.FormularioCarregarCSVs;
 
 public class TelaPrincipal {
     
@@ -17,7 +18,11 @@ public class TelaPrincipal {
     private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
     
     public static void main(String[] args) {
-        
+        gerenciaCliente.carregarClientesCSV("bancoclientes.csv");
+        gerenciaFornecedor.carregarFornecedorCSV("bancofornecedores.csv");
+        gerenciaProduto.carregarProdutosCSV("bancoprodutos.csv");
+        gerenciaCompra.carregarComprasCSV("bancocompras.csv");
+        gerenciaVenda.carregarVendasCSV("bancovendas.csv");
         
         // Garante que o código da interface rode na thread correta
         SwingUtilities.invokeLater(() -> {
@@ -65,6 +70,8 @@ public class TelaPrincipal {
         JButton btnRelatorios = new JButton("Geração de Relatórios Mensais");
         JButton btnCarregarCSV = new JButton("Carregar arquivos CSV");
         JButton btnSair = new JButton("Sair");
+        
+        
 
         // Adicionar "ação" ao botão de Cadastro
         btnCadastro.addActionListener(e -> {
@@ -74,7 +81,18 @@ public class TelaPrincipal {
 
         // Adicionar "ação" ao botão de Sair
         btnSair.addActionListener(e -> System.exit(0));
-
+        
+        
+        btnCarregarCSV.addActionListener(e -> {
+        FormularioCarregarCSVs formCSV = new FormularioCarregarCSVs(
+            gerenciaCliente,
+            gerenciaFornecedor,
+            gerenciaProduto,
+            gerenciaCompra,
+            gerenciaVenda
+        );
+        formCSV.setVisible(true);
+    });
         // (Adicionar ações para os outros botões depois)
 
         // Adicionar os botões ao painel
@@ -89,5 +107,7 @@ public class TelaPrincipal {
         
         // Adicione este método também dentro da classe TelaPrincipal.java
     }
+    
+    
     
 }

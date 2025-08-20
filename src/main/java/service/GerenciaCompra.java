@@ -40,7 +40,7 @@ public class GerenciaCompra {
     /**
      * Nome do arquivo CSV utilizado para armazenar as compras.
      */
-    private final String ARQUIVO_COMPRA = "compras.csv";
+    private final String ARQUIVO_COMPRA = "bancocompras.csv";
 
     /**
      * Utilitário para leitura de arquivos CSV.
@@ -97,17 +97,18 @@ public class GerenciaCompra {
     */
     public void carregarComprasCSV(String caminhoArquivo) {
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
-
+        
         for (String[] campos : linhas) {
             int numeroNotaFiscal = Integer.parseInt(campos[0]);
             int idFornecedor = Integer.parseInt(campos[1]);
             String dataCompra = campos[2];
             int idProduto = Integer.parseInt(campos[3]);
             int quantidade = Integer.parseInt(campos[4]);
-
             Compra compra = new Compra(numeroNotaFiscal, idFornecedor, dataCompra, idProduto, quantidade);
             compras.add(compra);
         }
+        
+        reescreverComprasCSV();
     }
     
     /**
@@ -211,4 +212,19 @@ public class GerenciaCompra {
         }
     }
     
+    private void reescreverComprasCSV() {
+        List<String[]> dados = new ArrayList<>();
+
+        for (Compra c : compras) {
+            dados.add(new String[]{
+                String.valueOf(c.getIdCompra()),
+                String.valueOf(c.getIdFornecedor()),
+                c.getDataCompra(),
+                String.valueOf(c.getIdProduto()),
+                String.valueOf(c.getQuantidade())
+            });
+        }
+
+        escritorCSV.escreverCompras(ARQUIVO_COMPRA, dados);
+    }
 }
