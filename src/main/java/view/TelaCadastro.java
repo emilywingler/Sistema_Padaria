@@ -2,16 +2,8 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import model.*;
-import io.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.math.BigDecimal;
-import java.util.List;
-import report.*;
 import service.*;
 import view.forms.*;
-import view.utils.FormUtils;
 
 public class TelaCadastro{
     

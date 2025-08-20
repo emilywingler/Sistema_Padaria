@@ -483,6 +483,7 @@ public class GerenciaVenda {
     
     
    /**
+    * VERSÃO TERMINAL
     * Calcula o total a receber (em aberto) de um cliente específico.
     *
     * Considera apenas as vendas realizadas a prazo (fiado), filtrando as que pertencem ao cliente informado.
@@ -513,7 +514,36 @@ public class GerenciaVenda {
     }
 
     return total;
-}
+    }
+    
+    /**
+     * VERSÃO INTERFACE
+    * Calcula o total a receber (em aberto) de um cliente específico.
+    *
+    * Considera apenas as vendas realizadas a prazo (fiado), filtrando as que pertencem ao cliente informado.
+    * Soma o valor total das vendas fiadas (valor unitário × quantidade).
+    *
+     * @param cliente cliente para o qual se deseja calcular o total em aberto.
+    * @return O valor total a receber do cliente ou {@code null} se ele não for encontrado
+    *         ou não possuir vendas fiadas.
+    */
+    public BigDecimal totalAReceberCliente(Cliente cliente) {
+        
+    BigDecimal total = BigDecimal.ZERO;
+
+    for (Venda v : vendas) {
+        if (v instanceof VendaFiado vf) {
+            if (vf.getIdCliente() == cliente.getId()) {
+                Produto p = gp.buscarProduto(vf.getIdProduto());
+                if (p != null) {
+                    total = total.add(receitaTotalDoPedido(vf, p));
+                }
+            }
+        }
+    }
+
+    return total;
+    }
     
     /**
     * Retorna uma lista de todas as vendas que ainda estão em aberto (fiado).
