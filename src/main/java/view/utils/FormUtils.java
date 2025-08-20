@@ -57,4 +57,20 @@ public class FormUtils {
         }
         return true; // Validação passou
     }
+
+    // Dentro da classe view/utils/FormUtils.java
+
+    public static char mapearPagamentoParaCodigo(String pagamento) {
+        if (pagamento == null) return ' '; // Segurança extra
+
+        switch (pagamento) {
+            case "Dinheiro": return '$';
+            case "Cheque": return 'X';
+            case "Cartão de Débito": return 'D';
+            case "Cartão de Crédito": return 'C';
+            case "Ticket Alimentação": return 'T';
+            case "Fiado": return 'F';
+            default: return ' '; // Retorno padrão caso algo inesperado ocorra
+        }
+    }
 }

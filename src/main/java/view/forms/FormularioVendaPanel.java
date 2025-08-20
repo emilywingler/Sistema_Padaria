@@ -213,5 +213,27 @@ public class FormularioVendaPanel extends JPanel {
 
     // Se passou por todas as verificações, o formulário é válido!
     return true;
-}
+    }
+    
+        // --- Métodos para obter os dados preenchidos ---
+    public String getDataVenda() {
+        return campoDataVenda.getText();
+    }
+
+    public int getIdProduto() throws NumberFormatException {
+        return Integer.parseInt(campoIdProduto.getText());
+    }
+
+    public int getQuantidade() throws NumberFormatException {
+        return Integer.parseInt(campoQuantidade.getText());
+    }
+
+    public String getMeioPagamento() {
+        return (String) seletorMeioPagamento.getSelectedItem();
+    }
+
+    public int getIdCliente() throws NumberFormatException {
+        return Integer.parseInt(campoIdCliente.getText());
+    }
+
 }

@@ -31,38 +31,43 @@ public class TelaPrincipal {
     }
 
     private static void criarEExibirGUI() {
-        TelaCadastro cadastro = new TelaCadastro(gerenciaProduto,gerenciaFornecedor,gerenciaCliente);
-        TelaControleContas telaContas = new TelaControleContas(gerenciaCompra, gerenciaVenda, gerenciaProduto, gerenciaCliente);
-        // 1. Criar a janela principal (JFrame)
+        // --- PARTE 1: CRIAR A BASE DA INTERFACE ---
+        // Primeiro, criamos a janela, o painel principal e o gerenciador de layout.
         JFrame frame = new JFrame("Sistema de Gestão de Padaria");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Fecha a aplicação ao clicar no X
-        frame.setSize(800, 600); // Define um tamanho
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
 
-        // 2. Configurar o painel principal com CardLayout (nosso "maquinista")
         CardLayout cardLayout = new CardLayout();
         JPanel painelPrincipal = new JPanel(cardLayout);
 
-        // 3. Criar os painéis para cada "tela" (os "cenários")
-        JPanel painelMenuPrincipal = criarPainelMenuPrincipal(painelPrincipal, cardLayout);
+        // --- PARTE 2: CRIAR AS CLASSES CONTROLADORAS E OS PAINÉIS ---
+        // Agora que a "base" existe, podemos criar nossas telas e passar a base para elas.
+        TelaCadastro cadastro = new TelaCadastro(gerenciaProduto, gerenciaFornecedor, gerenciaCliente);
+        TelaControleContas telaContas = new TelaControleContas(gerenciaCompra, gerenciaVenda, gerenciaProduto, gerenciaCliente);
+
+        // Usamos o nome correto da sua classe e passamos a base da interface
+        TelaRegistroVenda painelRegistroVendas = new TelaRegistroVenda(gerenciaVenda, gerenciaProduto, gerenciaCliente, painelPrincipal, cardLayout);
+
+        // Criamos os painéis que serão exibidos
         JPanel painelMenuCadastro = cadastro.criarPainelMenuCadastro(painelPrincipal, cardLayout);
         JPanel painelContas = telaContas.criarPainelControleContas(painelPrincipal, cardLayout);
-        // ... aqui você criaria os outros painéis (Vendas, Contas, Relatórios)
+        JPanel painelMenuPrincipal = criarPainelMenuPrincipal(painelPrincipal, cardLayout, painelRegistroVendas);
 
-        // 4. Adicionar os painéis ao nosso "baralho" de cartões (cenários)
+        // --- PARTE 3: ADICIONAR OS PAINÉIS AO LAYOUT ---
         painelPrincipal.add(painelMenuPrincipal, "menuPrincipal");
         painelPrincipal.add(painelMenuCadastro, "menuCadastro");
         painelPrincipal.add(painelContas, "menuContas");
-        // ... adicionar outros painéis
+        painelPrincipal.add(painelRegistroVendas, "telaVendas");
 
-        // 5. Adicionar o painel principal à janela e torná-la visível
+        // --- PARTE 4: TORNAR TUDO VISÍVEL ---
         frame.add(painelPrincipal);
-        frame.setLocationRelativeTo(null); // Centraliza a janela
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
+}
     
     // Adicione este método dentro da classe TelaPrincipal.java
 
-    private static JPanel criarPainelMenuPrincipal(JPanel painelPrincipal, CardLayout cardLayout) {
+    private static JPanel criarPainelMenuPrincipal(JPanel painelPrincipal, CardLayout cardLayout, TelaRegistroVenda painelVendas) {
         JPanel painel = new JPanel();
         painel.setLayout(new GridLayout(5, 1, 10, 10)); // 5 linhas, 1 coluna, com espaçamento
 
@@ -87,15 +92,23 @@ public class TelaPrincipal {
         
         
         btnCarregarCSV.addActionListener(e -> {
-        FormularioCarregarCSVs formCSV = new FormularioCarregarCSVs(
-            gerenciaCliente,
-            gerenciaFornecedor,
-            gerenciaProduto,
-            gerenciaCompra,
-            gerenciaVenda
-        );
-        formCSV.setVisible(true);
-    });
+            FormularioCarregarCSVs formCSV = new FormularioCarregarCSVs(
+                gerenciaCliente,
+                gerenciaFornecedor,
+                gerenciaProduto,
+                gerenciaCompra,
+                gerenciaVenda
+            );
+            formCSV.setVisible(true);
+        });
+
+
+        btnVendas.addActionListener(e -> {
+            painelVendas.carregarDados();
+            cardLayout.show(painelPrincipal, "telaVendas");
+        });
+
+// ... (adiciona o botão ao painel) ...
         
         btnContas.addActionListener(e -> {
             cardLayout.show(painelPrincipal, "menuContas");

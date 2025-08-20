@@ -316,22 +316,6 @@ public class GerenciaProduto{
         }
     return false; // nenhum produto está abaixo do mínimo
     }
-    
-    
-    /**
-     * Gera um novo ID único para um produto.
-     * 
-     * @return Próximo ID disponível.
-     */
-    public int gerarNovoId() {
-        int maxId = 0;
-        for (Produto p : produtos) {
-            if (p.getIdProduto() > maxId) {
-                maxId = p.getIdProduto();
-            }
-        }
-        return maxId + 1;
-    }
 
     public void reescreverProdutosCSV() {
     List<String[]> dados = new ArrayList<>();
@@ -346,6 +330,10 @@ public class GerenciaProduto{
         });
     }
     escritorCSV.escreverProdutos(ARQUIVO_PRODUTO, dados);
+    }
+
+    public List<Produto> getProdutos() {
+        return produtos;
     }
     
     
