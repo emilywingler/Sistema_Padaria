@@ -40,7 +40,7 @@ public class GerenciaCompra {
     /**
      * Nome do arquivo CSV utilizado para armazenar as compras.
      */
-    private final String ARQUIVO_COMPRA = "bancocompras.csv";
+    private final String ARQUIVO_VENDA = "compras.csv";
 
     /**
      * Utilitário para leitura de arquivos CSV.
@@ -97,18 +97,17 @@ public class GerenciaCompra {
     */
     public void carregarComprasCSV(String caminhoArquivo) {
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
-        
+
         for (String[] campos : linhas) {
             int numeroNotaFiscal = Integer.parseInt(campos[0]);
             int idFornecedor = Integer.parseInt(campos[1]);
             String dataCompra = campos[2];
             int idProduto = Integer.parseInt(campos[3]);
             int quantidade = Integer.parseInt(campos[4]);
+
             Compra compra = new Compra(numeroNotaFiscal, idFornecedor, dataCompra, idProduto, quantidade);
             compras.add(compra);
         }
-        
-        reescreverComprasCSV();
     }
     
     /**
@@ -128,15 +127,6 @@ public class GerenciaCompra {
             produto.setEstoqueAtual(produto.getEstoqueAtual() + quantidade);
             Compra c = new Compra(idCompra, idFornecedor, DataCompra, idProduto, quantidade);
             compras.add(c);
-            String[] linha = new String[]{
-                String.valueOf(c.getIdCompra()),
-                String.valueOf(c.getIdFornecedor()),
-                c.getDataCompra(),
-                String.valueOf(c.getIdProduto()),
-                String.valueOf(c.getQuantidade())
-            };
-            escritorCSV.escreverLinha(ARQUIVO_COMPRA, linha);
-            gp.reescreverProdutosCSV();
         }
     }
     
@@ -201,34 +191,10 @@ public class GerenciaCompra {
             for (Compra c : compras) {
                 if (c.getIdFornecedor() == idFornecedor) {
                     Produto produto = gp.buscarProduto(c.getIdProduto());
-                    if (produto != null) {
-                        total = total.add(this.valorTotalDaCompra(c, produto));
-                    } else {
-                        System.out.println("Produto não encontrado para a compra ID: " + c.getIdCompra());
-                    }
+                    total = total.add(this.valorTotalDaCompra(c, produto));
                 }
             }
             return total;
         }
-    }
-    
-    private void reescreverComprasCSV() {
-        List<String[]> dados = new ArrayList<>();
-
-        for (Compra c : compras) {
-            dados.add(new String[]{
-                String.valueOf(c.getIdCompra()),
-                String.valueOf(c.getIdFornecedor()),
-                c.getDataCompra(),
-                String.valueOf(c.getIdProduto()),
-                String.valueOf(c.getQuantidade())
-            });
-        }
-
-        escritorCSV.escreverCompras(ARQUIVO_COMPRA, dados);
-    }
-    //para a interface
-    public List<Compra> getCompras() {
-        return compras;
     }
 }

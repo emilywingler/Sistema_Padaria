@@ -1,7 +1,6 @@
 package test;
 
 
-import java.util.Scanner;
 import report.Apagar;
 import report.Areceber;
 import report.Estoque;
@@ -40,10 +39,10 @@ public class Teste {
         System.out.println("Sucesso!");
         
         //teste.listarClientes();
-        mockGerenciaProduto.listarProdutos();
+        //mockGerenciaProduto.listarProdutos();
         //mockGerenciaFornecedor.listarFornecedores();
-        //teste1.listarCompras();
-        //teste2.listarVendas();
+        teste1.listarCompras();
+        teste2.listarVendas();
         
         Apagar apagar = new Apagar(teste1, mockGerenciaFornecedor); 
         apagar.gerarCSV("apagar.csv");
@@ -59,9 +58,6 @@ public class Teste {
         
         VendasPorProduto vpp = new VendasPorProduto(teste2, mockGerenciaProduto);
         vpp.gerarCSV("vendaspgmt.csv");
-        
-        Scanner sc = new Scanner(System.in);
-        
         
         
         
