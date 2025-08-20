@@ -1,0 +1,6 @@
+idProduto;descricao;estoqueMinimo;estoqueAtual;valorCusto;percentualLucro
+102;Bolo de Chocolate;20;0;15.0;40
+103;Rapadura;20;40;15.0;40
+101;Bolo de Chocolate;20;48;15.0;40
+199;ca;1;90;4;7
+1;bolo;23;3;12;37

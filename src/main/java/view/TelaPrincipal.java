@@ -1,5 +1,8 @@
 package view;
 
+// ADICIONADO: Import para a nova tela de registro de vendas
+import view.TelaRegistroVenda; 
+
 import javax.swing.*;
 import java.awt.*;
 import model.*;
@@ -7,73 +10,33 @@ import service.*;
 import view.forms.FormularioCarregarCSVs;
 import view.forms.GerarRelatorioMensal;
 
-/**
- * Classe principal que serve como ponto de entrada e controlador central da interface gráfica (GUI)
- * do Sistema de Gestão de Padaria.
- * <p>
- * Esta classe é responsável por:
- * <ul>
- * <li>Inicializar os serviços de gerência ({@link GerenciaCliente}, {@link GerenciaProduto}, etc.).</li>
- * <li>Construir a janela principal ({@link JFrame}) e o painel com {@link CardLayout} para navegação.</li>
- * <li>Orquestrar o fluxo de inicialização, que exige o carregamento de arquivos CSV antes de habilitar
- * as funcionalidades principais do sistema.</li>
- * <li>Configurar os botões de navegação e suas respectivas ações.</li>
- * </ul>
- * A aplicação só se torna totalmente funcional após o usuário carregar os dados iniciais através do formulário de CSVs.
- */
 public class TelaPrincipal {
 
     // --- Serviços de Gerência ---
-    /** Instância estática para gerenciar as operações de clientes. */
     private static GerenciaCliente gerenciaCliente = new GerenciaCliente(null);
-    /** Instância estática para gerenciar as operações de produtos. */
     private static GerenciaProduto gerenciaProduto = new GerenciaProduto(null);
-    /** Instância estática para gerenciar as operações de fornecedores. */
     private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor(null);
-    /** Instância estática para gerenciar as operações de compras. */
     private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto, gerenciaFornecedor, null);
-    /** Instância estática para gerenciar as operações de vendas. */
     private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto, gerenciaCliente, null);
+    
 
     // --- Componentes da UI ---
-    /** Gerenciador de layout que permite alternar entre diferentes painéis (telas). */
     private static CardLayout cardLayout;
-    /** Painel principal que contém todos os outros painéis gerenciados pelo CardLayout. */
     private static JPanel painelPrincipal;
-    /** A janela principal da aplicação. Referência estática para ser acessível globalmente na classe. */
     private static JFrame frame;
 
     // --- Botões de Navegação ---
-    /** Botão para acessar a tela de cadastros. */
     private static JButton btnCadastro;
-    /** Botão para acessar a tela de registro de vendas. */
     private static JButton btnVendas;
-    /** Botão para acessar a tela de controle de contas. */
     private static JButton btnContas;
-    /** Botão para acessar a tela de geração de relatórios. */
     private static JButton btnRelatorios;
 
-    /**
-     * O ponto de entrada principal da aplicação.
-     * <p>
-     * Inicia a GUI na Event Dispatch Thread (EDT) do Swing. O fluxo de inicialização
-     * primeiro cria a janela principal de forma invisível, depois exibe um formulário
-     * para carregar arquivos CSV. Somente após o carregamento bem-sucedido, a janela
-     * principal é exibida e suas funcionalidades são habilitadas.
-     *
-     * @param args Argumentos de linha de comando (não utilizados).
-     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            // Cria a GUI principal, mas a mantém invisível inicialmente.
             criarEExibirGUI(false);
 
-            // Abre o formulário para carregar os CSVs, passando uma ação de callback (listener).
             abrirFormularioCSVs(() -> {
-                // Ação executada após o carregamento dos CSVs:
-                // 1. Habilita os botões principais da aplicação.
                 habilitarBotoesPrincipais(true);
-                // 2. Torna a janela principal visível.
                 frame.setVisible(true);
                 JOptionPane.showMessageDialog(frame, "Arquivos carregados com sucesso! O sistema está pronto para uso.");
             });
@@ -82,12 +45,8 @@ public class TelaPrincipal {
 
     /**
      * Constrói e configura a interface gráfica principal da aplicação.
-     *
-     * @param visivel Controla se a janela principal deve ser tornada visível imediatamente após a criação.
      */
-    private static void criarEExibirGUI(boolean visivel) {
-        TelaCadastro cadastro = new TelaCadastro(gerenciaProduto, gerenciaFornecedor, gerenciaCliente);
-        TelaControleContas telaContas = new TelaControleContas(gerenciaCompra, gerenciaVenda, gerenciaProduto, gerenciaCliente);
+    private static void criarEExibirGUI(boolean visível) {
 
         frame = new JFrame("Sistema de Gestão de Padaria");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -96,28 +55,28 @@ public class TelaPrincipal {
         cardLayout = new CardLayout();
         painelPrincipal = new JPanel(cardLayout);
 
-        // Cria os diferentes painéis (telas) da aplicação
-        JPanel painelMenuPrincipal = criarPainelMenuPrincipal();
+
+        TelaCadastro cadastro = new TelaCadastro(gerenciaProduto, gerenciaFornecedor, gerenciaCliente);
+        TelaControleContas telaContas = new TelaControleContas(gerenciaCompra, gerenciaVenda, gerenciaProduto, gerenciaCliente);
+        TelaRegistroVenda painelRegistroVendas = new TelaRegistroVenda(gerenciaVenda, gerenciaProduto, gerenciaCliente, painelPrincipal, cardLayout);
+
+        // Terceiro, criamos os painéis que serão efetivamente adicionados ao layout.
         JPanel painelMenuCadastro = cadastro.criarPainelMenuCadastro(painelPrincipal, cardLayout);
         JPanel painelContas = telaContas.criarPainelControleContas(painelPrincipal, cardLayout);
+        JPanel painelMenuPrincipal = criarPainelMenuPrincipal(painelRegistroVendas); // A chamada também foi simplificada.
 
-        // Adiciona os painéis ao gerenciador CardLayout
+        // Adiciona todos os painéis ao gerenciador CardLayout
         painelPrincipal.add(painelMenuPrincipal, "menuPrincipal");
         painelPrincipal.add(painelMenuCadastro, "menuCadastro");
         painelPrincipal.add(painelContas, "menuContas");
-
+        painelPrincipal.add(painelRegistroVendas, "telaVendas");
+        
         frame.add(painelPrincipal);
         frame.setLocationRelativeTo(null);
-        frame.setVisible(visivel);
+        frame.setVisible(visível);
     }
-
-    /**
-     * Cria e configura o painel do menu principal com os botões de navegação.
-     * Inicialmente, os botões de funcionalidade são desabilitados até que os dados CSV sejam carregados.
-     *
-     * @return O {@link JPanel} configurado com o menu principal.
-     */
-    private static JPanel criarPainelMenuPrincipal() {
+    
+    private static JPanel criarPainelMenuPrincipal(TelaRegistroVenda painelVendas) {
         JPanel painel = new JPanel();
         painel.setLayout(new GridLayout(6, 1, 10, 10));
 
@@ -128,7 +87,6 @@ public class TelaPrincipal {
         JButton btnCarregarCSV = new JButton("Carregar/Recarregar arquivos CSV");
         JButton btnSair = new JButton("Sair");
 
-        // Bloqueia os botões principais até que os arquivos CSV sejam carregados.
         habilitarBotoesPrincipais(false);
 
         // Action Listeners para navegação
@@ -141,6 +99,11 @@ public class TelaPrincipal {
                 habilitarBotoesPrincipais(true);
                 JOptionPane.showMessageDialog(frame, "Novos arquivos carregados com sucesso!");
             });
+        });
+
+        btnVendas.addActionListener(e -> {
+            painelVendas.carregarDados();
+            cardLayout.show(painelPrincipal, "telaVendas");
         });
         
         btnRelatorios.addActionListener(e -> {
@@ -162,9 +125,6 @@ public class TelaPrincipal {
 
     /**
      * Abre o formulário para carregar os arquivos CSV.
-     *
-     * @param listener Ação de callback (implementando a interface funcional {@link CarregamentoCSVListener})
-     * a ser executada quando o carregamento for concluído com sucesso.
      */
     private static void abrirFormularioCSVs(CarregamentoCSVListener listener) {
         FormularioCarregarCSVs formCSV = new FormularioCarregarCSVs(
@@ -176,9 +136,6 @@ public class TelaPrincipal {
 
     /**
      * Habilita ou desabilita os botões de navegação principais do sistema.
-     * Usado para prevenir o uso do sistema antes do carregamento de dados.
-     *
-     * @param habilitar {@code true} para habilitar os botões, {@code false} para desabilitá-los.
      */
     private static void habilitarBotoesPrincipais(boolean habilitar) {
         btnCadastro.setEnabled(habilitar);
