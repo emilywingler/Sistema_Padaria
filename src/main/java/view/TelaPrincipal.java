@@ -5,6 +5,7 @@ import java.awt.*;
 import model.*;
 import service.*;
 import view.forms.FormularioCarregarCSVs;
+import view.forms.GerarRelatorioMensal;
 
 public class TelaPrincipal {
 
@@ -100,6 +101,21 @@ public class TelaPrincipal {
                 habilitarBotoesPrincipais(true); // Apenas habilita os botões
                 JOptionPane.showMessageDialog(frame, "Novos arquivos carregados com sucesso!");
             });
+        });
+        
+        // ActionListener para o botão de Relatórios
+        btnRelatorios.addActionListener(e -> {
+            // Cria uma nova instância do formulário de relatórios
+            GerarRelatorioMensal formRelatorios = new GerarRelatorioMensal(
+                    frame, // Passa a janela principal como "pai"
+                    gerenciaCompra,
+                    gerenciaFornecedor,
+                    gerenciaVenda,
+                    gerenciaCliente,
+                    gerenciaProduto);
+            
+            // Exibe o formulário de relatórios
+            formRelatorios.setVisible(true);
         });
 
         painel.add(btnCadastro);
