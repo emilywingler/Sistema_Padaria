@@ -18,7 +18,11 @@ public class TelaPrincipal {
     private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
     
     public static void main(String[] args) {
-        
+        gerenciaCliente.carregarClientesCSV("bancoclientes.csv");
+        gerenciaFornecedor.carregarFornecedorCSV("bancofornecedores.csv");
+        gerenciaProduto.carregarProdutosCSV("bancoprodutos.csv");
+        gerenciaCompra.carregarComprasCSV("bancocompras.csv");
+        gerenciaVenda.carregarVendasCSV("bancovendas.csv");
         
         // Garante que o código da interface rode na thread correta
         SwingUtilities.invokeLater(() -> {

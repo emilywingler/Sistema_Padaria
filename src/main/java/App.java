@@ -28,8 +28,8 @@ public class App {
     private static String caminhoArquivoCliente;
     private static String caminhoArquivoFornecedor;
     private static String caminhoArquivoProduto;
-     private static String caminhoArquivoCompra;
-      private static String caminhoArquivoVenda;
+    private static String caminhoArquivoCompra;
+    private static String caminhoArquivoVenda;
     
     private static GerenciaCliente gerenciaCliente= new GerenciaCliente();
     private static GerenciaProduto gerenciaProduto = new GerenciaProduto();
