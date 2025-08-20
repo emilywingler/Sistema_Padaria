@@ -82,6 +82,7 @@ public class GerenciaFornecedor {
         reescreverFornecedoresCSV();
     }
     /**
+     * VERSÃO TERMINAL
     * Adiciona um novo fornecedor ao sistema e persiste a alteração no arquivo de dados.
     * <p>
     * Este método primeiro insere o objeto {@code Fornecedor} na lista em memória e,
@@ -137,6 +138,41 @@ public class GerenciaFornecedor {
         
         System.out.println("Fornecedor cadastrado com sucesso! ");
     }
+    
+        /**
+     * VERSÃO INTERFACE GRÁFICA
+    * Adiciona um novo fornecedor ao sistema e persiste a alteração no arquivo de dados.
+    * <p>
+    * Este método primeiro insere o objeto {@code Fornecedor} na lista em memória e,
+    * em seguida, invoca o método de atualização do {@code escritorCSV} para
+    * garantir que o novo fornecedor seja salvo permanentemente no arquivo CSV.
+    *
+     * @param idFornecedor
+     * @param nomeEmpresa
+     * @param endereco
+     * @param telefone
+     * @param cnpj
+     * @param pessoaContato
+    */
+    public void inserirFornecedor(int
+            idFornecedor, String nomeEmpresa, String endereco, String telefone, String cnpj, String pessoaContato){
+        Fornecedor fornecedor = new Fornecedor(idFornecedor, nomeEmpresa, endereco, telefone, cnpj, pessoaContato);
+
+        fornecedores.add(fornecedor);
+        
+        String[] linha = new String[]{
+                String.valueOf(fornecedor.getIdFornecedor()),
+                fornecedor.getNomeEmpresa(),
+                fornecedor.getEndereco(),
+                fornecedor.getTelefone(),
+                fornecedor.getCnpj(),
+                fornecedor.getPessoaContato()
+            };
+            escritorCSV.escreverLinha(ARQUIVO_FORNECEDOR, linha);
+        
+        System.out.println("Fornecedor cadastrado com sucesso! ");
+    }
+    
     
     /**
     * Remove um fornecedor do sistema com base no seu código de identificação.
