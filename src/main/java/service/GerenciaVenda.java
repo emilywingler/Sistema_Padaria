@@ -34,7 +34,7 @@ public class GerenciaVenda {
     /**
      * Nome do arquivo CSV onde as vendas são persistidas.
      */
-    private final String ARQUIVO_VENDA = "vendas.csv";
+    private final String ARQUIVO_VENDA = "bancovendas.csv";
 
     /**
      * Responsável por ler dados de arquivos.
@@ -94,13 +94,8 @@ public class GerenciaVenda {
     */
     public void carregarVendasCSV(String caminhoArquivo) {
         List<String[]> linhas = leitorCSV.lerArquivo(caminhoArquivo);
-
-        
+       
         for (String[] campos : linhas) {
-            if (campos.length < 4 || campos[0].isBlank()) {
-            System.out.println("Linha inválida ignorada: " + Arrays.toString(campos));
-            continue;
-        }
             String campoCliente = campos[0];
             String dataVenda = campos[1];
             int idProduto = Integer.parseInt(campos[2]);
@@ -118,6 +113,8 @@ public class GerenciaVenda {
                 vendas.add(v);
             }
         }
+        
+        reescreverVendasCSV();
     }
 
         
@@ -536,5 +533,33 @@ public class GerenciaVenda {
             }
         }
         return vendasAreceber;
-        }  
+        } 
+    
+    private void reescreverVendasCSV() {
+    List<String[]> dados = new ArrayList<>();
+        for (Venda v : vendas) {
+            if (v instanceof VendaAVista va) {
+                dados.add(new String[]{
+                    "",
+                    va.getDataVenda(),
+                    String.valueOf(va.getIdProduto()),
+                    String.valueOf(va.getQuantidade()),
+                    String.valueOf(va.getMeioPagamento()) 
+                });
+            } else if (v instanceof VendaFiado vf) {
+                dados.add(new String[]{
+                    String.valueOf(vf.getIdCliente()),
+                    vf.getDataVenda(),
+                    String.valueOf(vf.getIdProduto()),
+
+                    String.valueOf(vf.getQuantidade()),
+                    "F"  
+
+                });
+            }
+        }
+        escritorCSV.escreverVendas(ARQUIVO_VENDA, dados);
+}
+
+
 }

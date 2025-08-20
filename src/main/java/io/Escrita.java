@@ -63,7 +63,15 @@ public class Escrita {
     
     public void escreverProdutos(String caminho, List<String[]> dados) {
         escreverArquivo(caminho, "idProduto;descricao;estoqueMinimo;estoqueAtual;valorCusto;percentualLucro", dados);
-    }    
+    }  
+    
+    public void escreverVendas(String caminho, List<String[]> dados){
+        escreverArquivo(caminho,"idCliente;dataVenda;idProduto;quantidade;meioPagamento", dados);
+    }
+    
+    public void escreverCompras(String caminho, List<String[]> dados){
+        escreverArquivo(caminho,"numeroNF;idFornecedor;dataCompra;idProduto;quantidade", dados);
+    }
 
     /**
      * Gera um arquivo CSV contendo as contas a pagar de fornecedores.
