@@ -560,6 +560,9 @@ public class GerenciaVenda {
         }
         escritorCSV.escreverVendas(ARQUIVO_VENDA, dados);
 }
-
+    
+    public List<Venda> getVendas() {
+        return vendas;
+    }
 
 }

@@ -32,6 +32,7 @@ public class TelaPrincipal {
 
     private static void criarEExibirGUI() {
         TelaCadastro cadastro = new TelaCadastro(gerenciaProduto,gerenciaFornecedor,gerenciaCliente);
+        TelaControleContas telaContas = new TelaControleContas(gerenciaCompra, gerenciaVenda, gerenciaProduto, gerenciaCliente);
         // 1. Criar a janela principal (JFrame)
         JFrame frame = new JFrame("Sistema de Gestão de Padaria");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Fecha a aplicação ao clicar no X
@@ -44,11 +45,13 @@ public class TelaPrincipal {
         // 3. Criar os painéis para cada "tela" (os "cenários")
         JPanel painelMenuPrincipal = criarPainelMenuPrincipal(painelPrincipal, cardLayout);
         JPanel painelMenuCadastro = cadastro.criarPainelMenuCadastro(painelPrincipal, cardLayout);
+        JPanel painelContas = telaContas.criarPainelControleContas(painelPrincipal, cardLayout);
         // ... aqui você criaria os outros painéis (Vendas, Contas, Relatórios)
 
         // 4. Adicionar os painéis ao nosso "baralho" de cartões (cenários)
         painelPrincipal.add(painelMenuPrincipal, "menuPrincipal");
         painelPrincipal.add(painelMenuCadastro, "menuCadastro");
+        painelPrincipal.add(painelContas, "menuContas");
         // ... adicionar outros painéis
 
         // 5. Adicionar o painel principal à janela e torná-la visível
@@ -93,6 +96,11 @@ public class TelaPrincipal {
         );
         formCSV.setVisible(true);
     });
+        
+        btnContas.addActionListener(e -> {
+            cardLayout.show(painelPrincipal, "menuContas");
+        });
+        
         // (Adicionar ações para os outros botões depois)
 
         // Adicionar os botões ao painel
