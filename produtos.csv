@@ -1,5 +1,4 @@
 idProduto;descricao;estoqueMinimo;estoqueAtual;valorCusto;percentualLucro
-102;Bolo de Chocolate;20;0;15.0;40
-103;Rapadura;20;40;15.0;40
-101;Bolo de Chocolate;20;48;15.0;40
-199;ca;1;90;4;7
+101;Pão Francês;100;200;0.5;50
+102;Bolo de Chocolate;20;50;15.0;40
+103;Sonho Recheado;30;40;5.0;60

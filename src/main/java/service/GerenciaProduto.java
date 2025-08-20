@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import io.Leitura;
 import io.Escrita;
-import java.util.Arrays;
 
 /**
  * Classe responsável pelo gerenciamento de produtos,
@@ -29,7 +28,7 @@ public class GerenciaProduto{
     private List<Produto> produtos;
     
     /** Nome do arquivo CSV onde os produtos são salvos */
-    private final String ARQUIVO_PRODUTO = "bancoprodutos.csv";
+    private final String ARQUIVO_PRODUTO = "produtos.csv";
     
     /** Objeto responsável por ler dados de arquivos CSV */
     private Leitura leitorCSV;
@@ -58,11 +57,6 @@ public class GerenciaProduto{
         
         
         for (String[] campos : linhas) {
-            
-            if (campos.length < 6 || campos[0].trim().isEmpty()) {
-            System.out.println("Linha inválida ignorada: " + Arrays.toString(campos));
-            continue;
-        }
             int idProduto = Integer.parseInt(campos[0]);
             String descricao = campos[1];
             int minEstoque = Integer.parseInt(campos[2]);
@@ -72,13 +66,11 @@ public class GerenciaProduto{
             
             Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
             produtos.add(produto);
-            
         }
-       reescreverProdutosCSV(); 
+        
     }
     
     /**
-     * VERSÃO TERMINAL
     * Realiza o cadastro de um novo produto interativamente via terminal.
     * 
     * O método solicita ao usuário todos os dados necessários para criar um objeto {@link Produto}, 
@@ -130,54 +122,6 @@ public class GerenciaProduto{
         Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
 
         produtos.add(produto);
-        String[] linha = new String[]{
-        String.valueOf(produto.getIdProduto()),
-            produto.getDescricao(),
-            String.valueOf(produto.getMinEstoque()),
-            String.valueOf(produto.getEstoqueAtual()),
-            String.valueOf(produto.getCusto()),
-            String.valueOf(produto.getPercentualLucro())
-        };
-        escritorCSV.escreverLinha(ARQUIVO_PRODUTO, linha);
-        System.out.println(">>> Produto cadastrado com sucesso! <<<");
-    }
-    
-    
-    /**
-     * VERSÃO INTERFACE GRÁFICA
-    * Realiza o cadastro de um novo produto interativamente via terminal.
-    * 
-    * O método solicita ao usuário todos os dados necessários para criar um objeto {@link Produto}, 
-    * incluindo ID, descrição, estoque mínimo, estoque atual, custo e percentual de lucro.
-    * 
-    * Antes de aceitar o ID, o método verifica se já existe um produto com o mesmo identificador. 
-    * Caso exista, o usuário será solicitado a digitar um novo ID até que seja único.
-    * 
-    * Ao final, o produto é criado e adicionado à lista interna {@code produtos}, 
-    * e uma mensagem de sucesso é exibida.
-    *
-    * 
-     * @param idProduto
-     * @param descricao
-     * @param percentualLucro
-     * @param minEstoque
-     * @param estoqueAtual
-     * @param custo
-    */
-    public void inserirProduto(int idProduto, String descricao, int minEstoque, int estoqueAtual, BigDecimal custo, int percentualLucro) {
-
-        Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
-
-        produtos.add(produto);
-        String[] linha = new String[]{
-        String.valueOf(produto.getIdProduto()),
-            produto.getDescricao(),
-            String.valueOf(produto.getMinEstoque()),
-            String.valueOf(produto.getEstoqueAtual()),
-            String.valueOf(produto.getCusto()),
-            String.valueOf(produto.getPercentualLucro())
-        };
-        escritorCSV.escreverLinha(ARQUIVO_PRODUTO, linha);
         System.out.println(">>> Produto cadastrado com sucesso! <<<");
     }
 
@@ -191,7 +135,7 @@ public class GerenciaProduto{
         Produto p = buscarProduto(idProduto);
         if (p != null) {
             produtos.remove(p);
-            reescreverProdutosCSV();
+            //escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
         } else {
             System.out.println("Produto não encontrado.");
         }
@@ -286,7 +230,7 @@ public class GerenciaProduto{
             }
         }
 
-        reescreverProdutosCSV();
+        // escritorCSV.atualizarArquivo(ARQUIVO_PRODUTO);
     }
 
   
@@ -316,27 +260,23 @@ public class GerenciaProduto{
         }
     return false; // nenhum produto está abaixo do mínimo
     }
-
-    public void reescreverProdutosCSV() {
-    List<String[]> dados = new ArrayList<>();
-    for (Produto p : produtos) {
-        dados.add(new String[]{
-            String.valueOf(p.getIdProduto()),
-            p.getDescricao(),
-            String.valueOf(p.getMinEstoque()),
-            String.valueOf(p.getEstoqueAtual()),
-            String.valueOf(p.getCusto()),
-            String.valueOf(p.getPercentualLucro())
-        });
-    }
-    escritorCSV.escreverProdutos(ARQUIVO_PRODUTO, dados);
-    }
-
-    public List<Produto> getProdutos() {
-        return produtos;
-    }
     
     
-}       
+    /**
+     * Gera um novo ID único para um produto.
+     * 
+     * @return Próximo ID disponível.
+     */
+    public int gerarNovoId() {
+        int maxId = 0;
+        for (Produto p : produtos) {
+            if (p.getIdProduto() > maxId) {
+                maxId = p.getIdProduto();
+            }
+        }
+        return maxId + 1;
+    }
+}
+          
 
 

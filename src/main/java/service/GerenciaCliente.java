@@ -27,10 +27,11 @@ import java.util.Scanner;
  */
 public class GerenciaCliente {
     private List<Cliente> clientes;
-    private final String ARQUIVO_CLIENTE = "bancoclientes.csv";
+    private final String ARQUIVO_CLIENTE = "clientes_20.csv";
     private Leitura leitorCSV;
     private Escrita escritorCSV;
-   
+
+    
     /**
     * Construtor padrão da classe GerenciaCliente.
     * Inicializa a lista de clientes como um novo ArrayList e instancia um objeto
@@ -78,16 +79,12 @@ public class GerenciaCliente {
                 clientes.add(cj);
             }
         }
-        
-        reescreverClientesCSV();
-        
     }
 
     
     /**
-     * VERSÃO LINHA DE COMANDO
      * Solicita os dados ao usuário, cria um ClienteFisico ou ClienteJuridico
-     * e o adiciona à lista de clientes. 
+     * e o adiciona à lista de clientes.
      * 
      * @param sc Scanner que será utilizado.
      */
@@ -148,79 +145,14 @@ public class GerenciaCliente {
         }
 
         clientes.add(cliente);
-        
-         // Salvar no CSV 
-        List<String> dados = new ArrayList<>();
-        //
-        String[] linha;
-        if (cliente instanceof ClienteFisico cf) {
-            linha = new String[]{
-                String.valueOf(cf.getId()),
-                cf.getNome(),
-                cf.getEndereco(),
-                cf.getTelefone(),
-                cf.getDataCadastro(),
-                cf.getTipo(),
-                cf.getCpf()
-            };
-        } else {
-            ClienteJuridico cj = (ClienteJuridico) cliente;
-            linha = new String[]{
-                String.valueOf(cj.getId()),
-                cj.getNome(),
-                cj.getEndereco(),
-                cj.getTelefone(),
-                cj.getDataCadastro(),
-                cj.getTipo(),
-                cj.getCnpj(),
-                String.valueOf(cj.getInscricaoEstadual())
-            };
+        /*if("F".equalsIgnoreCase(cliente.getTipo())){
+            escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, (ClienteFisico) cliente);
         }
-        escritorCSV.escreverLinha(ARQUIVO_CLIENTE, linha);
-        System.out.println("Cliente cadastrado com sucesso!");
+        else{
+            escritorCSV.atualizarArquivoCliente(ARQUIVO_CLIENTE, (ClienteJuridico) cliente);
+        }*/
+        System.out.println(">>> Cliente cadastrado com sucesso! <<<");
     }
-    
-    //Versão interface grafica Cliente Físico
-    public void inserirCliente(int idCliente, String nome, String endereco, String telefone, String dataCadastro, String tipo, String cpf){
-        Cliente cliente = new ClienteFisico(idCliente, nome, endereco, telefone, dataCadastro, tipo, cpf);
-        clientes.add(cliente);
-        
-        String[] linha;
-        if (cliente instanceof ClienteFisico cf) {
-            linha = new String[]{
-                String.valueOf(cf.getId()),
-                cf.getNome(),
-                cf.getEndereco(),
-                cf.getTelefone(),
-                cf.getDataCadastro(),
-                cf.getTipo(),
-                cf.getCpf()
-            };
-            escritorCSV.escreverLinha(ARQUIVO_CLIENTE, linha);
-        }
-    }
-    
-    //Versão interface grafica Cliente Juridico
-    public void inserirCliente(String cnpj, int InscricaoEstadual, int idCliente, String nome, String endereco, String telefone, String dataCadastro, String tipo){
-        Cliente cliente = new ClienteJuridico(cnpj, InscricaoEstadual, idCliente, nome, endereco, telefone, dataCadastro, tipo);
-        clientes.add(cliente);
-        
-        String[] linha;
-        if (cliente instanceof ClienteJuridico cj) {
-            linha = new String[]{
-                String.valueOf(cj.getId()),
-                cj.getNome(),
-                cj.getEndereco(),
-                cj.getTelefone(),
-                cj.getDataCadastro(),
-                cj.getTipo(),
-                cj.getCnpj(),
-                String.valueOf(cj.getInscricaoEstadual())
-            };
-            escritorCSV.escreverLinha(ARQUIVO_CLIENTE, linha);
-        }
-        
-   }
     
     /**
     * Remove um cliente do sistema com base no seu código de identificação.
@@ -235,7 +167,12 @@ public class GerenciaCliente {
         Cliente cliente = buscarCliente(idCliente);
         if(cliente != null){
             clientes.remove(cliente);
-            reescreverClientesCSV();
+            /*for (Cliente c : clientes) {
+                if(c.getTipo().equalsIgnoreCase("F")){
+                    escritorCSV.reescreverArquivoCliente(clientes, ARQUIVO_CLIENTE);
+                }
+                                
+            }*/
         }else System.out.println("Cliente nao encontrado");   
     }
     
@@ -365,40 +302,7 @@ public class GerenciaCliente {
                 }
             } 
             sc.close();
-            reescreverClientesCSV();
-            System.out.println("Cliente editado com sucesso!");
         }else System.out.println("Cliente nao encontrado.");
         
-    }
-    
-   
-    private void reescreverClientesCSV() {
-        List<String[]> dados = new ArrayList<>();
-        for (Cliente c : clientes) {
-            if (c instanceof ClienteFisico cf) {
-                dados.add(new String[]{
-                    String.valueOf(cf.getId()),
-                    cf.getNome(),
-                    cf.getEndereco(),
-                    cf.getTelefone(),
-                    cf.getDataCadastro(),
-                    cf.getTipo(),
-                    cf.getCpf()
-                });
-            } else if (c instanceof ClienteJuridico cj) {
-                dados.add(new String[]{
-                    String.valueOf(cj.getId()),
-                    cj.getNome(),
-                    cj.getEndereco(),
-                    cj.getTelefone(),
-                    cj.getDataCadastro(),
-                    cj.getTipo(),
-                    cj.getCnpj(),
-                    String.valueOf(cj.getInscricaoEstadual())
-                });
-            }
-        }
-        escritorCSV.escreverClientes(ARQUIVO_CLIENTE, dados);
-    }
+    }   
 }
-
