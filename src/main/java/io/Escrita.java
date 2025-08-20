@@ -43,6 +43,35 @@ public class Escrita {
             System.exit(1);
         }
     }
+    
+    public void escreverLinha(String caminho, String[] linha) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(caminho, true))) {
+        bw.write(String.join(";", linha));
+        bw.newLine(); 
+    } catch (IOException e) {
+        System.out.println("Erro de I/O: " + e.getMessage());
+    }
+}
+    
+    public void escreverClientes(String caminho, List<String[]> dados) {
+        escreverArquivo(caminho, "idCliente;nome;endereco;telefone;dataCadastro;tipo;documento;inscricaoEstadual", dados);
+    }
+    
+    public void escreverFornecedores(String caminho, List<String[]> dados) {
+        escreverArquivo(caminho, "idFornecedor;nome;endereco;telefone;cnpj;pessoaContato", dados);
+    }
+    
+    public void escreverProdutos(String caminho, List<String[]> dados) {
+        escreverArquivo(caminho, "idProduto;descricao;estoqueMinimo;estoqueAtual;valorCusto;percentualLucro", dados);
+    }  
+    
+    public void escreverVendas(String caminho, List<String[]> dados){
+        escreverArquivo(caminho,"idCliente;dataVenda;idProduto;quantidade;meioPagamento", dados);
+    }
+    
+    public void escreverCompras(String caminho, List<String[]> dados){
+        escreverArquivo(caminho,"numeroNF;idFornecedor;dataCompra;idProduto;quantidade", dados);
+    }
 
     /**
      * Gera um arquivo CSV contendo as contas a pagar de fornecedores.
@@ -94,3 +123,4 @@ public class Escrita {
         escreverArquivo(caminho, "idProduto;descricao;estoqueAtual;observacao", dados);
     }
 }
+

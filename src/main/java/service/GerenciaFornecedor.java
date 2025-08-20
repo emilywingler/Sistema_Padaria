@@ -31,7 +31,7 @@ import io.Escrita;
 public class GerenciaFornecedor {
     
     private List<Fornecedor> fornecedores;
-    private final String ARQUIVO_FORNECEDOR = "fornecedores.csv";
+    private final String ARQUIVO_FORNECEDOR = "bancofornecedores.csv";
     private Leitura leitorCSV;
     private Escrita escritorCSV;
     
@@ -78,8 +78,11 @@ public class GerenciaFornecedor {
             Fornecedor fornecedor = new Fornecedor(idFornecedor, nomeEmpresa, endereco, telefone, cnpj, pessoaContato);
             fornecedores.add(fornecedor);
         }
+        
+        reescreverFornecedoresCSV();
     }
     /**
+     * VERSÃO TERMINAL
     * Adiciona um novo fornecedor ao sistema e persiste a alteração no arquivo de dados.
     * <p>
     * Este método primeiro insere o objeto {@code Fornecedor} na lista em memória e,
@@ -123,8 +126,53 @@ public class GerenciaFornecedor {
 
         fornecedores.add(fornecedor);
         
-        System.out.println(">>> Fornecedor cadastrado com sucesso! <<<");
+        String[] linha = new String[]{
+                String.valueOf(fornecedor.getIdFornecedor()),
+                fornecedor.getNomeEmpresa(),
+                fornecedor.getEndereco(),
+                fornecedor.getTelefone(),
+                fornecedor.getCnpj(),
+                fornecedor.getPessoaContato()
+            };
+            escritorCSV.escreverLinha(ARQUIVO_FORNECEDOR, linha);
+        
+        System.out.println("Fornecedor cadastrado com sucesso! ");
     }
+    
+        /**
+     * VERSÃO INTERFACE GRÁFICA
+    * Adiciona um novo fornecedor ao sistema e persiste a alteração no arquivo de dados.
+    * <p>
+    * Este método primeiro insere o objeto {@code Fornecedor} na lista em memória e,
+    * em seguida, invoca o método de atualização do {@code escritorCSV} para
+    * garantir que o novo fornecedor seja salvo permanentemente no arquivo CSV.
+    *
+     * @param idFornecedor
+     * @param nomeEmpresa
+     * @param endereco
+     * @param telefone
+     * @param cnpj
+     * @param pessoaContato
+    */
+    public void inserirFornecedor(int
+            idFornecedor, String nomeEmpresa, String endereco, String telefone, String cnpj, String pessoaContato){
+        Fornecedor fornecedor = new Fornecedor(idFornecedor, nomeEmpresa, endereco, telefone, cnpj, pessoaContato);
+
+        fornecedores.add(fornecedor);
+        
+        String[] linha = new String[]{
+                String.valueOf(fornecedor.getIdFornecedor()),
+                fornecedor.getNomeEmpresa(),
+                fornecedor.getEndereco(),
+                fornecedor.getTelefone(),
+                fornecedor.getCnpj(),
+                fornecedor.getPessoaContato()
+            };
+            escritorCSV.escreverLinha(ARQUIVO_FORNECEDOR, linha);
+        
+        System.out.println("Fornecedor cadastrado com sucesso! ");
+    }
+    
     
     /**
     * Remove um fornecedor do sistema com base no seu código de identificação.
@@ -139,7 +187,7 @@ public class GerenciaFornecedor {
         Fornecedor f = buscarFornecedor(codigo);
         if(f != null){
             fornecedores.remove(f);
-            //escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
+            reescreverFornecedoresCSV();
         }else System.out.println("Fornecedor nao encontrado.");
         
     }
@@ -241,11 +289,28 @@ public class GerenciaFornecedor {
                     }
                 }
             }
-            //escritorCSV.atualizarArquivo(ARQUIVO_FORNECEDOR);
             sc.close();
+            reescreverFornecedoresCSV();
+            System.out.println("Fornecedor editado com sucesso!");
+            
         }else{
             System.out.println("Fornecedor nao encontrado.");
         }
         
-    }   
+    } 
+    
+    private void reescreverFornecedoresCSV() {
+        List<String[]> dados = new ArrayList<>();
+        for (Fornecedor f : fornecedores) {
+            dados.add(new String[]{
+                String.valueOf(f.getIdFornecedor()),
+                f.getNomeEmpresa(),
+                f.getEndereco(),
+                f.getTelefone(),
+                f.getCnpj(),
+                f.getPessoaContato()
+            });
+        }
+        escritorCSV.escreverFornecedores(ARQUIVO_FORNECEDOR, dados);
+    }
 }
