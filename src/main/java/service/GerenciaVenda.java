@@ -34,7 +34,7 @@ public class GerenciaVenda {
     /**
      * Nome do arquivo CSV onde as vendas são persistidas.
      */
-    private final String ARQUIVO_VENDA = "bancovendas.csv";
+    private String ARQUIVO_VENDA;
 
     /**
      * Responsável por ler dados de arquivos.
@@ -62,12 +62,13 @@ public class GerenciaVenda {
      * @param gerenciaProd instância de GerenciaProduto
      * @param gerenciaCliente instância de GerenciaCliente
      */
-    public GerenciaVenda(GerenciaProduto gerenciaProd, GerenciaCliente gerenciaCliente) {
+    public GerenciaVenda(GerenciaProduto gerenciaProd, GerenciaCliente gerenciaCliente, String ARQUIVO_VENDA) {
         vendas = new ArrayList<>();
         leitorCSV = new Leitura();
         escritorCSV = new Escrita();
         this.gp = gerenciaProd;
         this.gc = gerenciaCliente;
+        this.ARQUIVO_VENDA = ARQUIVO_VENDA;
     }
     
     /**
@@ -113,8 +114,7 @@ public class GerenciaVenda {
                 vendas.add(v);
             }
         }
-        
-        reescreverVendasCSV();
+        this.ARQUIVO_VENDA = caminhoArquivo;
     }
 
         

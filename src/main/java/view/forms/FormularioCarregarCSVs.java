@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import service.*;
+import view.CarregamentoCSVListener;
 
 public class FormularioCarregarCSVs extends JFrame {
 
@@ -13,6 +14,7 @@ public class FormularioCarregarCSVs extends JFrame {
     private GerenciaFornecedor gerenciaFornecedor;
     private GerenciaCompra gerenciaCompra;
     private GerenciaVenda gerenciaVenda;
+    private CarregamentoCSVListener listener;
 
     private JTextField txtClientes;
     private JTextField txtFornecedores;
@@ -26,13 +28,15 @@ public class FormularioCarregarCSVs extends JFrame {
             GerenciaFornecedor gerFor,
             GerenciaProduto gerProd,
             GerenciaCompra gerComp,
-            GerenciaVenda gerVend) {
+            GerenciaVenda gerVend,
+            CarregamentoCSVListener listener) {
 
         this.gerenciaCliente = gerCli;
         this.gerenciaFornecedor = gerFor;
         this.gerenciaProduto = gerProd;
         this.gerenciaCompra = gerComp;
         this.gerenciaVenda = gerVend;
+        this.listener = listener;
 
         initComponents();
     }
@@ -81,16 +85,48 @@ public class FormularioCarregarCSVs extends JFrame {
         }
     }
 
+    // <<< MÉTODO ATUALIZADO >>>
     private void carregarArquivos() {
-        try {
-            gerenciaCliente.carregarClientesCSV(txtClientes.getText());
-            gerenciaFornecedor.carregarFornecedorCSV(txtFornecedores.getText());
-            gerenciaProduto.carregarProdutosCSV(txtProdutos.getText());
-            gerenciaCompra.carregarComprasCSV(txtCompras.getText());
-            gerenciaVenda.carregarVendasCSV(txtVendas.getText());
+        // <<< ADICIONADO: Bloco de Validação para evitar o erro >>>
+        String caminhoClientes = txtClientes.getText();
+        String caminhoFornecedores = txtFornecedores.getText();
+        String caminhoProdutos = txtProdutos.getText();
+        String caminhoCompras = txtCompras.getText();
+        String caminhoVendas = txtVendas.getText();
 
-            JOptionPane.showMessageDialog(this, "Arquivos carregados com sucesso!");
+        if (caminhoClientes == null || caminhoClientes.isBlank() ||
+            caminhoFornecedores == null || caminhoFornecedores.isBlank() ||
+            caminhoProdutos == null || caminhoProdutos.isBlank() ||
+            caminhoCompras == null || caminhoCompras.isBlank() ||
+            caminhoVendas == null || caminhoVendas.isBlank()) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, preencha todos os campos com os caminhos dos arquivos CSV.",
+                    "Campos Vazios",
+                    JOptionPane.WARNING_MESSAGE);
+            return; // Impede a execução do resto do método
+        }
+        // <<< FIM DA VALIDAÇÃO >>>
+
+        try {
+            // A lógica de carregamento agora usa as variáveis locais
+            gerenciaCliente.carregarClientesCSV(caminhoClientes);
+            gerenciaFornecedor.carregarFornecedorCSV(caminhoFornecedores);
+            gerenciaProduto.carregarProdutosCSV(caminhoProdutos);
+            gerenciaCompra.carregarComprasCSV(caminhoCompras);
+            gerenciaVenda.carregarVendasCSV(caminhoVendas);
+
+            if (listener != null) {
+                listener.onCSVsCarregadosComSucesso();
+            }
+
+            dispose();
+
         } catch (Exception ex) {
+            // <<< ADICIONADO: Linha essencial para diagnóstico >>>
+            // Esta linha imprimirá o erro completo e detalhado no console da sua IDE
+            ex.printStackTrace();
+
             JOptionPane.showMessageDialog(this,
                     "Erro ao carregar arquivos: " + ex.getMessage(),
                     "Erro",

@@ -3,107 +3,105 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import model.*;
-import io.*;
-import java.util.List;
-import report.*;
 import service.*;
 import view.forms.FormularioCarregarCSVs;
 
 public class TelaPrincipal {
-    
-    private static GerenciaCliente gerenciaCliente= new GerenciaCliente();
-    private static GerenciaProduto gerenciaProduto = new GerenciaProduto();
-    private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor();
-    private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor);
-    private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
-    
+
+    // As gerências continuam as mesmas
+    private static GerenciaCliente gerenciaCliente = new GerenciaCliente(null);
+    private static GerenciaProduto gerenciaProduto = new GerenciaProduto(null);
+    private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor(null);
+    private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto, gerenciaFornecedor, null);
+    private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto, gerenciaCliente, null);
+
+    // Referências para os componentes da UI que precisam ser atualizados
+    private static CardLayout cardLayout;
+    private static JPanel painelPrincipal;
+    private static JFrame frame; // <<< MUDANÇA: Frame agora é um campo estático para ser acessível
+
+    // <<< MUDANÇA: Botões agora são campos estáticos para serem acessados pelo listener
+    private static JButton btnCadastro;
+    private static JButton btnVendas;
+    private static JButton btnContas;
+    private static JButton btnRelatorios;
+
     public static void main(String[] args) {
-        gerenciaCliente.carregarClientesCSV("bancoclientes.csv");
-        gerenciaFornecedor.carregarFornecedorCSV("bancofornecedores.csv");
-        gerenciaProduto.carregarProdutosCSV("bancoprodutos.csv");
-        gerenciaCompra.carregarComprasCSV("bancocompras.csv");
-        gerenciaVenda.carregarVendasCSV("bancovendas.csv");
-        
-        // Garante que o código da interface rode na thread correta
         SwingUtilities.invokeLater(() -> {
-            criarEExibirGUI();
+            // <<< MUDANÇA: Criamos a GUI principal primeiro, mas a deixamos invisível
+            criarEExibirGUI(false);
+
+            // Abre a tela para carregar os CSVs com um "listener"
+            // Este listener dirá o que fazer quando os arquivos forem carregados
+            abrirFormularioCSVs(() -> {
+                // Esta é a ação de callback:
+                // 1. Habilita os botões
+                habilitarBotoesPrincipais(true);
+                // 2. Mostra a janela principal
+                frame.setVisible(true);
+                JOptionPane.showMessageDialog(frame, "Arquivos carregados com sucesso! O sistema está pronto para uso.");
+            });
         });
     }
 
-    private static void criarEExibirGUI() {
-        TelaCadastro cadastro = new TelaCadastro(gerenciaProduto,gerenciaFornecedor,gerenciaCliente);
+    // <<< MUDANÇA: Método agora aceita um booleano para controlar a visibilidade inicial
+    private static void criarEExibirGUI(boolean visivel) {
+        TelaCadastro cadastro = new TelaCadastro(gerenciaProduto, gerenciaFornecedor, gerenciaCliente);
         TelaControleContas telaContas = new TelaControleContas(gerenciaCompra, gerenciaVenda, gerenciaProduto, gerenciaCliente);
-        // 1. Criar a janela principal (JFrame)
-        JFrame frame = new JFrame("Sistema de Gestão de Padaria");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Fecha a aplicação ao clicar no X
-        frame.setSize(800, 600); // Define um tamanho
 
-        // 2. Configurar o painel principal com CardLayout (nosso "maquinista")
-        CardLayout cardLayout = new CardLayout();
-        JPanel painelPrincipal = new JPanel(cardLayout);
+        // Janela principal
+        frame = new JFrame("Sistema de Gestão de Padaria");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
 
-        // 3. Criar os painéis para cada "tela" (os "cenários")
-        JPanel painelMenuPrincipal = criarPainelMenuPrincipal(painelPrincipal, cardLayout);
+        // Painel principal com CardLayout
+        cardLayout = new CardLayout();
+        painelPrincipal = new JPanel(cardLayout);
+
+        // Menus
+        JPanel painelMenuPrincipal = criarPainelMenuPrincipal();
         JPanel painelMenuCadastro = cadastro.criarPainelMenuCadastro(painelPrincipal, cardLayout);
         JPanel painelContas = telaContas.criarPainelControleContas(painelPrincipal, cardLayout);
-        // ... aqui você criaria os outros painéis (Vendas, Contas, Relatórios)
 
-        // 4. Adicionar os painéis ao nosso "baralho" de cartões (cenários)
+        // Adiciona os painéis
         painelPrincipal.add(painelMenuPrincipal, "menuPrincipal");
         painelPrincipal.add(painelMenuCadastro, "menuCadastro");
         painelPrincipal.add(painelContas, "menuContas");
-        // ... adicionar outros painéis
 
-        // 5. Adicionar o painel principal à janela e torná-la visível
         frame.add(painelPrincipal);
-        frame.setLocationRelativeTo(null); // Centraliza a janela
-        frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(visivel); // <<< MUDANÇA: Controla a visibilidade
     }
-    
-    // Adicione este método dentro da classe TelaPrincipal.java
 
-    private static JPanel criarPainelMenuPrincipal(JPanel painelPrincipal, CardLayout cardLayout) {
+    // <<< MUDANÇA: Método não precisa mais dos parâmetros do CardLayout, pois são estáticos
+    private static JPanel criarPainelMenuPrincipal() {
         JPanel painel = new JPanel();
-        painel.setLayout(new GridLayout(5, 1, 10, 10)); // 5 linhas, 1 coluna, com espaçamento
+        painel.setLayout(new GridLayout(6, 1, 10, 10));
 
-        // Criar os botões
-        JButton btnCadastro = new JButton("Cadastro (Clientes, Fornecedores, Produtos)");
-        JButton btnVendas = new JButton("Registro de Vendas");
-        JButton btnContas = new JButton("Controle de Contas");
-        JButton btnRelatorios = new JButton("Geração de Relatórios Mensais");
-        JButton btnCarregarCSV = new JButton("Carregar arquivos CSV");
+        // <<< MUDANÇA: Atribui os botões aos campos estáticos
+        btnCadastro = new JButton("Cadastro (Clientes, Fornecedores, Produtos)");
+        btnVendas = new JButton("Registro de Vendas");
+        btnContas = new JButton("Controle de Contas");
+        btnRelatorios = new JButton("Geração de Relatórios Mensais");
+        JButton btnCarregarCSV = new JButton("Carregar/Recarregar arquivos CSV");
         JButton btnSair = new JButton("Sair");
-        
-        
 
-        // Adicionar "ação" ao botão de Cadastro
-        btnCadastro.addActionListener(e -> {
-            // Pede ao "maquinista" (cardLayout) para mostrar o painel "menuCadastro"
-            cardLayout.show(painelPrincipal, "menuCadastro");
-        });
+        // Bloqueia o acesso até carregar os CSVs
+        habilitarBotoesPrincipais(false);
 
-        // Adicionar "ação" ao botão de Sair
+        // Action Listeners
+        btnCadastro.addActionListener(e -> cardLayout.show(painelPrincipal, "menuCadastro"));
+        btnContas.addActionListener(e -> cardLayout.show(painelPrincipal, "menuContas"));
         btnSair.addActionListener(e -> System.exit(0));
-        
-        
-        btnCarregarCSV.addActionListener(e -> {
-        FormularioCarregarCSVs formCSV = new FormularioCarregarCSVs(
-            gerenciaCliente,
-            gerenciaFornecedor,
-            gerenciaProduto,
-            gerenciaCompra,
-            gerenciaVenda
-        );
-        formCSV.setVisible(true);
-    });
-        
-        btnContas.addActionListener(e -> {
-            cardLayout.show(painelPrincipal, "menuContas");
-        });
-        
-        // (Adicionar ações para os outros botões depois)
 
-        // Adicionar os botões ao painel
+        // <<< MUDANÇA: Lógica do ActionListener refatorada
+        btnCarregarCSV.addActionListener(e -> {
+            abrirFormularioCSVs(() -> {
+                habilitarBotoesPrincipais(true); // Apenas habilita os botões
+                JOptionPane.showMessageDialog(frame, "Novos arquivos carregados com sucesso!");
+            });
+        });
+
         painel.add(btnCadastro);
         painel.add(btnVendas);
         painel.add(btnContas);
@@ -112,10 +110,26 @@ public class TelaPrincipal {
         painel.add(btnSair);
 
         return painel;
-        
-        // Adicione este método também dentro da classe TelaPrincipal.java
     }
-    
-    
-    
+
+
+    private static void abrirFormularioCSVs(CarregamentoCSVListener listener) {
+        FormularioCarregarCSVs formCSV = new FormularioCarregarCSVs(
+                gerenciaCliente,
+                gerenciaFornecedor,
+                gerenciaProduto,
+                gerenciaCompra,
+                gerenciaVenda,
+                listener // Passa o listener para o formulário
+        );
+        formCSV.setVisible(true);
+    }
+
+
+    private static void habilitarBotoesPrincipais(boolean habilitar) {
+        btnCadastro.setEnabled(habilitar);
+        btnVendas.setEnabled(habilitar);
+        btnContas.setEnabled(habilitar);
+        btnRelatorios.setEnabled(habilitar);
+    }
 }
