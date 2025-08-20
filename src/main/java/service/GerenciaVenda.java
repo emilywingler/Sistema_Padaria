@@ -534,35 +534,5 @@ public class GerenciaVenda {
         }
         return vendasAreceber;
         } 
-    
-    private void reescreverVendasCSV() {
-    List<String[]> dados = new ArrayList<>();
-        for (Venda v : vendas) {
-            if (v instanceof VendaAVista va) {
-                dados.add(new String[]{
-                    "",
-                    va.getDataVenda(),
-                    String.valueOf(va.getIdProduto()),
-                    String.valueOf(va.getQuantidade()),
-                    String.valueOf(va.getMeioPagamento()) 
-                });
-            } else if (v instanceof VendaFiado vf) {
-                dados.add(new String[]{
-                    String.valueOf(vf.getIdCliente()),
-                    vf.getDataVenda(),
-                    String.valueOf(vf.getIdProduto()),
-
-                    String.valueOf(vf.getQuantidade()),
-                    "F"  
-
-                });
-            }
-        }
-        escritorCSV.escreverVendas(ARQUIVO_VENDA, dados);
-}
-    
-    public List<Venda> getVendas() {
-        return vendas;
-    }
-
+        
 }

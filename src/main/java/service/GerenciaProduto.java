@@ -40,6 +40,7 @@ public class GerenciaProduto{
     /**
      * Construtor da classe GerenciaProduto.
      * Inicializa a lista de produtos e os objetos de leitura/escrita de CSV.
+     * @param ARQUIVO_PRODUTO
      */
     public GerenciaProduto(String ARQUIVO_PRODUTO) {
         produtos = new ArrayList<>();
@@ -334,6 +335,10 @@ public class GerenciaProduto{
         }
         return maxId + 1;
     }
+    
+    /**
+     * Percorre a lista de produtos e reescreve no arquivo CSV
+     **/
 
     public void reescreverProdutosCSV() {
     List<String[]> dados = new ArrayList<>();

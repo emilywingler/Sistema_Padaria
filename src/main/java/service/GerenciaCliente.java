@@ -370,6 +370,9 @@ public class GerenciaCliente {
         
     }
     
+    /*
+    * Percorre a lista de clientes e reescreve tudo no arquivo csv
+    */
    
     private void reescreverClientesCSV() {
         List<String[]> dados = new ArrayList<>();
