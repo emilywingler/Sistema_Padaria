@@ -227,4 +227,8 @@ public class GerenciaCompra {
 
         escritorCSV.escreverCompras(ARQUIVO_COMPRA, dados);
     }
+    //para a interface
+    public List<Compra> getCompras() {
+        return compras;
+    }
 }
