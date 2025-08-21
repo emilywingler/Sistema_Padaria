@@ -21,25 +21,20 @@ public class TelaCadastro{
         JPanel painel = new JPanel();
         painel.setLayout(new GridLayout(4, 1, 10, 10));
 
-        // Criar os botões
+        
         JButton btnCadastrarCliente = new JButton("Cadastrar Novo Cliente");
         JButton btnCadastrarFornecedor = new JButton("Cadastrar Novo Fornecedor");
         JButton btnCadastrarProduto = new JButton("Cadastrar Novo Produto");
         JButton btnVoltar = new JButton("Voltar ao Menu Principal");
 
-        // Adicionar "ação" ao botão de Voltar
+        
         btnVoltar.addActionListener(e -> {
-            // Pede ao "maquinista" para mostrar o painel "menuPrincipal"
+            
             cardLayout.show(painelPrincipal, "menuPrincipal");
         });
 
-        // Adicionar ações para os botões de cadastro...
-        // Por exemplo, para cadastrar um cliente:
-        // Dentro do método criarPainelMenuCadastro(...)
-
         btnCadastrarCliente.addActionListener(e -> {
-            // Para obter o 'framePai', você pode precisar de uma referência ao JFrame principal.
-            // Uma forma simples é pegar a partir do próprio botão.
+           
             JFrame framePai = (JFrame) SwingUtilities.getWindowAncestor((Component) e.getSource());
             exibirFormularioCadastroCliente(framePai);
         });
@@ -55,7 +50,7 @@ public class TelaCadastro{
             exibirFormularioCadastroProduto(framePai);
         });
 
-        // Adicionar os botões ao painel
+        
         painel.add(btnCadastrarCliente);
         painel.add(btnCadastrarFornecedor);
         painel.add(btnCadastrarProduto);
@@ -72,17 +67,17 @@ public class TelaCadastro{
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
         if (resultado == JOptionPane.OK_OPTION) {
-            // 1. CHAMA O MÉTODO DE VALIDAÇÃO DO PRÓPRIO FORMULÁRIO
+            
             if (formulario.validarCampos(framePai)) {
                 try {
-                    // 2. SE A VALIDAÇÃO PASSOU, OBTÉM OS DADOS E SALVA
+                    
                     int codigo = formulario.getCodigo();
                     if (gc.buscarCliente(codigo) != null) {
                         JOptionPane.showMessageDialog(framePai, "Já existe um cliente cadastrado com este código.", "Erro de Duplicata", JOptionPane.ERROR_MESSAGE);
-                        continue; // Pede para corrigir o código
+                        continue; 
                     }
 
-                    String nome = formulario.getNome(); // Pega o nome para a mensagem de sucesso
+                    String nome = formulario.getNome(); 
                     
                     if ("Pessoa Física".equals(formulario.getTipoPessoa())) {
                         gc.inserirCliente(codigo, nome, formulario.getEndereco(), formulario.getTelefone(), 

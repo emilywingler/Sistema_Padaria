@@ -92,7 +92,7 @@ public class FormularioVendaPanel extends JPanel {
                 int id = Integer.parseInt(campoIdCliente.getText());
                 Cliente c = gc.buscarCliente(id);
                 if (c != null) {
-                    labelNomeCliente.setText(id + ": " + c.getNome() + "    Divida: R$ " + gv.totalAReceberCliente(c));
+                    labelNomeCliente.setText(id + ": " + c.getNome() + " Divida:" + gv.totalAReceberCliente(c));
                     labelNomeCliente.setForeground(Color.BLUE);
                 } else {
                     labelNomeCliente.setText("Cliente não encontrado");
