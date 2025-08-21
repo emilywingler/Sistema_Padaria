@@ -29,7 +29,7 @@ public class GerenciaProduto{
     private List<Produto> produtos;
     
     /** Nome do arquivo CSV onde os produtos são salvos */
-    private final String ARQUIVO_PRODUTO = "bancoprodutos.csv";
+    private String ARQUIVO_PRODUTO;
     
     /** Objeto responsável por ler dados de arquivos CSV */
     private Leitura leitorCSV;
@@ -40,11 +40,13 @@ public class GerenciaProduto{
     /**
      * Construtor da classe GerenciaProduto.
      * Inicializa a lista de produtos e os objetos de leitura/escrita de CSV.
+     * @param ARQUIVO_PRODUTO
      */
-    public GerenciaProduto() {
+    public GerenciaProduto(String ARQUIVO_PRODUTO) {
         produtos = new ArrayList<>();
         leitorCSV = new Leitura();
-        escritorCSV = new Escrita();     
+        escritorCSV = new Escrita(); 
+        this.ARQUIVO_PRODUTO = ARQUIVO_PRODUTO;
     }
     
     
@@ -74,7 +76,8 @@ public class GerenciaProduto{
             produtos.add(produto);
             
         }
-       reescreverProdutosCSV(); 
+        
+    this.ARQUIVO_PRODUTO = caminhoArquivo;
     }
     
     /**

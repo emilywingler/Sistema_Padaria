@@ -35,7 +35,7 @@ public class GerenciaVenda {
     /**
      * Nome do arquivo CSV onde as vendas são persistidas.
      */
-    private final String ARQUIVO_VENDA = "bancovendas.csv";
+    private String ARQUIVO_VENDA;
 
     /**
      * Responsável por ler dados de arquivos.
@@ -63,12 +63,13 @@ public class GerenciaVenda {
      * @param gerenciaProd instância de GerenciaProduto
      * @param gerenciaCliente instância de GerenciaCliente
      */
-    public GerenciaVenda(GerenciaProduto gerenciaProd, GerenciaCliente gerenciaCliente) {
+    public GerenciaVenda(GerenciaProduto gerenciaProd, GerenciaCliente gerenciaCliente, String ARQUIVO_VENDA) {
         vendas = new ArrayList<>();
         leitorCSV = new Leitura();
         escritorCSV = new Escrita();
         this.gp = gerenciaProd;
         this.gc = gerenciaCliente;
+        this.ARQUIVO_VENDA = ARQUIVO_VENDA;
     }
     
     /**
@@ -114,8 +115,7 @@ public class GerenciaVenda {
                 vendas.add(v);
             }
         }
-        
-        reescreverVendasCSV();
+        this.ARQUIVO_VENDA = caminhoArquivo;
     }
 
         
@@ -216,101 +216,113 @@ public class GerenciaVenda {
             }
         }
         
-        if(MeioPagamento == 'F'){
+
+        if (MeioPagamento == 'F') {
             int idCliente;
-            
-            while(true){
+
+            while (true) {
                 System.out.println("Digite o ID do Cliente: ");
                 idCliente = sc.nextInt();
+                sc.nextLine(); // Limpa o buffer do scanner
                 Cliente cliente = gc.buscarCliente(idCliente);
-                if(cliente == null){
+                if (cliente == null) {
                     System.out.println("Cliente não encontrado! Tente Novamente");
-                }
-                else{
+                } else {
                     break;
                 }
             }
-            
+
             produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
-            
+
             Venda v = new VendaFiado(idCliente, DataVenda, idProduto, quantidade, MeioPagamento);
             vendas.add(v);
+
             String[] linha = new String[]{
-            String.valueOf(v.getIdVenda()),
-            v.getDataVenda(),
-            String.valueOf(v.getIdProduto()),
-            String.valueOf(v.getQuantidade()),
-            Character.toString(v.getMeioPagamento())
-        };
+                String.valueOf(idCliente),
+                v.getDataVenda(),
+                String.valueOf(v.getIdProduto()),
+                String.valueOf(v.getQuantidade()),
+                Character.toString(v.getMeioPagamento())
+            };
             escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
             gp.reescreverProdutosCSV();
         }
         
-        else{
-            produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
-            
-            Venda v = new VendaAVista(DataVenda, idProduto, quantidade, MeioPagamento);
-            vendas.add(v);
-            
-            String[] linha = new String[]{
-            String.valueOf(v.getIdVenda()),
-            v.getDataVenda(),
-            String.valueOf(v.getIdProduto()),
-            String.valueOf(v.getQuantidade()),
-            Character.toString(v.getMeioPagamento())
-        };
-            escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
-            gp.reescreverProdutosCSV();
-            
-        }
+        
+
+        else {
+    produto.setEstoqueAtual(produto.getEstoqueAtual() - quantidade);
+    
+    Venda v = new VendaAVista(DataVenda, idProduto, quantidade, MeioPagamento);
+    vendas.add(v);
+    
+    
+    String[] linha = new String[]{
+        "", 
+        v.getDataVenda(),
+        String.valueOf(v.getIdProduto()),
+        String.valueOf(v.getQuantidade()),
+        Character.toString(v.getMeioPagamento())
+    };
+    escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
+    gp.reescreverProdutosCSV();
+}
 
         
     }
     
-       /**
-    * Registra uma nova venda no sistema de forma interativa via terminal.
-    * <p>
-    * O método guia o usuário pelo processo de registro de uma venda:
-    * <ul>
-    *   <li>Lista os produtos disponíveis e solicita a seleção de um ID válido.</li>
-    *   <li>Solicita a quantidade a ser vendida, validando se há estoque suficiente.</li>
-    *   <li>Pede a data da venda.</li>
-    *   <li>Solicita o meio de pagamento, aceitando apenas os seguintes caracteres:
-    *       <ul>
-    *           <li>`$` - Dinheiro</li>
-    *           <li>`X` - Cheque</li>
-    *           <li>`D` - Cartão de Débito</li>
-    *           <li>`C` - Cartão de Crédito</li>
-    *           <li>`T` - Ticket Alimentação</li>
-    *           <li>`F` - Fiado</li>
-    *       </ul>
-    *   </li>
-    *   <li>Se o pagamento for <b>Fiado</b>, também é solicitado o ID de um cliente válido.</li>
-    * </ul>
-    * Após as validações, o estoque do produto é atualizado e uma instância de {@link VendaAVista} 
-    * ou {@link VendaFiado} é criada e adicionada à lista de vendas.
-    * 
-     * @param v
-     * @param produto
-    * 
-    * @throws NullPointerException se, em algum ponto, o produto selecionado não for encontrado 
-    *         (tratado internamente com {@link java.util.Objects#requireNonNull(Object)}).
-    */
-    public void registrarVenda(Venda v, Produto produto){
-            
-            produto.setEstoqueAtual(produto.getEstoqueAtual() - v.getQuantidade());
+    /**
+ * Registra uma nova venda (criada pela interface gráfica) no sistema.
+ * <p>
+ * Este método recebe um objeto {@link Venda} já criado. Ele atualiza o estoque do
+ * produto correspondente, adiciona a venda à lista em memória e persiste a
+ * transação no arquivo CSV no formato correto.
+ * </p>
+ * <p>
+ * A formatação do CSV depende do tipo da venda:
+ * <ul>
+ * <li><b>VendaFiado:</b> O primeiro campo do CSV será o ID do cliente.</li>
+ * <li><b>VendaAVista:</b> O primeiro campo do CSV será vazio. </li>
+ * </ul>
+ *
+ * @param v O objeto Venda (pode ser VendaAVista ou VendaFiado) a ser registrado.
+ * @param produto O produto associado à venda, para atualização do estoque.
+ */
+    public void registrarVenda(Venda v, Produto produto) {
+       
+        produto.setEstoqueAtual(produto.getEstoqueAtual() - v.getQuantidade());
 
-            vendas.add(v);
-            String[] linha = new String[]{
-            String.valueOf(v.getIdVenda()),
-            v.getDataVenda(),
-            String.valueOf(v.getIdProduto()),
-            String.valueOf(v.getQuantidade()),
-            Character.toString(v.getMeioPagamento())
-        };
-            escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
-            gp.reescreverProdutosCSV();
+        
+        vendas.add(v);
+
+        
+        String[] linha;
+
+        
+        if (v instanceof VendaFiado vf) {
+            
+            linha = new String[]{
+                String.valueOf(vf.getIdCliente()),
+                vf.getDataVenda(),
+                String.valueOf(vf.getIdProduto()),
+                String.valueOf(vf.getQuantidade()),
+                Character.toString(vf.getMeioPagamento())
+            };
+        } else {
+            
+            linha = new String[]{
+                "",
+                v.getDataVenda(),
+                String.valueOf(v.getIdProduto()),
+                String.valueOf(v.getQuantidade()),
+                Character.toString(v.getMeioPagamento())
+            };
         }
+
+    
+    escritorCSV.escreverLinha(ARQUIVO_VENDA, linha);
+    gp.reescreverProdutosCSV(); 
+    }
     /**
      * Lista todas as vendas registradas.
      */
@@ -608,7 +620,7 @@ public class GerenciaVenda {
         }
         return vendasAreceber;
         } 
-    
+
     // filtro da interface
     public List<Venda> filtrarMeioPagamento(char meio){
         List<Venda> filtro = new ArrayList<>();
@@ -718,5 +730,6 @@ public class GerenciaVenda {
     public List<Venda> getVendas() {
         return vendas;
     }
+
 
 }
