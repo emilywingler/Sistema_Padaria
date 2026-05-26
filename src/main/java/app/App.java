@@ -1,3 +1,5 @@
+package app;
+
 
 import java.util.Scanner;
 import model.*;
@@ -25,17 +27,18 @@ import service.*;
  * </ul>
  */
 public class App {
+    
     private static String caminhoArquivoCliente;
     private static String caminhoArquivoFornecedor;
     private static String caminhoArquivoProduto;
     private static String caminhoArquivoCompra;
     private static String caminhoArquivoVenda;
     
-    private static GerenciaCliente gerenciaCliente= new GerenciaCliente();
-    private static GerenciaProduto gerenciaProduto = new GerenciaProduto();
-    private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor();
-    private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor);
-    private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
+    private static GerenciaCliente gerenciaCliente= new GerenciaCliente(caminhoArquivoCliente);
+    private static GerenciaProduto gerenciaProduto = new GerenciaProduto(caminhoArquivoProduto);
+    private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor(caminhoArquivoFornecedor);
+    private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor, caminhoArquivoCompra);
+    private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente, caminhoArquivoVenda);
     
     /**
      * Método principal da aplicação.
@@ -45,8 +48,25 @@ public class App {
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int op = 0;
         
+        System.out.println("Digite o caminho do arquivo csv contendo os clientes: ");
+        caminhoArquivoCliente = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo os fornecedores: ");
+        caminhoArquivoFornecedor = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo os produtos: ");
+        caminhoArquivoProduto = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo as compras: ");
+        caminhoArquivoCompra = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo as vendas: ");
+        caminhoArquivoVenda = sc.nextLine();
+
+        gerenciaCliente.carregarClientesCSV(caminhoArquivoCliente);
+        gerenciaFornecedor.carregarFornecedorCSV(caminhoArquivoFornecedor);
+        gerenciaProduto.carregarProdutosCSV(caminhoArquivoProduto);
+        gerenciaCompra.carregarComprasCSV(caminhoArquivoCompra);
+        gerenciaVenda.carregarVendasCSV(caminhoArquivoVenda);
+        
+        int op = 0;
         
         while(op != 5){
             menuPrincipal();
@@ -108,7 +128,6 @@ public class App {
                            2. Cadastrar Novo Fornecedor
                            3. Cadastrar Novo Produto
                            4. Voltar ao Menu Principal
-                           5. Carregar Arquivos CSV's
                            """);
             op = selecionarOpcao(sc);
 
@@ -124,27 +143,6 @@ public class App {
                 }
                 case 4 ->{ 
                     return;
-                }
-                case 5 ->{
-                    sc.nextLine();
-                    System.out.println("Digite o caminho do arquivo csv contendo os clientes: ");
-                    caminhoArquivoCliente = sc.nextLine();
-                    System.out.println("Digite o caminho do arquivo csv contendo os fornecedores: ");
-                    caminhoArquivoFornecedor = sc.nextLine();
-                    System.out.println("Digite o caminho do arquivo csv contendo os produtos: ");
-                    caminhoArquivoProduto = sc.nextLine();
-                    System.out.println("Digite o caminho do arquivo csv contendo as compras: ");
-                    caminhoArquivoCompra = sc.nextLine();
-                    System.out.println("Digite o caminho do arquivo csv contendo as vendas: ");
-                    caminhoArquivoVenda = sc.nextLine();
-                    
-                    gerenciaCliente.carregarClientesCSV(caminhoArquivoCliente);
-                    gerenciaFornecedor.carregarFornecedorCSV(caminhoArquivoFornecedor);
-                    gerenciaProduto.carregarProdutosCSV(caminhoArquivoProduto);
-                    gerenciaCompra.carregarComprasCSV(caminhoArquivoCompra);
-                    gerenciaVenda.carregarVendasCSV(caminhoArquivoVenda);
-                    
-                    
                 }
                 default ->{
                     System.out.println("Opção inválida. Tente novamente.");

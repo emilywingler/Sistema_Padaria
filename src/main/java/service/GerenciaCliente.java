@@ -27,7 +27,7 @@ import java.util.Scanner;
  */
 public class GerenciaCliente {
     private List<Cliente> clientes;
-    private final String ARQUIVO_CLIENTE = "bancoclientes.csv";
+    private String ARQUIVO_CLIENTE;
     private Leitura leitorCSV;
     private Escrita escritorCSV;
    
@@ -36,10 +36,11 @@ public class GerenciaCliente {
     * Inicializa a lista de clientes como um novo ArrayList e instancia um objeto
     * da classe Leitura para manipulação de arquivos CSV.
     */
-    public GerenciaCliente(){
+    public GerenciaCliente(String ARQUIVO_CLIENTE){
         clientes = new ArrayList<>();
         leitorCSV = new Leitura();
         escritorCSV = new Escrita();
+        this.ARQUIVO_CLIENTE = ARQUIVO_CLIENTE;
     }
     
     /**
@@ -78,9 +79,7 @@ public class GerenciaCliente {
                 clientes.add(cj);
             }
         }
-        
-        reescreverClientesCSV();
-        
+        this.ARQUIVO_CLIENTE = caminhoArquivo;
     }
 
     
@@ -371,6 +370,9 @@ public class GerenciaCliente {
         
     }
     
+    /*
+    * Percorre a lista de clientes e reescreve tudo no arquivo csv
+    */
    
     private void reescreverClientesCSV() {
         List<String[]> dados = new ArrayList<>();

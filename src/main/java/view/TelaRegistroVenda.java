@@ -89,9 +89,6 @@ public class TelaRegistroVenda extends JPanel {
         String[] meios = {"Todos os Pagamentos", "Dinheiro", "Cheque", "Cartão de Débito", "Cartão de Crédito", "Ticket Alimentação", "Fiado"};
         filtroMeioPagamento = new JComboBox<>(meios);
 
-        // 2. Adiciona os componentes na ordem correta para formar a grade
-        painelFiltros.add(new JLabel("Filtrar por Produto:"));
-        painelFiltros.add(filtroProduto);
         painelFiltros.add(new JLabel("Filtrar por Pagamento:")); // Agora este ficará na linha de baixo
         painelFiltros.add(filtroMeioPagamento);
 
@@ -102,8 +99,6 @@ public class TelaRegistroVenda extends JPanel {
         painelBotoes.add(btnRegistrarVenda);
         painelBotoes.add(btnVoltar);
 
-        // 4. As ações dos componentes continuam as mesmas
-        filtroProduto.addActionListener(e -> atualizarTabela());
         filtroMeioPagamento.addActionListener(e -> atualizarTabela());
 
         btnRegistrarVenda.addActionListener(e -> {
@@ -174,8 +169,6 @@ public class TelaRegistroVenda extends JPanel {
                     Produto produto = gp.buscarProduto(idProduto);
                     Venda venda;
 
-                    // --- AQUI ESTÁ A MUDANÇA ---
-                    // USA A FUNÇÃO UTILITÁRIA para converter o nome para o código (ex: '$', 'F')
                     char meioPagamentoCodigo = FormUtils.mapearPagamentoParaCodigo(meioPagamentoString);
 
                     // A verificação continua sendo pelo nome, o que é mais legível

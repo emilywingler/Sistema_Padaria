@@ -40,7 +40,7 @@ public class GerenciaCompra {
     /**
      * Nome do arquivo CSV utilizado para armazenar as compras.
      */
-    private final String ARQUIVO_COMPRA = "bancocompras.csv";
+    private String ARQUIVO_COMPRA;
 
     /**
      * Utilitário para leitura de arquivos CSV.
@@ -68,12 +68,13 @@ public class GerenciaCompra {
      * @param gerenciarProd instância de {@link GerenciaProduto} para controle de produtos
      * @param gerenciarFornecedor instância de {@link GerenciaFornecedor} para controle de fornecedores
      */
-    public GerenciaCompra(GerenciaProduto gerenciarProd, GerenciaFornecedor gerenciarFornecedor) {
+    public GerenciaCompra(GerenciaProduto gerenciarProd, GerenciaFornecedor gerenciarFornecedor, String ARQUIVO_COMPRA) {
         compras = new ArrayList<>();
         leitorCSV = new Leitura();
         escritorCSV = new Escrita();
         this.gp = gerenciarProd;
         this.gf = gerenciarFornecedor;
+        this.ARQUIVO_COMPRA = ARQUIVO_COMPRA;
     }
     
     /**
@@ -107,8 +108,7 @@ public class GerenciaCompra {
             Compra compra = new Compra(numeroNotaFiscal, idFornecedor, dataCompra, idProduto, quantidade);
             compras.add(compra);
         }
-        
-        reescreverComprasCSV();
+     this.ARQUIVO_COMPRA = caminhoArquivo;   
     }
     
     /**

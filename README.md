@@ -1,6 +1,7 @@
 ## Sistema de Gestão de Padaria
+[Link do App.java, para rodar o programa no terminal](src/main/java/app/App.java)
 
-**(Prática baseada nos trabalhos elaborados pelo professor Vitor E. Silva Souza, UFES)**
+[Link do TelaPrincipal.java, para rodar o programa a interface gráfica](src/main/java/view/TelaPrincipal.java)
 
 [Link da organização em UML](https://lucid.app/lucidchart/6489d7bc-bc9a-4903-986c-0b3dabb231fd/edit?invitationId=inv_f00eb130-1baf-4d5a-bcbe-ecc79af7f850&page=hF_BlsUKGquW#)
 

@@ -18,24 +18,56 @@ import service.GerenciaVenda;
 import service.GerenciaProduto;
 import service.GerenciaCliente;
 
+/**
+ * Representa a tela (painel) de controle de contas do sistema.
+ * <p>
+ * Esta classe é responsável por criar e gerenciar a interface do usuário para
+ * visualização de "Contas a Pagar" (originadas de compras) e "Contas a Receber"
+ * (originadas de vendas a prazo/fiado).
+ * </p>
+ * <p>
+ * Utiliza um {@link CardLayout} para alternar entre as duas visualizações principais
+ * e depende das classes de serviço para obter os dados a serem exibidos.
+ * </p>
+ */
 public class TelaControleContas {
 
+    // --- Camadas de Serviço ---
+    /** Serviço para gerenciar dados de compras. */
     private final GerenciaCompra gerenciaCompra;
+    /** Serviço para gerenciar dados de vendas. */
     private final GerenciaVenda gerenciaVenda;
+    /** Serviço para gerenciar dados de produtos. */
     private final GerenciaProduto gerenciaProduto;
+    /** Serviço para gerenciar dados de clientes. */
     private final GerenciaCliente gerenciaCliente;
 
+    /** Formatador de números para a moeda brasileira (Real). */
     private final NumberFormat moedaBR = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
-    // UI refs para atualizar quando necessário
+    // --- Referências de UI ---
+    /** Tabela que exibe os detalhes das contas a pagar. */
     private JTable tabelaPagar;
+    /** Tabela que exibe os detalhes das contas a receber. */
     private JTable tabelaReceber;
+    /** Rótulo que exibe o valor total das contas a pagar. */
     private JLabel lblTotalPagar;
+    /** Rótulo que exibe o valor total das contas a receber. */
     private JLabel lblTotalReceber;
 
+    /** Painel que contém as visualizações (pagar/receber) e alterna entre elas. */
     private JPanel containerViews;
+    /** Gerenciador de layout para o {@code containerViews}. */
     private CardLayout viewsLayout;
 
+    /**
+     * Constrói a tela de controle de contas com as dependências de serviço necessárias.
+     *
+     * @param gc   Instância de {@link GerenciaCompra} para obter dados de compras.
+     * @param gv   Instância de {@link GerenciaVenda} para obter dados de vendas.
+     * @param gp   Instância de {@link GerenciaProduto} para obter detalhes dos produtos.
+     * @param gcli Instância de {@link GerenciaCliente} para obter detalhes dos clientes.
+     */
     public TelaControleContas(GerenciaCompra gc,
                               GerenciaVenda gv,
                               GerenciaProduto gp,
@@ -46,11 +78,21 @@ public class TelaControleContas {
         this.gerenciaCliente = gcli;
     }
 
+    /**
+     * Cria e retorna o painel principal para a interface de controle de contas.
+     * <p>
+     * Este método monta a estrutura completa do painel, incluindo os botões de navegação
+     * ("Contas a Pagar", "Contas a Receber", "Voltar") e o contêiner com as tabelas.
+     * </p>
+     * @param painelPrincipal O painel raiz da aplicação, para onde o botão "Voltar" retorna.
+     * @param cardLayout      O gerenciador de layout do painel raiz, usado para efetuar a troca de telas.
+     * @return um {@link JPanel} totalmente configurado para ser adicionado à janela principal.
+     */
     public JPanel criarPainelControleContas(JPanel painelPrincipal, CardLayout cardLayout) {
         JPanel raiz = new JPanel(new BorderLayout(12, 12));
         raiz.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
 
-        // Barra de ações (botões)
+        // Barra de ações superior com os botões
         JPanel barra = new JPanel(new FlowLayout(FlowLayout.LEFT, 8, 0));
         JButton btnAPagar = new JButton("Contas a Pagar");
         JButton btnAReceber = new JButton("Contas a Receber");
@@ -63,7 +105,7 @@ public class TelaControleContas {
 
         raiz.add(barra, BorderLayout.NORTH);
 
-        // Container que troca entre as duas visões
+        // Contêiner que troca entre as visões de "pagar" e "receber"
         viewsLayout = new CardLayout();
         containerViews = new JPanel(viewsLayout);
 
@@ -72,7 +114,7 @@ public class TelaControleContas {
 
         raiz.add(containerViews, BorderLayout.CENTER);
 
-        // Ações dos botões
+        // Ações dos botões de navegação
         btnAPagar.addActionListener(e -> {
             viewsLayout.show(containerViews, "pagar");
             atualizarPagar();
@@ -85,14 +127,18 @@ public class TelaControleContas {
 
         btnVoltar.addActionListener(e -> cardLayout.show(painelPrincipal, "menuPrincipal"));
 
-        // Carrega dados iniciais
+        // Carrega os dados nas tabelas na primeira exibição
         atualizarPagar();
         atualizarReceber();
 
         return raiz;
     }
 
-    // ========= View "A Pagar" =========
+    /**
+     * Cria o painel de visualização para "Contas a Pagar".
+     *
+     * @return um {@link JPanel} contendo a tabela e o rótulo de total.
+     */
     private JPanel criarViewPagar() {
         JPanel painel = new JPanel(new BorderLayout(8, 8));
 
@@ -111,6 +157,11 @@ public class TelaControleContas {
         return painel;
     }
 
+    /**
+     * Cria um modelo de tabela vazio e não editável para as contas a pagar.
+     *
+     * @return um {@link DefaultTableModel} com as colunas pré-definidas.
+     */
     private DefaultTableModel modeloPagarVazio() {
         return new DefaultTableModel(
             new Object[]{"NF", "Fornecedor", "Data", "Produto", "Quantidade", "Custo unitário", "Total item"}, 0
@@ -119,9 +170,11 @@ public class TelaControleContas {
         };
     }
 
+    /**
+     * Busca os dados mais recentes de compras, calcula os totais e atualiza a tabela e o rótulo de "Contas a Pagar".
+     */
     private void atualizarPagar() {
         DefaultTableModel model = modeloPagarVazio();
-
         List<Compra> compras = gerenciaCompra.getCompras();
         BigDecimal total = BigDecimal.ZERO;
 
@@ -149,7 +202,11 @@ public class TelaControleContas {
         lblTotalPagar.setText("Total a pagar: " + moedaBR.format(total));
     }
 
-    // ========= View "A Receber" =========
+    /**
+     * Cria o painel de visualização para "Contas a Receber".
+     *
+     * @return um {@link JPanel} contendo a tabela e o rótulo de total.
+     */
     private JPanel criarViewReceber() {
         JPanel painel = new JPanel(new BorderLayout(8, 8));
 
@@ -168,6 +225,11 @@ public class TelaControleContas {
         return painel;
     }
 
+    /**
+     * Cria um modelo de tabela vazio e não editável para as contas a receber.
+     *
+     * @return um {@link DefaultTableModel} com as colunas pré-definidas.
+     */
     private DefaultTableModel modeloReceberVazio() {
         return new DefaultTableModel(
             new Object[]{"Data", "Cliente (id)", "Produto", "Quantidade", "Preço unitário", "Total item"}, 0
@@ -176,15 +238,17 @@ public class TelaControleContas {
         };
     }
 
+    /**
+     * Busca os dados mais recentes de vendas a prazo, calcula os totais e atualiza a tabela e o rótulo de "Contas a Receber".
+     */
     private void atualizarReceber() {
         DefaultTableModel model = modeloReceberVazio();
-
         List<Venda> fiados = gerenciaVenda.filtrarVendasAReceber();
         BigDecimal total = BigDecimal.ZERO;
 
         if (fiados != null) {
             for (Venda v : fiados) {
-                // Só fiado deve vir aqui, mas conferimos mesmo assim
+                // A lista já deve ser apenas de VendaFiado, mas a verificação é uma boa prática.
                 if (!(v instanceof VendaFiado)) continue;
 
                 VendaFiado vf = (VendaFiado) v;
@@ -210,7 +274,13 @@ public class TelaControleContas {
         lblTotalReceber.setText("Total a receber: " + moedaBR.format(total));
     }
 
-    /** Chame isto depois de carregar CSVs para atualizar as duas tabelas. */
+    /**
+     * Força a atualização dos dados em ambas as tabelas (pagar e receber).
+     * <p>
+     * Este método deve ser chamado externamente quando os dados subjacentes
+     * (como após o carregamento de novos arquivos CSV) foram alterados.
+     * </p>
+     */
     public void recarregarDados() {
         atualizarPagar();
         atualizarReceber();
