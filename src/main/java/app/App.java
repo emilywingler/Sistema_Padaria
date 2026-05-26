@@ -1,3 +1,5 @@
+package app;
+
 
 import java.util.Scanner;
 import model.*;
@@ -25,15 +27,18 @@ import service.*;
  * </ul>
  */
 public class App {
+    
     private static String caminhoArquivoCliente;
     private static String caminhoArquivoFornecedor;
     private static String caminhoArquivoProduto;
+    private static String caminhoArquivoCompra;
+    private static String caminhoArquivoVenda;
     
-    private static GerenciaCliente gerenciaCliente= new GerenciaCliente();
-    private static GerenciaProduto gerenciaProduto = new GerenciaProduto();
-    private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor();
-    private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor);
-    private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente);
+    private static GerenciaCliente gerenciaCliente= new GerenciaCliente(caminhoArquivoCliente);
+    private static GerenciaProduto gerenciaProduto = new GerenciaProduto(caminhoArquivoProduto);
+    private static GerenciaFornecedor gerenciaFornecedor = new GerenciaFornecedor(caminhoArquivoFornecedor);
+    private static GerenciaCompra gerenciaCompra = new GerenciaCompra(gerenciaProduto,gerenciaFornecedor, caminhoArquivoCompra);
+    private static GerenciaVenda gerenciaVenda = new GerenciaVenda(gerenciaProduto,gerenciaCliente, caminhoArquivoVenda);
     
     /**
      * Método principal da aplicação.
@@ -43,13 +48,25 @@ public class App {
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int op = 0;
-        gerenciaCliente.carregarClientesCSV("clientes.csv");
-        gerenciaFornecedor.carregarFornecedorCSV("fornecedores.csv");
-        gerenciaProduto.carregarProdutosCSV("produtos.csv");
-        gerenciaCompra.carregarComprasCSV("compras.csv");
-        gerenciaVenda.carregarVendasCSV("vendas.csv");
         
+        System.out.println("Digite o caminho do arquivo csv contendo os clientes: ");
+        caminhoArquivoCliente = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo os fornecedores: ");
+        caminhoArquivoFornecedor = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo os produtos: ");
+        caminhoArquivoProduto = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo as compras: ");
+        caminhoArquivoCompra = sc.nextLine();
+        System.out.println("Digite o caminho do arquivo csv contendo as vendas: ");
+        caminhoArquivoVenda = sc.nextLine();
+
+        gerenciaCliente.carregarClientesCSV(caminhoArquivoCliente);
+        gerenciaFornecedor.carregarFornecedorCSV(caminhoArquivoFornecedor);
+        gerenciaProduto.carregarProdutosCSV(caminhoArquivoProduto);
+        gerenciaCompra.carregarComprasCSV(caminhoArquivoCompra);
+        gerenciaVenda.carregarVendasCSV(caminhoArquivoVenda);
+        
+        int op = 0;
         
         while(op != 5){
             menuPrincipal();
@@ -218,19 +235,19 @@ public class App {
      */
     public static void gerarRelatorios(){
         Apagar apagar = new Apagar(gerenciaCompra,gerenciaFornecedor); 
-        apagar.gerarCSV("apagar.csv");
+        apagar.gerarCSV("1-apagar.csv");
         
         Areceber areceber = new Areceber(gerenciaVenda,gerenciaCliente);
-        areceber.gerarCSV("areceber.csv");
+        areceber.gerarCSV("2-areceber.csv");
         
         Estoque estoque = new Estoque(gerenciaProduto);
-        estoque.gerarCSV("estoque.csv");
+        estoque.gerarCSV("5-estoque.csv");
         
         VendasPorPagamento vppg = new VendasPorPagamento(gerenciaVenda);
-        vppg.gerarCSV("vendasprod.csv");
+        vppg.gerarCSV("4-vendaspgto.csvv");
         
         VendasPorProduto vpp = new VendasPorProduto(gerenciaVenda,gerenciaProduto);
-        vpp.gerarCSV("vendaspgmt.csv");
+        vpp.gerarCSV("3-vendasprod.csv");
         
         System.out.println("<<< Relatórios gerados com sucesso! >>>");
     }
