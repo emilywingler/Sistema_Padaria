@@ -168,7 +168,6 @@ public class GerenciaProduto{
      * @param custo
     */
     public void inserirProduto(int idProduto, String descricao, int minEstoque, int estoqueAtual, BigDecimal custo, int percentualLucro) {
-
         Produto produto = new Produto(idProduto, descricao, minEstoque, estoqueAtual, custo, percentualLucro);
 
         produtos.add(produto);

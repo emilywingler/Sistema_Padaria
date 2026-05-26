@@ -160,6 +160,11 @@ public class TelaCadastro{
                                 }
                                 // int idProduto, String descricao, int minEstoque, int estoqueAtual, BigDecimal custo, int percentualLucro
                                 String descricao = formulario.getDescricao();
+
+                                if(formulario.getEstoqueAtual() < 0 || formulario.getMinEstoque() < 0){
+                                    JOptionPane.showMessageDialog(framePai, "Não é possível cadastrar um estoque negativo.", "Erro de Estoque Negativo", JOptionPane.ERROR_MESSAGE);
+                                    continue;
+                                }
                                 
                                 gp.inserirProduto(id, descricao, formulario.getMinEstoque(), formulario.getEstoqueAtual(), formulario.getCusto(), formulario.getPercentualLucro());
                                 JOptionPane.showMessageDialog(framePai, "Produto '" + descricao + "' cadastrado com sucesso!");

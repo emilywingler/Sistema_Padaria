@@ -7,3 +7,4 @@ idProduto;descricao;estoqueMinimo;estoqueAtual;valorCusto;percentualLucro
 89751;PAO;10;60;10;5
 900;sonho;10;87;5;20
 1;sonho;100;200;10;20
+200;paozinho;10;-10;25;10
